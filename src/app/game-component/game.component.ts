@@ -2,11 +2,14 @@ import {ChangeDetectorRef, Component, computed, inject, OnInit, signal} from '@a
 import {DataService} from '../../services/data.service';
 import Rand from 'rand-seed';
 import {FormsModule} from '@angular/forms';
+import {CardInfoComponent} from './card-info-component/card-info.component';
+import {CardData} from '../../model/cardData';
 
 @Component({
-  selector: 'app-game-compoentn',
+  selector: 'app-game',
   imports: [
-    FormsModule
+    FormsModule,
+    CardInfoComponent
   ],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
@@ -36,6 +39,8 @@ export class GameComponent implements OnInit {
       next: data => {
         this.cards = data;
         this.card = this.getDailyCard();
+        //TODO: remove
+        this.guesses.push(this.cards.sort((a,b) => a.code.localeCompare(b.code))[0]);
         this.loading = false;
         this.cdr.detectChanges();
       },

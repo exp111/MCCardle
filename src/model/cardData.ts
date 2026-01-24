@@ -1,4 +1,4 @@
-interface CardData {
+export interface CardData {
   code: string;
   cost?: number;
   type: CardType;
@@ -10,7 +10,7 @@ interface CardData {
   illustrators: string[];
 }
 
-enum CardType {
+export enum CardType {
   Event = "event",
   Resource = "resource",
   Ally = "ally",
@@ -32,7 +32,7 @@ enum CardType {
   EvidenceOpportunity = "evidence_opportunity",
 }
 
-enum CardFaction {
+export enum CardFaction {
   Hero = "hero",
   Basic = "basic",
   Aggression = "aggression",
@@ -45,14 +45,14 @@ enum CardFaction {
   Encounter = "encounter",
 }
 
-enum CardResource {
+export enum CardResource {
   Energy = "e",
   Mental = "m",
   Physical = "p",
   Wild = "w"
 }
 
-enum Pack {
+export enum Pack {
   Core = "core",
   GreenGoblin = "gob",
   CaptainAmerica = "cap",

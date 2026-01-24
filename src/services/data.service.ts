@@ -1,5 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {CardData} from '../model/cardData';
 
 @Injectable({
   providedIn: 'root',

@@ -27,7 +27,7 @@
         <span class="w-25 border rounded text-center align-content-center fs-5">Guess #{{ guesses.length + 1 }}</span>
       </div>
       @for (guess of guesses; track guess.code) {
-        {{guess.name}}
+        <app-card-info [card]="guess"></app-card-info>
       }
     </div>
   }

@@ -1,5 +1,6 @@
 import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {DataService} from '../../services/data.service';
+import {CardData} from '../../model/cardData';
 
 @Component({
   selector: 'app-cards',

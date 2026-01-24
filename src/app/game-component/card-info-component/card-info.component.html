@@ -1,0 +1,15 @@
+<div class="row border rounded">
+  <div class="col-2 p-2">
+    <img class="img" [src]="cardImg()">
+  </div>
+  <div class="col-6 d-flex flex-column">
+    <div>{{card().name}}</div>
+    <div>{{card().cost ?? "-"}} <span class="text-muted">Cost</span></div>
+    <div>{{getType()}} <span class="text-muted">Type</span></div>
+    <div>{{getFaction()}} <span class="text-muted">Aspect</span></div>
+  </div>
+  <div class="col">
+    <div></div>
+  </div>
+</div>
+
