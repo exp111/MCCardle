@@ -1,8 +1,6 @@
 # MCCardle
 
 ## TODO
-- show guessed info/summary
-- better search display
 - language
 
 ## Links
