@@ -1,0 +1,39 @@
+<h4 class="header">Cards</h4>
+@if (loading) {
+  <span class="loading">Loading...</span>
+} @else {
+  <table>
+    <thead>
+    <tr>
+      <th>Code</th>
+      <th>Cost</th>
+      <th>Type</th>
+      <th>Faction</th>
+      <th>Name</th>
+      <th>Name DE</th>
+      <th>Resources</th>
+      <th>Packs</th>
+      <th>Illustrators</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (card of cards; track card.code) {
+        <tr>
+          <td>{{card.code}}</td>
+          <td>{{card.cost ?? "-"}}</td>
+          <td>{{card.type}}</td>
+          <td>{{card.faction}}</td>
+          <td>{{card.name}}</td>
+          <td>{{card.name_de}}</td>
+          <td>{{card.resources.join("")}}</td>
+          <td>{{card.packs.join(",")}}</td>
+          <td>{{card.illustrators.join(",")}}</td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="8">Could not load cards...</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
