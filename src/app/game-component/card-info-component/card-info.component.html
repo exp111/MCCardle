@@ -5,7 +5,7 @@
   </div>
   <div class="col-6 d-flex flex-column">
     <!-- name -->
-    <div class="value fw-bold" [class.correct]="card().name == correctCard().name">{{ card().name }}</div>
+    <div class="value fw-bold" [class.correct]="card().name == correctCard().name">{{ getName(card()) }}</div>
     <!-- cost -->
     <div>
       <span class="value" [class.correct]="card().cost == correctCard().cost" [class.lower]="answerIsLower(card().cost, correctCard().cost)" [class.higher]="answerIsHigher(card().cost, correctCard().cost)">{{ card().cost ?? "-" }} </span>

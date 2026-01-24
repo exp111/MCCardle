@@ -5,7 +5,7 @@
   </div>
   <div class="col-6 d-flex flex-column">
     <!-- name -->
-    <div class="value fw-bold" [class.correct]="value('name')">{{ value("name") ?? PLACEHOLDER }}</div>
+    <div class="value fw-bold" [class.correct]="value('name')">{{ value("name") ? getName(correctCard()) : PLACEHOLDER }}</div>
     <!-- cost -->
     <div>
       <span class="value" [class.correct]="value('cost')">{{ value("cost") ?? PLACEHOLDER }} </span>

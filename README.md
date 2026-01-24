@@ -1,8 +1,5 @@
 # MCCardle
 
-## TODO
-- language
-
 ## Links
 [BGdle](http://bgdle.org/)
 [MarvelCDB](https://marvelcdb.com/)

@@ -22,7 +22,7 @@
     </div>
     <div class="d-flex flex-column gap-1">
       @if (cardGuessed) {
-        <h4 class="correct text-center">You guessed the card correctly! It was {{ cardToGuess.name }}.</h4>
+        <h4 class="correct text-center">You guessed the card correctly! It was {{ getName(cardToGuess) }}.</h4>
       }
       <div class="form-check">
         <input type="checkbox" class="form-check-input" [(ngModel)]="showSearchImages">
@@ -30,7 +30,13 @@
           Show Card Images in Search
         </label>
       </div>
-      <app-guess-info [card]="null!" [correctCard]="cardToGuess" [guesses]="guesses"></app-guess-info>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="germanLanguage">
+        <label class="form-check-label" for="checkDefault">
+          German Language
+        </label>
+      </div>
+      <app-guess-info [card]="null!" [correctCard]="cardToGuess" [guesses]="guesses" [germanLanguage]="germanLanguage()"></app-guess-info>
       <div class="d-flex">
         <!-- Search -->
         <div class="flex-grow-1 position-relative">
@@ -45,7 +51,7 @@
                 @if (showSearchImages()) {
                   <div class="col-2 p-2"><img class="card-img" [src]="getCardImage(result)"></div>
                 }
-                <div class="col align-content-center">{{ result.name }} ({{ getFaction(result.faction) }})</div>
+                <div class="col align-content-center">{{ getName(result) }} ({{ getFaction(result.faction) }})</div>
               </div>
             }
             @if (shownSearchResults().length != searchResults().length) {
@@ -57,7 +63,7 @@
         <span class="w-25 border rounded text-center align-content-center fs-5">Guess #{{ guesses.length + 1 }}</span>
       </div>
       @for (guess of guesses; track guess.code) {
-        <app-card-info [card]="guess" [correctCard]="cardToGuess"></app-card-info>
+        <app-card-info [card]="guess" [correctCard]="cardToGuess" [germanLanguage]="germanLanguage()"></app-card-info>
       }
     </div>
   }

@@ -1,6 +1,6 @@
 import {Component, computed, input} from '@angular/core';
 import {CardData, CardFaction, CardType, Pack} from '../../../model/cardData';
-import {getCardImage, getFaction, getPack, getType} from '../../helpers';
+import {getCardImage, getCardName, getFaction, getPack, getType} from '../../helpers';
 
 @Component({
   selector: 'app-card-info',
@@ -11,8 +11,13 @@ import {getCardImage, getFaction, getPack, getType} from '../../helpers';
 export class CardInfoComponent {
   card = input.required<CardData>();
   correctCard = input.required<CardData>();
+  germanLanguage = input.required<boolean>();
 
   cardImg = computed(() => getCardImage(this.card()));
+
+  getName(card: CardData) {
+    return getCardName(card, this.germanLanguage());
+  }
 
   answerIsHigher(val?: number, correct?: number) {
     // nothing lower than null (-)
@@ -47,4 +52,5 @@ export class CardInfoComponent {
   protected readonly getPack = getPack;
   protected readonly getFaction = getFaction;
   protected readonly getType = getType;
+  protected readonly getCardName = getCardName;
 }

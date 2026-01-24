@@ -25,3 +25,7 @@ export function getPack(pack: string) {
 //export function getSet(set: string) {
 //  return set.replace(/^\w/, (c) => c.toUpperCase()).replaceAll(/_(\w)/g, (c) => ` ${c[1].toUpperCase()}`) // convert to camel case
 //}
+
+export function getCardName(card: CardData, translated: boolean) {
+  return translated ? card.name_de ?? card.name : card.name;
+}
