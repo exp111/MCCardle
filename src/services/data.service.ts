@@ -8,6 +8,6 @@ export class DataService {
   httpClient = inject(HttpClient);
 
   getData() {
-    return this.httpClient.get<CardData[]>("/cards.json");
+    return this.httpClient.get<CardData[]>("cards.json");
   }
 }
