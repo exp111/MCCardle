@@ -8,16 +8,24 @@
       <!--TODO: guessed stuff -->
       <div>{{ card.name }} {{ card.name_de }}</div>
       <!--<img src="https://marvelcdb.com/bundles/cards/{{card.code}}.png">-->
-      <div class="input-group">
-        <input placeholder="Enter your guess here" class="form-control form-control-lg" [(ngModel)]="search">
-        <span class="input-group-text">Guess #{{ guesses.length + 1 }}</span>
+      <div class="d-flex">
+        <!-- Search -->
+        <div class="flex-grow-1 position-relative">
+          <!-- Search Input -->
+          <input placeholder="Enter your guess here" class="form-control form-control-lg" [(ngModel)]="search">
+          <!-- Search Results -->
+          <div class="z-2 position-absolute w-100 bg-white border rounded-bottom" [class.d-none]="!shownSearchResults().length">
+            @for (result of shownSearchResults(); track result.code) {
+              <div>{{ result.name }}</div>
+            }
+            @if (shownSearchResults().length != searchResults().length) {
+              <div>...</div>
+            }
+          </div>
+        </div>
+        <!-- Guess Counter -->
+        <span class="w-25 border rounded text-center align-content-center fs-5">Guess #{{ guesses.length + 1 }}</span>
       </div>
-      @for (result of shownSearchResults(); track result.code) {
-        {{result.name}}<br>
-      }
-      @if (shownSearchResults().length != searchResults().length) {
-        ...
-      }
       @for (guess of guesses; track guess.code) {
 
       }
