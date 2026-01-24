@@ -4,13 +4,18 @@
   @if (!card) {
     Couldn't load data...
   } @else {
-    <!--TODO: guessed stuff -->
-    <div>{{card.name}} {{card.name_de}}</div>
-    <!--<img src="https://marvelcdb.com/bundles/cards/{{card.code}}.png">-->
-    <input placeholder="Enter your guess here" class="form-control form-control-lg">
-    @for (guess of guesses; track guess.code) {
+    <div class="d-flex flex-column">
+      <!--TODO: guessed stuff -->
+      <div>{{ card.name }} {{ card.name_de }}</div>
+      <!--<img src="https://marvelcdb.com/bundles/cards/{{card.code}}.png">-->
+      <div class="input-group">
+        <input placeholder="Enter your guess here" class="form-control form-control-lg">
+        <span class="input-group-text">Guess #{{ guesses.length + 1 }}</span>
+      </div>
+      @for (guess of guesses; track guess.code) {
 
-    }
+      }
+    </div>
   }
 }
 
