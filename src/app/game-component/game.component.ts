@@ -22,6 +22,8 @@ export class GameComponent implements OnInit {
   cards: CardData[] = [];
   cardToGuess!: CardData;
 
+  showLegend = false;
+
   MINIMUM_SEARCH_LENGTH = 2;
   SHOWN_RESULTS = 5;
   search = signal("");
@@ -72,5 +74,9 @@ export class GameComponent implements OnInit {
     }
     // clear search
     this.search.set("");
+  }
+
+  toggleLegend() {
+    this.showLegend = !this.showLegend;
   }
 }

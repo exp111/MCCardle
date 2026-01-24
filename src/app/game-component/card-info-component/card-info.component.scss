@@ -1,3 +1,5 @@
+@import "../../../variables";
+
 .img {
   max-width: 100%;
   height: auto;
@@ -31,7 +33,7 @@
   }
 
   &.correct {
-    color: green !important;
+    color: $correct-color !important;
     &:before {
       content: '✓';
     }
@@ -40,11 +42,14 @@
 
 .value {
   &.correct {
-    color: green;
+    color: $correct-color;
+    &:before {
+      content: '✓ ';
+    }
   }
 
   &.lower {
-    color: #1796B7FF;
+    color: $lower-color;
 
     &:before {
       content: '˅ ';
@@ -52,7 +57,7 @@
   }
 
   &.higher {
-    color: #E2725BFF;
+    color: $higher-color;
 
     &:before {
       content: '˄ ';
