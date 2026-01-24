@@ -1,5 +1,5 @@
 import {Component, computed, input} from '@angular/core';
-import {CardData, CardFaction, CardType} from '../../../model/cardData';
+import {CardData, CardFaction, CardType, Pack} from '../../../model/cardData';
 
 @Component({
   selector: 'app-card-info',
@@ -22,5 +22,9 @@ export class CardInfoComponent {
 
   getFaction() {
     return this.getEnumKey(CardFaction, this.card().faction);
+  }
+
+  getPack(pack: string) {
+    return this.getEnumKey(Pack, pack).replaceAll(/([A-Z])/g, (c) => ` ${c}`) // convert camel case to spaces;
   }
 }
