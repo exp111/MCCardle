@@ -2,3 +2,31 @@
   max-width: 100%;
   height: auto;
 }
+
+// icons font
+@font-face {
+  font-family: 'marvel-icons';
+  src: url('/ChampionsIcons.ttf?') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.resource {
+  font-family: 'marvel-icons';
+
+  &.m {
+    color: #003961;
+  }
+
+  &.e {
+    color: #ff8f3f;
+  }
+
+  &.p {
+    color: #661e09;
+  }
+
+  &.w {
+    color: #00543a;
+  }
+}

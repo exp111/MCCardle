@@ -9,7 +9,12 @@
     <div>{{getFaction()}} <span class="text-muted">Aspect</span></div>
   </div>
   <div class="col">
-    <div></div>
+    <div>
+      <span class="fw-bold">Resources</span>
+      @for (resource of card().resources; track $index) {
+        <span class="resource {{resource}}">{{resource.toUpperCase()}}</span>
+      }
+    </div>
   </div>
 </div>
 
