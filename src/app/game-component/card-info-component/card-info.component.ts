@@ -9,6 +9,7 @@ import {CardData, CardFaction, CardType, Pack} from '../../../model/cardData';
 })
 export class CardInfoComponent {
   card = input.required<CardData>();
+  correctCard = input.required<CardData>();
 
   cardImg = computed(() => `https://marvelcdb.com/bundles/cards/${this.card().code}.png`);
 
@@ -31,4 +32,34 @@ export class CardInfoComponent {
   //getSet(set: string) {
   //  return set.replace(/^\w/, (c) => c.toUpperCase()).replaceAll(/_(\w)/g, (c) => ` ${c[1].toUpperCase()}`) // convert to camel case
   //}
+
+  answerIsHigher(val?: number, correct?: number) {
+    // nothing lower than null (-)
+    if (correct == null) {
+      return false;
+    }
+
+    // higher if val not null
+    if (val == null) {
+      return true;
+    }
+
+    // otherwise if lower
+    return val < correct;
+  }
+
+  answerIsLower(val?: number, correct?: number) {
+    // nothing lower than null (-)
+    if (val == null) {
+      return false;
+    }
+
+    // higher if val not null
+    if (correct == null) {
+      return true;
+    }
+
+    // otherwise if higher
+    return val > correct;
+  }
 }

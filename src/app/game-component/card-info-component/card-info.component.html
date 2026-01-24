@@ -1,24 +1,38 @@
 <div class="row border rounded">
+  <!-- img -->
   <div class="col-2 p-2">
     <img class="img" [src]="cardImg()">
   </div>
   <div class="col-6 d-flex flex-column">
-    <div>{{card().name}}</div>
-    <div>{{card().cost ?? "-"}} <span class="text-muted">Cost</span></div>
-    <div>{{getType()}} <span class="text-muted">Type</span></div>
-    <div>{{getFaction()}} <span class="text-muted">Aspect</span></div>
+    <!-- name -->
+    <div class="value" [class.correct]="card().name == correctCard().name">{{ card().name }}</div>
+    <!-- cost -->
+    <div>
+      <span class="value" [class.correct]="card().cost == correctCard().cost" [class.lower]="answerIsLower(card().cost, correctCard().cost)" [class.higher]="answerIsHigher(card().cost, correctCard().cost)">{{ card().cost ?? "-" }} </span>
+      <span class="text-muted">Cost</span>
+    </div>
+    <!-- type -->
+    <div>
+      <span class="value" [class.correct]="card().type == correctCard().type">{{ getType() }} </span>
+      <span class="text-muted">Type</span>
+    </div>
+    <!-- faction -->
+    <div>
+      <span class="value" [class.correct]="card().faction == correctCard().faction">{{ getFaction() }} </span>
+      <span class="text-muted">Aspect</span>
+    </div>
   </div>
   <div class="col">
     <div>
       <span class="fw-bold">Resources </span>
       @for (resource of card().resources; track $index) {
-        <span class="resource {{resource}}">{{resource.toUpperCase()}}</span>
+        <span class="resource {{resource}}" [class.correct]="correctCard().resources.includes(resource)">{{ resource.toUpperCase() }}</span>
       }
     </div>
     <div>
       <span class="fw-bold">Packs </span>
       @for (pack of card().packs; track pack) {
-        <span>{{getPack(pack)}}</span>@if (!$last) {, }
+        <span class="value" [class.correct]="correctCard().packs.includes(pack)">{{ getPack(pack) }}</span>@if (!$last) {,}
       }
     </div>
   </div>

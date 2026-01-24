@@ -1,12 +1,12 @@
 @if (loading) {
   Loading...
 } @else {
-  @if (!card) {
+  @if (!cardToGuess) {
     Couldn't load data...
   } @else {
     <div class="d-flex flex-column gap-1">
       <!--TODO: guessed stuff -->
-      <div>{{ card.name }} {{ card.name_de }}</div>
+      <div>{{ cardToGuess.name }} {{ cardToGuess.name_de }}</div>
       <!--<img src="https://marvelcdb.com/bundles/cards/{{card.code}}.png">-->
       <div class="d-flex">
         <!-- Search -->
@@ -27,7 +27,7 @@
         <span class="w-25 border rounded text-center align-content-center fs-5">Guess #{{ guesses.length + 1 }}</span>
       </div>
       @for (guess of guesses; track guess.code) {
-        <app-card-info [card]="guess"></app-card-info>
+        <app-card-info [card]="guess" [correctCard]="cardToGuess"></app-card-info>
       }
     </div>
   }

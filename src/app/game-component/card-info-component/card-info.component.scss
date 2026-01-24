@@ -29,4 +29,33 @@
   &.w {
     color: #00543a;
   }
+
+  &.correct {
+    color: green !important;
+    &:before {
+      content: '✓';
+    }
+  }
+}
+
+.value {
+  &.correct {
+    color: green;
+  }
+
+  &.lower {
+    color: #1796B7FF;
+
+    &:before {
+      content: '˅ ';
+    }
+  }
+
+  &.higher {
+    color: #E2725BFF;
+
+    &:before {
+      content: '˄ ';
+    }
+  }
 }

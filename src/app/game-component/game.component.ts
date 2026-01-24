@@ -20,7 +20,7 @@ export class GameComponent implements OnInit {
 
   loading = false;
   cards: CardData[] = [];
-  card!: CardData;
+  cardToGuess!: CardData;
 
   MINIMUM_SEARCH_LENGTH = 2;
   SHOWN_RESULTS = 5;
@@ -38,7 +38,7 @@ export class GameComponent implements OnInit {
     this.dataService.getData().subscribe({
       next: data => {
         this.cards = data;
-        this.card = this.getDailyCard();
+        this.cardToGuess = this.getDailyCard();
         //TODO: remove
         this.guesses.push(this.cards.sort((a,b) => a.code.localeCompare(b.code))[0]);
         this.loading = false;
@@ -66,7 +66,7 @@ export class GameComponent implements OnInit {
       return;
     }
     this.guesses.push(cardData);
-    if (this.card == cardData) {
+    if (this.cardToGuess == cardData) {
       console.log("Card guessed!");
       //TODO: show won
     }
