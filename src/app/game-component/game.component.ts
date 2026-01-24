@@ -44,8 +44,6 @@ export class GameComponent implements OnInit {
       next: data => {
         this.cards = data;
         this.cardToGuess = this.getDailyCard();
-        //TODO: remove
-        this.guesses.push(this.cards.sort((a,b) => a.code.localeCompare(b.code))[0]);
         this.loading = false;
         this.cdr.detectChanges();
       },
