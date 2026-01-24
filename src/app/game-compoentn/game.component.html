@@ -16,7 +16,7 @@
           <!-- Search Results -->
           <div class="z-2 position-absolute w-100 bg-white border rounded-bottom" [class.d-none]="!shownSearchResults().length">
             @for (result of shownSearchResults(); track result.code) {
-              <div>{{ result.name }}</div>
+              <div class="cursor-pointer" (click)="guessCard(result)">{{ result.name }}</div>
             }
             @if (shownSearchResults().length != searchResults().length) {
               <div>...</div>
@@ -27,7 +27,7 @@
         <span class="w-25 border rounded text-center align-content-center fs-5">Guess #{{ guesses.length + 1 }}</span>
       </div>
       @for (guess of guesses; track guess.code) {
-
+        {{guess.name}}
       }
     </div>
   }

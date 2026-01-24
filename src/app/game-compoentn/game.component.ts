@@ -54,4 +54,18 @@ export class GameComponent implements OnInit {
     let index = Math.floor(random.next() * this.cards.length);
     return this.cards[index];
   }
+
+  guessCard(cardData: CardData) {
+    if (this.guesses.includes(cardData)) {
+      console.log(`Card ${cardData.name} already guessed`);
+      return;
+    }
+    this.guesses.push(cardData);
+    if (this.card == cardData) {
+      console.log("Card guessed!");
+      //TODO: show won
+    }
+    // clear search
+    this.search.set("");
+  }
 }
