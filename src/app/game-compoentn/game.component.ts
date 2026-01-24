@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
+import {DataService} from '../../services/data.service';
+import Rand from 'rand-seed';
 
 @Component({
   selector: 'app-game-compoentn',
@@ -6,6 +8,38 @@ import { Component } from '@angular/core';
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
 })
-export class GameComponent {
+export class GameComponent implements OnInit {
+  dataService = inject(DataService);
+  cdr = inject(ChangeDetectorRef);
 
+  loading = false;
+  cards: CardData[] = [];
+  card!: CardData;
+
+  guesses: CardData[] = [];
+
+  ngOnInit() {
+    this.loading = true;
+    this.dataService.getData().subscribe({
+      next: data => {
+        this.cards = data;
+        this.card = this.getDailyCard();
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: err => {
+        console.error(err);
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    })
+  }
+
+  getDailyCard() {
+    let day = new Date();
+    let str = `${day.getUTCFullYear()}-${day.getUTCMonth() + 1}-${day.getUTCDate()}`;
+    let random = new Rand(str);
+    let index = Math.floor(random.next() * this.cards.length);
+    return this.cards[index];
+  }
 }

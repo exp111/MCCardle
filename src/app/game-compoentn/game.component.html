@@ -1,2 +1,16 @@
-<!--TODO: guessed stuff -->
-<input placeholder="Enter your Guess here">
+@if (loading) {
+  Loading...
+} @else {
+  @if (!card) {
+    Couldn't load data...
+  } @else {
+    <!--TODO: guessed stuff -->
+    <div>{{card.name}} {{card.name_de}}</div>
+    <!--<img src="https://marvelcdb.com/bundles/cards/{{card.code}}.png">-->
+    <input placeholder="Enter your guess here" class="form-control form-control-lg">
+    @for (guess of guesses; track guess.code) {
+
+    }
+  }
+}
+
