@@ -35,6 +35,9 @@
             "polyfills": [
               "@angular/localize/init"
             ],
+            "externalDependencies": [
+              "ChampionsIcons.ttf"
+            ],
             "stylePreprocessorOptions": {
               "sass": {
                 "silenceDeprecations": ["import"]
