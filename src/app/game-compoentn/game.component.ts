@@ -1,10 +1,13 @@
-import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, computed, inject, OnInit, signal} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import Rand from 'rand-seed';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-game-compoentn',
-  imports: [],
+  imports: [
+    FormsModule
+  ],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
 })
@@ -15,6 +18,15 @@ export class GameComponent implements OnInit {
   loading = false;
   cards: CardData[] = [];
   card!: CardData;
+
+  MINIMUM_SEARCH_LENGTH = 2;
+  SHOWN_RESULTS = 5;
+  search = signal("");
+  searchResults = computed(() =>
+    this.search().length >= this.MINIMUM_SEARCH_LENGTH ?
+      this.cards.filter(c => c.name.toLowerCase().includes(this.search().toLowerCase()))
+      : []);
+  shownSearchResults = computed(() => this.searchResults().slice(0, this.SHOWN_RESULTS));
 
   guesses: CardData[] = [];
 
