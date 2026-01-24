@@ -7,6 +7,8 @@ export interface CardData {
   name_de?: string;
   resources: CardResource[];
   packs: Pack[];
+  // these are both incomplete
+  sets: string[];
   illustrators: string[];
 }
 

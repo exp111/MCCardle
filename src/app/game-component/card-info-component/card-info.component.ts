@@ -27,4 +27,8 @@ export class CardInfoComponent {
   getPack(pack: string) {
     return this.getEnumKey(Pack, pack).replaceAll(/([A-Z])/g, (c) => ` ${c}`) // convert camel case to spaces;
   }
+
+  //getSet(set: string) {
+  //  return set.replace(/^\w/, (c) => c.toUpperCase()).replaceAll(/_(\w)/g, (c) => ` ${c[1].toUpperCase()}`) // convert to camel case
+  //}
 }
