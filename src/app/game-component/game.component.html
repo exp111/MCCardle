@@ -24,21 +24,32 @@
       @if (cardGuessed) {
         <h4 class="correct text-center">You guessed the card correctly! It was {{ cardToGuess.name }}.</h4>
       }
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" [(ngModel)]="showSearchImages">
+        <label class="form-check-label" for="checkDefault">
+          Show Card Images in Search
+        </label>
+      </div>
       <app-guess-info [card]="null!" [correctCard]="cardToGuess" [guesses]="guesses"></app-guess-info>
-      <!--<img src="https://marvelcdb.com/bundles/cards/{{card.code}}.png">-->
       <div class="d-flex">
         <!-- Search -->
         <div class="flex-grow-1 position-relative">
           <!-- Search Input -->
-          <input placeholder="Enter your guess here" class="form-control form-control-lg" [(ngModel)]="search" [disabled]="cardGuessed">
+          <input placeholder="Enter your guess here" class="form-control form-control-lg" [(ngModel)]="search"
+                 [disabled]="cardGuessed">
           <!-- Search Results -->
           <div class="z-2 position-absolute w-100 bg-white border rounded-bottom"
                [class.d-none]="!shownSearchResults().length">
             @for (result of shownSearchResults(); track result.code) {
-              <div class="cursor-pointer" (click)="guessCard(result)">{{ result.name }}</div>
+              <div class="cursor-pointer d-flex" (click)="guessCard(result)">
+                @if (showSearchImages()) {
+                  <div class="col-2 p-2"><img class="card-img" [src]="getCardImage(result)"></div>
+                }
+                <div class="col align-content-center">{{ result.name }} ({{ getFaction(result.faction) }})</div>
+              </div>
             }
             @if (shownSearchResults().length != searchResults().length) {
-              <div>...</div>
+              <div class="p-2">...</div>
             }
           </div>
         </div>

@@ -1,5 +1,6 @@
 import {Component, computed, input} from '@angular/core';
 import {CardData, CardFaction, CardType, Pack} from '../../../model/cardData';
+import {getCardImage, getFaction, getPack, getType} from '../../helpers';
 
 @Component({
   selector: 'app-card-info',
@@ -11,30 +12,7 @@ export class CardInfoComponent {
   card = input.required<CardData>();
   correctCard = input.required<CardData>();
 
-  getImg(card: CardData) {
-    return `https://marvelcdb.com/bundles/cards/${card.code}.png`;
-  }
-  cardImg = computed(() => this.getImg(this.card()));
-
-  getEnumKey(enums: any, val: string) {
-    return Object.entries(enums).find(([_, v]) => v === val)![0] ?? val;
-  }
-
-  getType(type: CardType) {
-    return this.getEnumKey(CardType, type);
-  }
-
-  getFaction(faction: CardFaction) {
-    return this.getEnumKey(CardFaction, faction);
-  }
-
-  getPack(pack: string) {
-    return this.getEnumKey(Pack, pack).replaceAll(/([A-Z])/g, (c) => ` ${c}`) // convert camel case to spaces;
-  }
-
-  //getSet(set: string) {
-  //  return set.replace(/^\w/, (c) => c.toUpperCase()).replaceAll(/_(\w)/g, (c) => ` ${c[1].toUpperCase()}`) // convert to camel case
-  //}
+  cardImg = computed(() => getCardImage(this.card()));
 
   answerIsHigher(val?: number, correct?: number) {
     // nothing lower than null (-)
@@ -65,4 +43,8 @@ export class CardInfoComponent {
     // otherwise if higher
     return val > correct;
   }
+
+  protected readonly getPack = getPack;
+  protected readonly getFaction = getFaction;
+  protected readonly getType = getType;
 }

@@ -5,6 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {CardInfoComponent} from './card-info-component/card-info.component';
 import {CardData} from '../../model/cardData';
 import {GuessInfoComponent} from './guess-info/guess-info.component';
+import {getCardImage, getFaction} from '../helpers';
 
 @Component({
   selector: 'app-game',
@@ -35,6 +36,7 @@ export class GameComponent implements OnInit {
       this.cards.filter(c => c.name.toLowerCase().includes(this.search().toLowerCase()))
       : []);
   shownSearchResults = computed(() => this.searchResults().slice(0, this.SHOWN_RESULTS));
+  showSearchImages = signal(true);
 
   guesses: CardData[] = [];
 
@@ -80,4 +82,7 @@ export class GameComponent implements OnInit {
   toggleLegend() {
     this.showLegend = !this.showLegend;
   }
+
+  protected readonly getCardImage = getCardImage;
+  protected readonly getFaction = getFaction;
 }

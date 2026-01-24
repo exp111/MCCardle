@@ -1,6 +1,7 @@
 import {Component, computed, input} from '@angular/core';
 import {CardInfoComponent} from '../card-info-component/card-info.component';
 import {CardData, CardResource, Pack} from '../../../model/cardData';
+import {getCardImage} from '../../helpers';
 
 @Component({
   selector: 'app-guess-info',
@@ -13,7 +14,7 @@ export class GuessInfoComponent extends CardInfoComponent {
 
   PLACEHOLDER = "???";
 
-  override cardImg = computed(() => this.guesses().includes(this.correctCard()) ? this.getImg(this.correctCard()) : "placeholder.png");
+  override cardImg = computed(() => this.guesses().includes(this.correctCard()) ? getCardImage(this.correctCard()) : "placeholder.png");
 
   value(field: keyof CardData) {
     let correct = this.correctCard()[field];

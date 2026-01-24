@@ -1,0 +1,27 @@
+import {CardData, CardFaction, CardType, Pack} from '../model/cardData';
+
+export const marvelcdbImageUrl = "https://marvelcdb.com/bundles/cards/";
+
+export function getCardImage(card: CardData) {
+  return `${marvelcdbImageUrl}${card.code}.png`;
+}
+
+export function getEnumKey(enums: any, val: string) {
+  return Object.entries(enums).find(([_, v]) => v === val)![0] ?? val;
+}
+
+export function getType(type: CardType) {
+  return getEnumKey(CardType, type);
+}
+
+export function getFaction(faction: CardFaction) {
+  return getEnumKey(CardFaction, faction);
+}
+
+export function getPack(pack: string) {
+  return getEnumKey(Pack, pack).replaceAll(/([A-Z])/g, (c) => ` ${c}`) // convert camel case to spaces;
+}
+
+//export function getSet(set: string) {
+//  return set.replace(/^\w/, (c) => c.toUpperCase()).replaceAll(/_(\w)/g, (c) => ` ${c[1].toUpperCase()}`) // convert to camel case
+//}
