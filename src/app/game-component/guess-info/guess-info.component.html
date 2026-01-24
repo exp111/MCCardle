@@ -1,0 +1,40 @@
+<div class="d-flex border rounded">
+  <!-- img -->
+  <div class="col-2 p-2">
+    <img class="img" [src]="cardImg()">
+  </div>
+  <div class="col-6 d-flex flex-column">
+    <!-- name -->
+    <div class="value fw-bold" [class.correct]="value('name')">{{ value("name") ?? PLACEHOLDER }}</div>
+    <!-- cost -->
+    <div>
+      <span class="value" [class.correct]="value('cost')">{{ value("cost") ?? PLACEHOLDER }} </span>
+      <span class="text-muted">Cost</span>
+    </div>
+    <!-- type -->
+    <div>
+      <span class="value" [class.correct]="value('type')">{{ value("type") ? getType($any(value("type"))) : PLACEHOLDER }} </span>
+      <span class="text-muted">Type</span>
+    </div>
+    <!-- faction -->
+    <div>
+      <span class="value" [class.correct]="value('faction')">{{ value("faction") ? getFaction($any(value("faction"))) : PLACEHOLDER }} </span>
+      <span class="text-muted">Aspect</span>
+    </div>
+  </div>
+  <div class="col">
+    <div>
+      <span class="fw-bold">Resources </span>
+      @for (resource of correctCard().resources; track $index) {
+        <span class="{{hasResource(resource) ? `resource ${resource}` : ''}}">{{ hasResource(resource) ? resource.toUpperCase() : PLACEHOLDER }}</span>
+      }
+    </div>
+    <div>
+      <span class="fw-bold">Packs </span>
+      @for (pack of correctCard().packs; track pack) {
+        <span class="value" [class.correct]="hasPack(pack)">{{ hasPack(pack) ? getPack(pack) : PLACEHOLDER }}</span>@if (!$last) {,}
+      }
+    </div>
+  </div>
+</div>
+

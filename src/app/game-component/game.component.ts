@@ -4,12 +4,14 @@ import Rand from 'rand-seed';
 import {FormsModule} from '@angular/forms';
 import {CardInfoComponent} from './card-info-component/card-info.component';
 import {CardData} from '../../model/cardData';
+import {GuessInfoComponent} from './guess-info/guess-info.component';
 
 @Component({
   selector: 'app-game',
   imports: [
     FormsModule,
-    CardInfoComponent
+    CardInfoComponent,
+    GuessInfoComponent
   ],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',

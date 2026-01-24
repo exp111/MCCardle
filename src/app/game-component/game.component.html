@@ -21,10 +21,10 @@
       </div>
     </div>
     <div class="d-flex flex-column gap-1">
-      <!--TODO: guessed stuff -->
       @if (cardGuessed) {
         <h4 class="correct text-center">You guessed the card correctly! It was {{ cardToGuess.name }}.</h4>
       }
+      <app-guess-info [card]="null!" [correctCard]="cardToGuess" [guesses]="guesses"></app-guess-info>
       <!--<img src="https://marvelcdb.com/bundles/cards/{{card.code}}.png">-->
       <div class="d-flex">
         <!-- Search -->

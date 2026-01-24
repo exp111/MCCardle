@@ -11,18 +11,21 @@ export class CardInfoComponent {
   card = input.required<CardData>();
   correctCard = input.required<CardData>();
 
-  cardImg = computed(() => `https://marvelcdb.com/bundles/cards/${this.card().code}.png`);
+  getImg(card: CardData) {
+    return `https://marvelcdb.com/bundles/cards/${card.code}.png`;
+  }
+  cardImg = computed(() => this.getImg(this.card()));
 
   getEnumKey(enums: any, val: string) {
     return Object.entries(enums).find(([_, v]) => v === val)![0] ?? val;
   }
 
-  getType() {
-    return this.getEnumKey(CardType, this.card().type);
+  getType(type: CardType) {
+    return this.getEnumKey(CardType, type);
   }
 
-  getFaction() {
-    return this.getEnumKey(CardFaction, this.card().faction);
+  getFaction(faction: CardFaction) {
+    return this.getEnumKey(CardFaction, faction);
   }
 
   getPack(pack: string) {
