@@ -5,7 +5,7 @@
     Couldn't load data...
   } @else {
     <div class="legend" [class.showLegend]="showLegend">
-      <div class="tab" (click)="toggleLegend()">
+      <div class="tab bg-body" (click)="toggleLegend()">
         <div>
           <p>Legend</p>
         </div>
@@ -22,15 +22,18 @@
     </div>
     <div class="d-flex flex-column gap-1">
       <!--TODO: guessed stuff -->
-      <div>{{ cardToGuess.name }} {{ cardToGuess.name_de }}</div>
+      @if (cardGuessed) {
+        <h4 class="correct text-center">You guessed the card correctly! It was {{ cardToGuess.name }}.</h4>
+      }
       <!--<img src="https://marvelcdb.com/bundles/cards/{{card.code}}.png">-->
       <div class="d-flex">
         <!-- Search -->
         <div class="flex-grow-1 position-relative">
           <!-- Search Input -->
-          <input placeholder="Enter your guess here" class="form-control form-control-lg" [(ngModel)]="search">
+          <input placeholder="Enter your guess here" class="form-control form-control-lg" [(ngModel)]="search" [disabled]="cardGuessed">
           <!-- Search Results -->
-          <div class="z-2 position-absolute w-100 bg-white border rounded-bottom" [class.d-none]="!shownSearchResults().length">
+          <div class="z-2 position-absolute w-100 bg-white border rounded-bottom"
+               [class.d-none]="!shownSearchResults().length">
             @for (result of shownSearchResults(); track result.code) {
               <div class="cursor-pointer" (click)="guessCard(result)">{{ result.name }}</div>
             }

@@ -22,6 +22,7 @@ export class GameComponent implements OnInit {
   cards: CardData[] = [];
   cardToGuess!: CardData;
 
+  cardGuessed = false;
   showLegend = false;
 
   MINIMUM_SEARCH_LENGTH = 2;
@@ -70,7 +71,7 @@ export class GameComponent implements OnInit {
     this.guesses.push(cardData);
     if (this.cardToGuess == cardData) {
       console.log("Card guessed!");
-      //TODO: show won
+      this.cardGuessed = true;
     }
     // clear search
     this.search.set("");
