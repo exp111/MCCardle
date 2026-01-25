@@ -106,6 +106,13 @@ export class GameComponent implements OnInit {
     })
   }
 
+  onDayChange() {
+    // load guesses for date
+    this.loadGuessesFromLocalStorage();
+    // reset filter
+    this.filter.set(null);
+  }
+
   loadGuessesFromLocalStorage() {
     // read from local storage
     let data = this.getLocalStorage();
