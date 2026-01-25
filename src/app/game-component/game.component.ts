@@ -26,8 +26,10 @@ export class GameComponent implements OnInit {
   modalService = inject(NgbModal);
 
   loading = false;
-  cards: CardData[] = [];
-  cardToGuess!: CardData;
+  cards = signal<CardData[]>([]);
+  cardToGuess = computed(() => this.getDailyCard());
+  today = new Date().toISOString().split('T')[0];
+  day = signal<string>(this.today);
 
   cardGuessed = false;
   showLegend = false;
@@ -37,7 +39,7 @@ export class GameComponent implements OnInit {
   search = signal("");
   searchResults = computed(() =>
     this.search().length >= this.MINIMUM_SEARCH_LENGTH ?
-      this.cards.filter(c => this.getName(c).toLowerCase().includes(this.search().toLowerCase()))
+      this.cards().filter(c => this.getName(c).toLowerCase().includes(this.search().toLowerCase()))
       : []);
   shownSearchResults = computed(() => this.searchResults().slice(0, this.SHOWN_RESULTS));
   showSearchImages = signal(true);
@@ -53,8 +55,7 @@ export class GameComponent implements OnInit {
     this.loading = true;
     this.dataService.getData().subscribe({
       next: data => {
-        this.cards = data;
-        this.cardToGuess = this.getDailyCard();
+        this.cards.set(data);
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -66,12 +67,18 @@ export class GameComponent implements OnInit {
     })
   }
 
+  resetGuesses() {
+    this.cardGuessed = false;
+    this.guesses.set([]);
+  }
+
   getDailyCard() {
-    let day = new Date();
-    let str = `${day.getUTCFullYear()}-${day.getUTCMonth() + 1}-${day.getUTCDate()}`;
-    let random = new Rand(str);
-    let index = Math.floor(random.next() * this.cards.length);
-    return this.cards[index];
+    if (!this.cards().length) {
+      return null!;
+    }
+    let random = new Rand(this.day());
+    let index = Math.floor(random.next() * this.cards().length);
+    return this.cards()[index];
   }
 
   guessCard(cardData: CardData) {
@@ -80,7 +87,7 @@ export class GameComponent implements OnInit {
       return;
     }
     this.guesses.update(g => [...g, cardData]);
-    if (this.cardToGuess == cardData) {
+    if (this.cardToGuess() == cardData) {
       console.log("Card guessed!");
       this.cardGuessed = true;
       this.showSuccessModal();
@@ -92,7 +99,7 @@ export class GameComponent implements OnInit {
   showSuccessModal() {
     let ref = this.modalService.open(SuccessModalComponent, {size: "lg"});
     let instance = ref.componentInstance as SuccessModalComponent;
-    instance.card = this.cardToGuess;
+    instance.card = this.cardToGuess();
     instance.germanLanguage = this.germanLanguage();
     this.confetti();
   }

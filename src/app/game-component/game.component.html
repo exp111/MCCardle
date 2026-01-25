@@ -1,7 +1,7 @@
 @if (loading) {
   Loading...
 } @else {
-  @if (!cardToGuess) {
+  @if (!cardToGuess()) {
     Couldn't load data...
   } @else {
     <!-- Legend -->
@@ -24,9 +24,13 @@
     <!-- Content -->
     <div class="d-flex flex-column gap-1">
       @if (cardGuessed) {
-        <h4 class="correct text-center">You guessed the card! It was {{ getName(cardToGuess) }}.</h4>
+        <h4 class="correct text-center">You guessed the card! It was {{ getName(cardToGuess()) }}.</h4>
       }
       <!-- Parameters -->
+      <div class="input-group">
+        <span class="input-group-text">Card for Date</span>
+        <input type="date" [(ngModel)]="day" [max]="today" class="form-control" (ngModelChange)="resetGuesses()">
+      </div>
       <div class="form-check">
         <input type="checkbox" class="form-check-input" [(ngModel)]="showSearchImages">
         <label class="form-check-label" for="checkDefault">
@@ -40,7 +44,7 @@
         </label>
       </div>
       <!-- Guess Info -->
-      <app-guess-info [card]="null!" [correctCard]="cardToGuess" [guesses]="guesses()"
+      <app-guess-info [card]="null!" [correctCard]="cardToGuess()" [guesses]="guesses()"
                       [germanLanguage]="germanLanguage()"></app-guess-info>
       <div class="d-flex">
         <!-- Search -->
@@ -68,7 +72,7 @@
         <span class="w-25 border rounded text-center align-content-center fs-5">Guess #{{ guesses().length + 1 }}</span>
       </div>
       @for (guess of guesses(); track guess.code) {
-        <app-card-info [card]="guess" [correctCard]="cardToGuess" [germanLanguage]="germanLanguage()"></app-card-info>
+        <app-card-info [card]="guess" [correctCard]="cardToGuess()" [germanLanguage]="germanLanguage()"></app-card-info>
       }
     </div>
   }

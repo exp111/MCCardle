@@ -4,7 +4,6 @@
 - show starting letter if guessed
 - filter by parameter
 - tutorial/help
-- date selection
 
 ## Links
 - [BGdle](http://bgdle.org/)
