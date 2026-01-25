@@ -19,7 +19,9 @@ export function getFaction(faction: CardFaction) {
 }
 
 export function getPack(pack: string) {
-  return getEnumKey(Pack, pack).replaceAll(/([A-Z])/g, (c) => ` ${c}`) // convert camel case to spaces;
+  return getEnumKey(Pack, pack)
+    .replaceAll(/([A-Z])/g, (c) => ` ${c}`) // convert camel case to spaces
+    .replace("S H I E L D", "S.H.I.E.L.D."); // edge case
 }
 
 //export function getSet(set: string) {
