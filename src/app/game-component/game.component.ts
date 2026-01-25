@@ -8,6 +8,7 @@ import {GuessInfoComponent} from './guess-info/guess-info.component';
 import {getCardImage, getCardName, getFaction} from '../helpers';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SuccessModalComponent} from './success-modal/success-modal.component';
+import confetti from 'canvas-confetti';
 
 @Component({
   selector: 'app-game',
@@ -93,6 +94,22 @@ export class GameComponent implements OnInit {
     let instance = ref.componentInstance as SuccessModalComponent;
     instance.card = this.cardToGuess;
     instance.germanLanguage = this.germanLanguage();
+    this.confetti();
+  }
+
+  confetti() {
+    const duration = 3000; // in milliseconds
+
+    confetti({
+      zIndex: 1060, // higher than modal
+      particleCount: 150,
+      spread: 180,
+      origin: { y: -0.1 },
+      startVelocity: -35
+    });
+
+    // Clear confetti after a certain duration
+    setTimeout(() => confetti.reset(), duration);
   }
 
   toggleLegend() {
