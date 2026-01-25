@@ -43,7 +43,7 @@ export class GameComponent implements OnInit {
     return getCardName(card, this.germanLanguage());
   }
 
-  guesses: CardData[] = [];
+  guesses = signal<CardData[]>([]);
 
   ngOnInit() {
     this.loading = true;
@@ -71,11 +71,11 @@ export class GameComponent implements OnInit {
   }
 
   guessCard(cardData: CardData) {
-    if (this.guesses.includes(cardData)) {
+    if (this.guesses().includes(cardData)) {
       console.log(`Card ${cardData.name} already guessed`);
       return;
     }
-    this.guesses.push(cardData);
+    this.guesses.update(g => [...g, cardData]);
     if (this.cardToGuess == cardData) {
       console.log("Card guessed!");
       this.cardGuessed = true;

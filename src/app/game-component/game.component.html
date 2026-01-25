@@ -36,7 +36,7 @@
           German Language
         </label>
       </div>
-      <app-guess-info [card]="null!" [correctCard]="cardToGuess" [guesses]="guesses" [germanLanguage]="germanLanguage()"></app-guess-info>
+      <app-guess-info [card]="null!" [correctCard]="cardToGuess" [guesses]="guesses()" [germanLanguage]="germanLanguage()"></app-guess-info>
       <div class="d-flex">
         <!-- Search -->
         <div class="flex-grow-1 position-relative">
@@ -60,9 +60,9 @@
           </div>
         </div>
         <!-- Guess Counter -->
-        <span class="w-25 border rounded text-center align-content-center fs-5">Guess #{{ guesses.length + 1 }}</span>
+        <span class="w-25 border rounded text-center align-content-center fs-5">Guess #{{ guesses().length + 1 }}</span>
       </div>
-      @for (guess of guesses; track guess.code) {
+      @for (guess of guesses(); track guess.code) {
         <app-card-info [card]="guess" [correctCard]="cardToGuess" [germanLanguage]="germanLanguage()"></app-card-info>
       }
     </div>
