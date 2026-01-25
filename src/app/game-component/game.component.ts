@@ -35,10 +35,9 @@ export class GameComponent implements OnInit {
   loading = false;
   cards = signal<CardData[]>([]);
   cardToGuess = computed(() => this.getDailyCard());
-  today = new Date().toISOString().split('T')[0];
   todayNgbDate = new NgbDate(new Date().getUTCFullYear(), new Date().getUTCMonth() + 1, new Date().getUTCDate());
   date = signal<NgbDate>(new NgbDate(this.todayNgbDate.year, this.todayNgbDate.month, this.todayNgbDate.day));
-  day = computed(() => `${this.date().year}-${this.date().month}-${this.date().day}`);
+  day = computed(() => `${this.date().year}-${this.date().month.toString().padStart(2, "0")}-${this.date().day.toString().padStart(2, "0")}`);
 
   cardGuessed = computed(() => this.guesses().includes(this.cardToGuess()));
   showLegend = false;
