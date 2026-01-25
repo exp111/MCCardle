@@ -10,6 +10,12 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SuccessModalComponent} from './success-modal/success-modal.component';
 import confetti from 'canvas-confetti';
 
+export interface Filter {
+  field: keyof CardData;
+  value: any;
+  array: boolean;
+}
+
 @Component({
   selector: 'app-game',
   imports: [
@@ -34,15 +40,23 @@ export class GameComponent implements OnInit {
   cardGuessed = false;
   showLegend = false;
 
-  MINIMUM_SEARCH_LENGTH = 2;
+  MINIMUM_SEARCH_LENGTH = 1;
   SHOWN_RESULTS = 5;
   search = signal("");
   searchResults = computed(() =>
     this.search().length >= this.MINIMUM_SEARCH_LENGTH ?
-      this.cards().filter(c => this.getName(c).toLowerCase().includes(this.search().toLowerCase()))
+      this.cards()
+        .filter(c => this.filter() ?
+          this.filter()!.array ?
+            (c[this.filter()!.field] as any[]).includes(this.filter()!.value)
+            : c[this.filter()!.field] == this.filter()!.value
+          : true) // filter by guess parameter
+        .filter(c => this.getName(c).toLowerCase().includes(this.search().toLowerCase())) // filter by name
       : []);
   shownSearchResults = computed(() => this.searchResults().slice(0, this.SHOWN_RESULTS));
   showSearchImages = signal(true);
+  filter = signal<Filter | null>(null);
+  filterDescription = computed(() => this.filter() ? `[Filter ${this.filter()!.field}: ${this.filter()!.value}] ` : "");
   germanLanguage = signal(false);
 
   getName(card: CardData) {
@@ -68,7 +82,7 @@ export class GameComponent implements OnInit {
   }
 
   // triggered on date input
-  onDaySet(event: Event & {target: HTMLInputElement}) {
+  onDaySet(event: Event & { target: HTMLInputElement }) {
     // if day is set to a higher value than today (ie by using arrow keys), reset to today
     if (this.day() > this.today) {
       this.day.set(this.today);
@@ -121,7 +135,7 @@ export class GameComponent implements OnInit {
       zIndex: 1060, // higher than modal
       particleCount: 150,
       spread: 180,
-      origin: { y: -0.1 },
+      origin: {y: -0.1},
       startVelocity: -35
     });
 

@@ -44,13 +44,16 @@
         </label>
       </div>
       <!-- Guess Info -->
-      <app-guess-info [card]="null!" [correctCard]="cardToGuess()" [guesses]="guesses()"
-                      [germanLanguage]="germanLanguage()"></app-guess-info>
+      <app-guess-info [card]="null!"
+                      [correctCard]="cardToGuess()"
+                      [guesses]="guesses()"
+                      [germanLanguage]="germanLanguage()"
+                      [(filter)]="filter"></app-guess-info>
       <div class="d-flex gap-1">
         <!-- Search -->
         <div class="flex-grow-1 position-relative">
           <!-- Search Input -->
-          <input placeholder="Enter your guess here" class="form-control form-control-lg" [(ngModel)]="search"
+          <input placeholder="{{filterDescription()}}Enter your guess here" class="form-control form-control-lg" [(ngModel)]="search"
                  [disabled]="cardGuessed">
           <!-- Search Results -->
           <div class="z-2 position-absolute w-100 bg-white border rounded-bottom"

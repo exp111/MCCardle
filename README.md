@@ -2,7 +2,6 @@
 
 ## TODO
 - show starting letter if guessed
-- filter by parameter
 - tutorial/help
 
 ## Links

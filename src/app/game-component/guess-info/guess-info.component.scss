@@ -1,0 +1,9 @@
+// make correct guesses clickable
+.correct, .resource {
+  cursor: pointer;
+}
+
+// mark active filters
+.filter {
+  text-decoration: #1796B7 wavy underline;
+}

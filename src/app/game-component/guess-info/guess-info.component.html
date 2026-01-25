@@ -5,20 +5,36 @@
   </div>
   <div class="col-6 d-flex flex-column">
     <!-- name -->
-    <div class="value fw-bold" [class.correct]="value('name') != null">{{ value("name") ? getName(correctCard()) : PLACEHOLDER }}</div>
+    @let nameValue = value("name");
+    <div class="value fw-bold"
+         [class.correct]="nameValue != null"
+         [class.filter]="filter()?.field == 'name'"
+         (click)="setFilter('name')">{{ nameValue ? getName(correctCard()) : PLACEHOLDER }}</div>
     <!-- cost -->
     <div>
-      <span class="value" [class.correct]="value('cost') != null">{{ value("cost") ?? PLACEHOLDER }} </span>
+      @let costValue = value("cost");
+      <span class="value"
+            [class.correct]="costValue != null"
+            [class.filter]="filter()?.field == 'cost'"
+            (click)="setFilter('cost')">{{ costValue ?? PLACEHOLDER }} </span>
       <span class="text-muted">Cost</span>
     </div>
     <!-- type -->
     <div>
-      <span class="value" [class.correct]="value('type') != null">{{ value("type") ? getType($any(value("type"))) : PLACEHOLDER }} </span>
+      @let typeValue = value("type");
+      <span class="value"
+            [class.correct]="typeValue != null"
+            [class.filter]="filter()?.field == 'type'"
+            (click)="setFilter('type')">{{ typeValue ? getType($any(typeValue)) : PLACEHOLDER }} </span>
       <span class="text-muted">Type</span>
     </div>
-    <!-- faction -->
+    <!-- faction/aspect -->
     <div>
-      <span class="value" [class.correct]="value('faction') != null">{{ value("faction") ? getFaction($any(value("faction"))) : PLACEHOLDER }} </span>
+      @let factionValue = value("faction");
+      <span class="value"
+            [class.correct]="factionValue != null"
+            [class.filter]="filter()?.field == 'faction'"
+            (click)="setFilter('faction')">{{ factionValue ? getFaction($any(factionValue)) : PLACEHOLDER }} </span>
       <span class="text-muted">Aspect</span>
     </div>
   </div>
@@ -26,19 +42,30 @@
     <div>
       <span class="fw-bold">Resources </span>
       @for (resource of correctCard().resources; track $index) {
-        <span class="{{hasResource(resource) ? `resource ${resource}` : ''}}">{{ hasResource(resource) ? resource.toUpperCase() : PLACEHOLDER }}</span>
+        @let hasValue = hasResource(resource);
+        <span class="{{hasValue ? `resource ${resource}` : ''}}"
+              [class.filter]="filter()?.field == 'resources' && filter()?.value == resource"
+              (click)="setFilterArray('resources', resource)">{{ hasValue ? resource.toUpperCase() : PLACEHOLDER }}</span>
       }
     </div>
     <div>
       <span class="fw-bold">Packs </span>
       @for (pack of correctCard().packs; track pack) {
-        <span class="value" [class.correct]="hasPack(pack)">{{ hasPack(pack) ? getPack(pack) : PLACEHOLDER }}</span>@if (!$last) {, }
+        @let hasValue = hasPack(pack);
+        <span class="value"
+              [class.correct]="hasValue"
+              [class.filter]="filter()?.field == 'packs' && filter()?.value == pack"
+              (click)="setFilterArray('packs', pack)">{{ hasValue ? getPack(pack) : PLACEHOLDER }}</span>@if (!$last) {, }
       }
     </div>
     <div>
       <span class="fw-bold">Traits </span>
       @for (trait of correctCard().traits; track trait) {
-        <span class="value" [class.correct]="hasTrait(trait)">{{ hasTrait(trait) ? trait : PLACEHOLDER }}</span>@if (!$last) {. }
+        @let hasValue = hasTrait(trait);
+        <span class="value"
+              [class.correct]="hasValue"
+              [class.filter]="filter()?.field == 'traits' && filter()?.value == trait"
+              (click)="setFilterArray('traits', trait)">{{ hasValue ? trait : PLACEHOLDER }}</span>@if (!$last) {. }
       }
     </div>
   </div>
