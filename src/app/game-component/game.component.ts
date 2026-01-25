@@ -67,6 +67,16 @@ export class GameComponent implements OnInit {
     })
   }
 
+  // triggered on date input
+  onDaySet(event: Event & {target: HTMLInputElement}) {
+    // if day is set to a higher value than today (ie by using arrow keys), reset to today
+    if (this.day() > this.today) {
+      this.day.set(this.today);
+      // force set ui input
+      event.target.value = this.day();
+    }
+  }
+
   resetGuesses() {
     this.cardGuessed = false;
     this.guesses.set([]);
