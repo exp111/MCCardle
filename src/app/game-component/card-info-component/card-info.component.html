@@ -1,24 +1,27 @@
-<div class="d-flex border rounded">
+<div class="d-flex rounded" [class.border]="showBorder()">
   <!-- img -->
   <div class="col-2 p-2">
     <img class="img" [src]="cardImg()">
   </div>
   <div class="col-6 d-flex flex-column">
     <!-- name -->
-    <div class="value fw-bold" [class.correct]="card().name == correctCard().name">{{ getName(card()) }}</div>
+    <div class="value fw-bold" [class.correct]="correctCard() && card().name == correctCard().name">{{ getName(card()) }}</div>
     <!-- cost -->
     <div>
-      <span class="value" [class.correct]="card().cost == correctCard().cost" [class.lower]="answerIsLower(card().cost, correctCard().cost)" [class.higher]="answerIsHigher(card().cost, correctCard().cost)">{{ card().cost ?? "-" }} </span>
+      <span class="value"
+            [class.correct]="correctCard() && card().cost == correctCard().cost"
+            [class.lower]="correctCard() && answerIsLower(card().cost, correctCard().cost)"
+            [class.higher]="correctCard() && answerIsHigher(card().cost, correctCard().cost)">{{ card().cost ?? "-" }} </span>
       <span class="text-muted">Cost</span>
     </div>
     <!-- type -->
     <div>
-      <span class="value" [class.correct]="card().type == correctCard().type">{{ getType(card().type) }} </span>
+      <span class="value" [class.correct]="correctCard() && card().type == correctCard().type">{{ getType(card().type) }} </span>
       <span class="text-muted">Type</span>
     </div>
     <!-- faction -->
     <div>
-      <span class="value" [class.correct]="card().faction == correctCard().faction">{{ getFaction(card().faction) }} </span>
+      <span class="value" [class.correct]="correctCard() && card().faction == correctCard().faction">{{ getFaction(card().faction) }} </span>
       <span class="text-muted">Aspect</span>
     </div>
   </div>
@@ -26,19 +29,19 @@
     <div>
       <span class="fw-bold">Resources </span>
       @for (resource of card().resources; track $index) {
-        <span class="resource {{resource}}" [class.correct]="correctCard().resources.includes(resource)">{{ resource.toUpperCase() }}</span>
+        <span class="resource {{resource}}" [class.correct]="correctCard() && correctCard().resources.includes(resource)">{{ resource.toUpperCase() }}</span>
       }
     </div>
     <div>
       <span class="fw-bold">Packs </span>
       @for (pack of card().packs; track pack) {
-        <span class="value" [class.correct]="correctCard().packs.includes(pack)">{{ getPack(pack) }}</span>@if (!$last) {, }
+        <span class="value" [class.correct]="correctCard() && correctCard().packs.includes(pack)">{{ getPack(pack) }}</span>@if (!$last) {, }
       }
     </div>
     <div>
       <span class="fw-bold">Traits </span>
       @for (trait of card().traits; track trait) {
-        <span class="value" [class.correct]="correctCard().traits.includes(trait)">{{ trait }}</span>@if (!$last) {. }
+        <span class="value" [class.correct]="correctCard() && correctCard().traits.includes(trait)">{{ trait }}</span>@if (!$last) {. }
       }
     </div>
   </div>

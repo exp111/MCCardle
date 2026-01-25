@@ -6,6 +6,8 @@ import {CardInfoComponent} from './card-info-component/card-info.component';
 import {CardData} from '../../model/cardData';
 import {GuessInfoComponent} from './guess-info/guess-info.component';
 import {getCardImage, getCardName, getFaction} from '../helpers';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {SuccessModalComponent} from './success-modal/success-modal.component';
 
 @Component({
   selector: 'app-game',
@@ -20,6 +22,7 @@ import {getCardImage, getCardName, getFaction} from '../helpers';
 export class GameComponent implements OnInit {
   dataService = inject(DataService);
   cdr = inject(ChangeDetectorRef);
+  modalService = inject(NgbModal);
 
   loading = false;
   cards: CardData[] = [];
@@ -79,9 +82,17 @@ export class GameComponent implements OnInit {
     if (this.cardToGuess == cardData) {
       console.log("Card guessed!");
       this.cardGuessed = true;
+      this.showSuccessModal();
     }
     // clear search
     this.search.set("");
+  }
+
+  showSuccessModal() {
+    let ref = this.modalService.open(SuccessModalComponent, {size: "lg"});
+    let instance = ref.componentInstance as SuccessModalComponent;
+    instance.card = this.cardToGuess;
+    instance.germanLanguage = this.germanLanguage();
   }
 
   toggleLegend() {

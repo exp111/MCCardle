@@ -1,0 +1,12 @@
+<div class="modal-header">
+  <h4 class="modal-title">You guessed the card!</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <app-card-info [card]="card" [correctCard]="$any(undefined)" [germanLanguage]="germanLanguage" showBorder="false"></app-card-info>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close()">Close</button>
+</div>

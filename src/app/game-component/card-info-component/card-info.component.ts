@@ -1,5 +1,5 @@
-import {Component, computed, input} from '@angular/core';
-import {CardData, CardFaction, CardType, Pack} from '../../../model/cardData';
+import {booleanAttribute, Component, computed, input} from '@angular/core';
+import {CardData} from '../../../model/cardData';
 import {getCardImage, getCardName, getFaction, getPack, getType} from '../../helpers';
 
 @Component({
@@ -12,6 +12,7 @@ export class CardInfoComponent {
   card = input.required<CardData>();
   correctCard = input.required<CardData>();
   germanLanguage = input.required<boolean>();
+  showBorder = input(true, {transform: booleanAttribute});
 
   cardImg = computed(() => getCardImage(this.card()));
 
