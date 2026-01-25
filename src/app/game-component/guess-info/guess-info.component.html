@@ -5,20 +5,20 @@
   </div>
   <div class="col-6 d-flex flex-column">
     <!-- name -->
-    <div class="value fw-bold" [class.correct]="value('name')">{{ value("name") ? getName(correctCard()) : PLACEHOLDER }}</div>
+    <div class="value fw-bold" [class.correct]="value('name') != null">{{ value("name") ? getName(correctCard()) : PLACEHOLDER }}</div>
     <!-- cost -->
     <div>
-      <span class="value" [class.correct]="value('cost')">{{ value("cost") ?? PLACEHOLDER }} </span>
+      <span class="value" [class.correct]="value('cost') != null">{{ value("cost") ?? PLACEHOLDER }} </span>
       <span class="text-muted">Cost</span>
     </div>
     <!-- type -->
     <div>
-      <span class="value" [class.correct]="value('type')">{{ value("type") ? getType($any(value("type"))) : PLACEHOLDER }} </span>
+      <span class="value" [class.correct]="value('type') != null">{{ value("type") ? getType($any(value("type"))) : PLACEHOLDER }} </span>
       <span class="text-muted">Type</span>
     </div>
     <!-- faction -->
     <div>
-      <span class="value" [class.correct]="value('faction')">{{ value("faction") ? getFaction($any(value("faction"))) : PLACEHOLDER }} </span>
+      <span class="value" [class.correct]="value('faction') != null">{{ value("faction") ? getFaction($any(value("faction"))) : PLACEHOLDER }} </span>
       <span class="text-muted">Aspect</span>
     </div>
   </div>
