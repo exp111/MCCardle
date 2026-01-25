@@ -23,13 +23,18 @@
     </div>
     <!-- Content -->
     <div class="d-flex flex-column gap-1">
-      @if (cardGuessed) {
+      @if (cardGuessed()) {
         <h4 class="correct text-center">You guessed the card! It was {{ getName(cardToGuess()) }}.</h4>
       }
       <!-- Parameters -->
       <div class="input-group">
         <span class="input-group-text">Card for Date</span>
-        <input type="date" [(ngModel)]="day" [max]="today" class="form-control" (ngModelChange)="resetGuesses()" (input)="onDaySet($any($event))">
+        <input type="date" [(ngModel)]="date" [maxDate]="todayNgbDate" class="form-control"
+               ngbDatepicker
+               readonly
+               #d="ngbDatepicker"
+               (ngModelChange)="loadGuessesFromLocalStorage()">
+        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">Change</button>
       </div>
       <div class="form-check">
         <input type="checkbox" class="form-check-input" [(ngModel)]="showSearchImages">
@@ -53,8 +58,9 @@
         <!-- Search -->
         <div class="flex-grow-1 position-relative">
           <!-- Search Input -->
-          <input placeholder="{{filterDescription()}}Enter your guess here" class="form-control form-control-lg" [(ngModel)]="search"
-                 [disabled]="cardGuessed">
+          <input placeholder="{{filterDescription()}}Enter your guess here" class="form-control form-control-lg"
+                 [(ngModel)]="search"
+                 [disabled]="cardGuessed()">
           <!-- Search Results -->
           <div class="z-2 position-absolute w-100 bg-white border rounded-bottom"
                [class.d-none]="!shownSearchResults().length">

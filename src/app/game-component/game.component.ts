@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, computed, inject, OnInit, signal} from '@angular/core';
+import {ChangeDetectorRef, Component, computed, effect, inject, OnInit, signal} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import Rand from 'rand-seed';
 import {FormsModule} from '@angular/forms';
@@ -6,7 +6,7 @@ import {CardInfoComponent} from './card-info-component/card-info.component';
 import {CardData} from '../../model/cardData';
 import {GuessInfoComponent} from './guess-info/guess-info.component';
 import {getCardImage, getCardName, getFaction} from '../helpers';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDate, NgbInputDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SuccessModalComponent} from './success-modal/success-modal.component';
 import confetti from 'canvas-confetti';
 
@@ -21,7 +21,8 @@ export interface Filter {
   imports: [
     FormsModule,
     CardInfoComponent,
-    GuessInfoComponent
+    GuessInfoComponent,
+    NgbInputDatepicker
   ],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
@@ -35,9 +36,11 @@ export class GameComponent implements OnInit {
   cards = signal<CardData[]>([]);
   cardToGuess = computed(() => this.getDailyCard());
   today = new Date().toISOString().split('T')[0];
-  day = signal<string>(this.today);
+  todayNgbDate = new NgbDate(new Date().getUTCFullYear(), new Date().getUTCMonth() + 1, new Date().getUTCDate());
+  date = signal<NgbDate>(new NgbDate(this.todayNgbDate.year, this.todayNgbDate.month, this.todayNgbDate.day));
+  day = computed(() => `${this.date().year}-${this.date().month}-${this.date().day}`);
 
-  cardGuessed = false;
+  cardGuessed = computed(() => this.guesses().includes(this.cardToGuess()));
   showLegend = false;
 
   MINIMUM_SEARCH_LENGTH = 1;
@@ -65,11 +68,34 @@ export class GameComponent implements OnInit {
 
   guesses = signal<CardData[]>([]);
 
+  LOCAL_STORAGE_KEY = "data";
+  saveToLocalStorageEffect = effect(() => {
+    // dont write empty stuff into storage
+    if (!this.guesses().length) {
+      return;
+    }
+    let data = this.getLocalStorage();
+    if (data == null) {
+      data = {};
+    }
+    data[this.day()] = this.guesses();
+    localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(data));
+  });
+
+  getLocalStorage() {
+    let data = localStorage.getItem(this.LOCAL_STORAGE_KEY);
+    if (data) {
+      return JSON.parse(data);
+    }
+    return null;
+  }
+
   ngOnInit() {
     this.loading = true;
     this.dataService.getData().subscribe({
       next: data => {
         this.cards.set(data);
+        this.loadGuessesFromLocalStorage();
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -81,19 +107,12 @@ export class GameComponent implements OnInit {
     })
   }
 
-  // triggered on date input
-  onDaySet(event: Event & { target: HTMLInputElement }) {
-    // if day is set to a higher value than today (ie by using arrow keys), reset to today
-    if (this.day() > this.today) {
-      this.day.set(this.today);
-      // force set ui input
-      event.target.value = this.day();
-    }
-  }
-
-  resetGuesses() {
-    this.cardGuessed = false;
-    this.guesses.set([]);
+  loadGuessesFromLocalStorage() {
+    // read from local storage
+    let data = this.getLocalStorage();
+    this.guesses.set(data ? (data[this.day()] ?? [])
+      // map saved cards to the actual data
+      .map((card: CardData) => this.cards().find(c => c.code == card.code)) : []);
   }
 
   getDailyCard() {
@@ -113,7 +132,6 @@ export class GameComponent implements OnInit {
     this.guesses.update(g => [...g, cardData]);
     if (this.cardToGuess() == cardData) {
       console.log("Card guessed!");
-      this.cardGuessed = true;
       this.showSuccessModal();
     }
     // clear search
