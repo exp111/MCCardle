@@ -66,7 +66,7 @@ export enum Pack {
   DoctorStrange = "drs",
   Hulk = "hlk",
   RonanModular = "ron",
-  RiseofRedSkull = "trors",
+  RiseOfRedSkull = "trors",
   OnceAndFutureKang = "toafk",
   AntMan = "ant",
   Wasp = "wsp",
