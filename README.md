@@ -1,7 +1,13 @@
 # MCCardle
 
+## TODO
+- show starting letter if guessed
+- filter by parameter
+- tutorial/help
+- date selection
+
 ## Links
-[BGdle](http://bgdle.org/)
-[MarvelCDB](https://marvelcdb.com/)
-[MarvelCDB Data](https://github.com/zzorba/marvelsdb-json-data)
-[Extract Script](https://github.com/exp111/MCStuff/tree/master/Cardle)
+- [BGdle](http://bgdle.org/)
+- [MarvelCDB](https://marvelcdb.com/)
+- [MarvelCDB Data](https://github.com/zzorba/marvelsdb-json-data)
+- [Extract Script](https://github.com/exp111/MCStuff/tree/master/Cardle)
