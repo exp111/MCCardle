@@ -4,6 +4,7 @@
   @if (!cardToGuess) {
     Couldn't load data...
   } @else {
+    <!-- Legend -->
     <div class="legend" [class.showLegend]="showLegend">
       <div class="tab bg-body" (click)="toggleLegend()">
         <div>
@@ -20,10 +21,12 @@
         </div>
       </div>
     </div>
+    <!-- Content -->
     <div class="d-flex flex-column gap-1">
       @if (cardGuessed) {
         <h4 class="correct text-center">You guessed the card! It was {{ getName(cardToGuess) }}.</h4>
       }
+      <!-- Parameters -->
       <div class="form-check">
         <input type="checkbox" class="form-check-input" [(ngModel)]="showSearchImages">
         <label class="form-check-label" for="checkDefault">
@@ -36,7 +39,9 @@
           German Language
         </label>
       </div>
-      <app-guess-info [card]="null!" [correctCard]="cardToGuess" [guesses]="guesses()" [germanLanguage]="germanLanguage()"></app-guess-info>
+      <!-- Guess Info -->
+      <app-guess-info [card]="null!" [correctCard]="cardToGuess" [guesses]="guesses()"
+                      [germanLanguage]="germanLanguage()"></app-guess-info>
       <div class="d-flex">
         <!-- Search -->
         <div class="flex-grow-1 position-relative">
