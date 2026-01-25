@@ -12,7 +12,9 @@
       <th>Name</th>
       <th>Name DE</th>
       <th>Resources</th>
+      <th>Traits</th>
       <th>Packs</th>
+      <th>Sets</th>
       <th>Illustrators</th>
     </tr>
     </thead>
@@ -26,7 +28,9 @@
           <td>{{card.name}}</td>
           <td>{{card.name_de}}</td>
           <td>{{card.resources.join("")}}</td>
+          <td>{{card.traits.join(". ")}}</td>
           <td>{{card.packs.join(",")}}</td>
+          <td>{{card.sets.join(",")}}</td>
           <td>{{card.illustrators.join(",")}}</td>
         </tr>
       } @empty {

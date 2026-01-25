@@ -32,7 +32,13 @@
     <div>
       <span class="fw-bold">Packs </span>
       @for (pack of correctCard().packs; track pack) {
-        <span class="value" [class.correct]="hasPack(pack)">{{ hasPack(pack) ? getPack(pack) : PLACEHOLDER }}</span>@if (!$last) {,}
+        <span class="value" [class.correct]="hasPack(pack)">{{ hasPack(pack) ? getPack(pack) : PLACEHOLDER }}</span>@if (!$last) {, }
+      }
+    </div>
+    <div>
+      <span class="fw-bold">Traits </span>
+      @for (trait of correctCard().traits; track trait) {
+        <span class="value" [class.correct]="hasTrait(trait)">{{ hasTrait(trait) ? trait : PLACEHOLDER }}</span>@if (!$last) {. }
       }
     </div>
   </div>

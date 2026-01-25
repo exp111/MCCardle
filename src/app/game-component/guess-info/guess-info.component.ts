@@ -33,4 +33,8 @@ export class GuessInfoComponent extends CardInfoComponent {
   hasPack(pack: Pack) {
     return this.guesses().some(g => g.packs.includes(pack));
   }
+
+  hasTrait(trait: string) {
+    return this.guesses().some(g => g.traits.includes(trait));
+  }
 }
