@@ -68,7 +68,8 @@ export class SuccessModalComponent {
     let correctArray = this.card[field];
     let guessArray = guess[field];
     let matches = guessArray.filter(v => correctArray.includes(v as never)).length;
-    return matches == correctArray.length ? this.CORRECT_EMOJI :
+    // if arrays completely match, return green. if partially matched, return orange. otherwise wrong
+    return matches == correctArray.length && matches == guessArray.length ? this.CORRECT_EMOJI :
       matches > 0 ? this.PARTIALLY_CORRECT_EMOJI
         : this.WRONG_EMOJI;
   }
