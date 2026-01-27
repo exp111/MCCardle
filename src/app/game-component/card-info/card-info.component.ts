@@ -1,6 +1,6 @@
 import {booleanAttribute, Component, computed, input} from '@angular/core';
 import {CardData} from '../../../model/cardData';
-import {getCardImage, getCardName, getFaction, getPack, getType} from '../../helpers';
+import {getCardImage, getCardMarvelCDBURL, getCardName, getFaction, getPack, getType} from '../../helpers';
 
 @Component({
   selector: 'app-card-info',
@@ -13,6 +13,7 @@ export class CardInfoComponent {
   correctCard = input.required<CardData>();
   germanLanguage = input.required<boolean>();
   showBorder = input(true, {transform: booleanAttribute});
+  showMarvelCDBLink = input(false);
 
   cardImg = computed(() => getCardImage(this.card()));
 
@@ -54,4 +55,5 @@ export class CardInfoComponent {
   protected readonly getFaction = getFaction;
   protected readonly getType = getType;
   protected readonly getCardName = getCardName;
+  protected readonly getCardMarvelCDBURL = getCardMarvelCDBURL;
 }

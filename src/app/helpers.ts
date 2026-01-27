@@ -1,9 +1,12 @@
 import {CardData, CardFaction, CardType, Pack} from '../model/cardData';
-
-export const marvelcdbImageUrl = "https://marvelcdb.com/bundles/cards/";
+import {MARVELCDB_CARD_URL, MARVELCDB_IMAGE_URL} from './const';
 
 export function getCardImage(card: CardData) {
-  return `${marvelcdbImageUrl}${card.code}.png`;
+  return `${MARVELCDB_IMAGE_URL}${card.code}.png`;
+}
+
+export function getCardMarvelCDBURL(card: CardData) {
+  return `${MARVELCDB_CARD_URL}${card.code}`;
 }
 
 export function getEnumKey(enums: any, val: string) {

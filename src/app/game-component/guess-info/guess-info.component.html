@@ -9,7 +9,8 @@
     <div class="value fw-bold"
          [class.correct]="nameValue != null"
          [class.filter]="filter()?.field == 'name'"
-         (click)="setFilter('name')">{{ nameValue ? getName(correctCard()) : PLACEHOLDER }}</div>
+         (click)="setFilter('name')">{{ nameValue ? getName(correctCard()) : PLACEHOLDER }}
+    </div>
     <!-- cost -->
     <div>
       @let costValue = value("cost");
@@ -55,7 +56,9 @@
         <span class="value"
               [class.correct]="hasValue"
               [class.filter]="filter()?.field == 'packs' && filter()?.value == pack"
-              (click)="setFilterArray('packs', pack)">{{ hasValue ? getPack(pack) : PLACEHOLDER }}</span>@if (!$last) {, }
+              (click)="setFilterArray('packs', pack)">{{ hasValue ? getPack(pack) : PLACEHOLDER }}</span>@if (!$last) {
+          ,
+        }
       }
     </div>
     <div>
@@ -65,7 +68,9 @@
         <span class="value"
               [class.correct]="hasValue"
               [class.filter]="filter()?.field == 'traits' && filter()?.value == trait"
-              (click)="setFilterArray('traits', trait)">{{ hasValue ? trait : PLACEHOLDER }}</span>@if (!$last) {. }
+              (click)="setFilterArray('traits', trait)">{{ hasValue ? trait : PLACEHOLDER }}</span>@if (!$last) {
+          .
+        }
       }
     </div>
   </div>

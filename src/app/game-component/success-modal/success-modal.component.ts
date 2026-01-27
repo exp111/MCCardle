@@ -4,6 +4,7 @@ import {CardData, CardDataArrayField} from '../../../model/cardData';
 import {CardInfoComponent} from '../card-info/card-info.component';
 import {getCardName} from '../../helpers';
 import {ToastService} from '../../../services/toast.service';
+import {GITHUB_PAGES_URL} from '../../const';
 
 @Component({
   selector: 'app-success-modal',
@@ -28,7 +29,7 @@ export class SuccessModalComponent {
 
   share(addSpoileredCardName = false) {
     let share = `Marvel Champions Cardle ${this.day} in ${this.guesses.length} Guesses\n`;
-    share += "https://exp111.github.io/MCCardle/\n\n";
+    share += `${GITHUB_PAGES_URL}\n\n`;
 
     let tries: string[] = [];
     for (let guess of this.guesses) {
