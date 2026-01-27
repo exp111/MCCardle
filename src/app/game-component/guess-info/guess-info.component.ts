@@ -1,4 +1,4 @@
-import {Component, computed, input, model, output} from '@angular/core';
+import {Component, computed, input, model} from '@angular/core';
 import {CardInfoComponent} from '../card-info/card-info.component';
 import {CardData, CardDataArrayField, CardResource, Pack} from '../../../model/cardData';
 import {getCardImage} from '../../helpers';
@@ -14,11 +14,17 @@ export class GuessInfoComponent extends CardInfoComponent {
   guesses = input.required<CardData[]>();
   filter = model<Filter | null>();
 
+  cardGuessed = computed(() => this.guesses().includes(this.correctCard()));
+
   PLACEHOLDER = "???";
 
-  override cardImg = computed(() => this.guesses().includes(this.correctCard()) ? getCardImage(this.correctCard()) : "placeholder.png");
+  override cardImg = computed(() => this.cardGuessed() ? getCardImage(this.correctCard()) : "placeholder.png");
 
   setFilter(field: keyof CardData) {
+    // don't set filter if card was already guessed
+    if (this.cardGuessed()) {
+      return;
+    }
     // not guessed yet
     if (this.value(field) == null ) {
       return;

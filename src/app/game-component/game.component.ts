@@ -138,6 +138,9 @@ export class GameComponent implements OnInit {
     this.guesses.update(g => [...g, cardData]);
     if (this.cardToGuess() == cardData) {
       console.log("Card guessed!");
+      // reset filter
+      this.filter.set(null);
+      // show user success
       this.showSuccessModal();
       this.confetti();
     }
