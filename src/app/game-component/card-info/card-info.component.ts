@@ -54,6 +54,5 @@ export class CardInfoComponent {
   protected readonly getPack = getPack;
   protected readonly getFaction = getFaction;
   protected readonly getType = getType;
-  protected readonly getCardName = getCardName;
   protected readonly getCardMarvelCDBURL = getCardMarvelCDBURL;
 }

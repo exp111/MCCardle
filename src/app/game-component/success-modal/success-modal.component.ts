@@ -41,7 +41,7 @@ export class SuccessModalComponent {
       text += this.checkArray(guess, "packs");
       text += this.checkArray(guess, "traits");
       if (addSpoileredCardName) {
-        text += ` ||${getCardName(guess, this.germanLanguage)}||`;
+        text += ` ||${this.getName(guess)}||`;
       }
       tries.push(text);
     }
@@ -73,5 +73,9 @@ export class SuccessModalComponent {
     return matches == correctArray.length && matches == guessArray.length ? this.CORRECT_EMOJI :
       matches > 0 ? this.PARTIALLY_CORRECT_EMOJI
         : this.WRONG_EMOJI;
+  }
+
+  getName(card: CardData) {
+    return getCardName(card, this.germanLanguage);
   }
 }
