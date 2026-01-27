@@ -54,6 +54,7 @@ export class GameComponent implements OnInit {
             : c[this.filter()!.field] == this.filter()!.value
           : true) // filter by guess parameter
         .filter(c => this.getName(c).toLowerCase().includes(this.search().toLowerCase())) // filter by name
+        .filter(c => !this.guesses().includes(c)) // filter out already guessed cards
       : []);
   shownSearchResults = computed(() => this.searchResults().slice(0, this.SHOWN_RESULTS));
   showSearchImages = signal(true);
