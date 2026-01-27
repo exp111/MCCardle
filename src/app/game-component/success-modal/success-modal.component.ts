@@ -1,8 +1,9 @@
 import {Component, inject} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {CardData, CardDataArrayField} from '../../../model/cardData';
-import {CardInfoComponent} from '../card-info-component/card-info.component';
+import {CardInfoComponent} from '../card-info/card-info.component';
 import {getCardName} from '../../helpers';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-success-modal',
@@ -14,6 +15,7 @@ import {getCardName} from '../../helpers';
 })
 export class SuccessModalComponent {
   activeModal = inject(NgbActiveModal);
+  toastService = inject(ToastService);
 
   card!: CardData;
   germanLanguage!: boolean;
@@ -24,7 +26,7 @@ export class SuccessModalComponent {
   PARTIALLY_CORRECT_EMOJI = "🟨";
   CORRECT_EMOJI = "🟩";
 
-  share() {
+  share(addSpoileredCardName = false) {
     let share = `Marvel Champions Cardle ${this.day} in ${this.guesses.length} Guesses\n`;
     share += "https://exp111.github.io/MCCardle/\n\n";
 
@@ -37,10 +39,25 @@ export class SuccessModalComponent {
       text += this.checkArray(guess, "resources");
       text += this.checkArray(guess, "packs");
       text += this.checkArray(guess, "traits");
+      if (addSpoileredCardName) {
+        text += ` ||${getCardName(guess, this.germanLanguage)}||`;
+      }
       tries.push(text);
     }
     share += tries.join("\n");
-    navigator.clipboard.writeText(share);
+    // write to clipboard + toast
+    try {
+      navigator.clipboard.writeText(share).then(() => {
+        this.toastService.show({
+          content: "Copied to clipboard."
+        });
+      });
+    } catch (error) {
+      console.log(error);
+      this.toastService.show({
+        content: "Could not write to clipboard."
+      })
+    }
   }
 
   checkValue(guess: CardData, field: keyof CardData) {
