@@ -139,6 +139,7 @@ export class GameComponent implements OnInit {
     if (this.cardToGuess() == cardData) {
       console.log("Card guessed!");
       this.showSuccessModal();
+      this.confetti();
     }
     // clear search
     this.search.set("");
@@ -149,7 +150,8 @@ export class GameComponent implements OnInit {
     let instance = ref.componentInstance as SuccessModalComponent;
     instance.card = this.cardToGuess();
     instance.germanLanguage = this.germanLanguage();
-    this.confetti();
+    instance.guesses = this.guesses();
+    instance.day = this.day();
   }
 
   confetti() {

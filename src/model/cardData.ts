@@ -13,6 +13,8 @@ export interface CardData {
   illustrators: string[];
 }
 
+export type CardDataArrayField = "resources" | "packs" | "traits";
+
 export enum CardType {
   Event = "event",
   Resource = "resource",

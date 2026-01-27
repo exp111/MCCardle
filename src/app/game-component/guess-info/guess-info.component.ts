@@ -1,10 +1,9 @@
 import {Component, computed, input, model, output} from '@angular/core';
 import {CardInfoComponent} from '../card-info-component/card-info.component';
-import {CardData, CardResource, Pack} from '../../../model/cardData';
+import {CardData, CardDataArrayField, CardResource, Pack} from '../../../model/cardData';
 import {getCardImage} from '../../helpers';
 import {Filter} from '../game.component';
 
-type arrayType = "resources" | "packs" | "traits";
 @Component({
   selector: 'app-guess-info',
   imports: [],
@@ -37,7 +36,7 @@ export class GuessInfoComponent extends CardInfoComponent {
     });
   }
 
-  setFilterArray(field: arrayType, value: any) {
+  setFilterArray(field: CardDataArrayField, value: any) {
     // not guessed yet
     if (!this.hasValue(field as any, value as never)) {
       return;
@@ -65,7 +64,7 @@ export class GuessInfoComponent extends CardInfoComponent {
     return null;
   }
 
-  hasValue(field: arrayType, value: never) {
+  hasValue(field: CardDataArrayField, value: never) {
     return this.guesses().some(g => g[field].includes(value));
   }
 

@@ -24,7 +24,9 @@
     <!-- Content -->
     <div class="d-flex flex-column gap-1 pb-2">
       @if (cardGuessed()) {
-        <h4 class="correct text-center">You guessed the card! It was {{ getName(cardToGuess()) }}.</h4>
+        <h4 class="correct text-center">
+          You guessed the card! It was {{ getName(cardToGuess()) }}.
+        </h4>
       }
       <!-- Parameters -->
       <div class="input-group">
@@ -34,6 +36,7 @@
                readonly
                #d="ngbDatepicker"
                (ngModelChange)="onDayChange()">
+
         <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">Change</button>
       </div>
       <div class="form-check">
@@ -54,6 +57,7 @@
                       [guesses]="guesses()"
                       [germanLanguage]="germanLanguage()"
                       [(filter)]="filter"></app-guess-info>
+      <!-- Search Bar -->
       <div class="d-flex gap-1">
         <!-- Search -->
         <div class="flex-grow-1 position-relative">
@@ -78,7 +82,13 @@
           </div>
         </div>
         <!-- Guess Counter -->
-        <span class="w-25 border rounded text-center align-content-center fs-5">Guess #{{ guesses().length + 1 }}</span>
+        @if (!cardGuessed()) {
+          <span
+            class="w-25 border rounded text-center align-content-center fs-5">Guess #{{ guesses().length + 1 }}</span>
+        } @else {
+          <button type="button" class="w-25 btn btn-outline-primary" (click)="showSuccessModal()">Show Result</button>
+        }
+
       </div>
       @for (guess of guesses(); track guess.code) {
         <app-card-info [card]="guess" [correctCard]="cardToGuess()" [germanLanguage]="germanLanguage()"></app-card-info>
