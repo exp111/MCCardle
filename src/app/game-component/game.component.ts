@@ -3,7 +3,7 @@ import {DataService} from '../../services/data.service';
 import Rand from 'rand-seed';
 import {FormsModule} from '@angular/forms';
 import {CardInfoComponent} from './card-info/card-info.component';
-import {CardData} from '../../model/cardData';
+import {CardData, CardDataArrayField} from '../../model/cardData';
 import {GuessInfoComponent} from './guess-info/guess-info.component';
 import {getCardImage, getCardName, getFaction} from '../helpers';
 import {NgbDate, NgbInputDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -11,8 +11,10 @@ import {SuccessModalComponent} from './success-modal/success-modal.component';
 import confetti from 'canvas-confetti';
 import {IS_DEV} from '../const';
 
+export type FilterType = keyof CardData | "firstLetter";
+
 export interface Filter {
-  field: keyof CardData;
+  filter: FilterType;
   value: any;
   array: boolean;
 }
@@ -49,19 +51,37 @@ export class GameComponent implements OnInit {
   searchResults = computed(() =>
     this.search().length >= this.MINIMUM_SEARCH_LENGTH ?
       this.cards()
-        .filter(c => this.filter() ?
-          this.filter()!.array ?
-            (c[this.filter()!.field] as any[]).includes(this.filter()!.value)
-            : c[this.filter()!.field] == this.filter()!.value
-          : true) // filter by guess parameter
+        .filter(c => this.matchesFilter(c)) // filter by guess parameter
         .filter(c => this.getName(c).toLowerCase().includes(this.search().toLowerCase())) // filter by name
         .filter(c => !this.guesses().includes(c)) // filter out already guessed cards
       : []);
   shownSearchResults = computed(() => this.searchResults().slice(0, this.SHOWN_RESULTS));
   showSearchImages = signal(true);
   filter = signal<Filter | null>(null);
-  filterDescription = computed(() => this.filter() ? `[Filter ${this.filter()!.field}: ${this.filter()!.value}] ` : "");
+  filterDescription = computed(() => this.filter() ? `[Filter ${this.filter()!.filter}: ${this.filter()!.value}] ` : "");
   germanLanguage = signal(false);
+
+  matchesFilter(card: CardData) {
+    let filter = this.filter();
+    if (!filter) {
+      return true;
+    }
+
+    if (filter.array) {
+      return (card[filter.filter as CardDataArrayField] as any[]).includes(filter.value);
+    }
+
+    let cardValue: unknown;
+    switch (filter.filter) {
+      case 'firstLetter':
+        cardValue = this.getName(card)[0];
+        break;
+      default:
+        cardValue = card[filter.filter];
+        break;
+    }
+    return cardValue == filter.value;
+  }
 
   getName(card: CardData) {
     return getCardName(card, this.germanLanguage());

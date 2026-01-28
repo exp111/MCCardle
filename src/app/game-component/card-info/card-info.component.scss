@@ -42,10 +42,14 @@
 
 .value {
   &.correct {
-    color: $correct-color;
+    color: $correct-color !important;
     &:before {
       content: '✓ ';
     }
+  }
+
+  &.partial {
+    color: $partial-color;
   }
 
   &.lower {

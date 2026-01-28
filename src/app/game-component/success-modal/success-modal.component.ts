@@ -34,7 +34,7 @@ export class SuccessModalComponent {
     let tries: string[] = [];
     for (let guess of this.guesses) {
       let text = '';
-      text += this.checkValue(guess, "name");
+      text += this.checkName(guess);
       text += this.checkValue(guess, "type");
       text += this.checkValue(guess, "faction");
       text += this.checkArray(guess, "resources");
@@ -59,6 +59,15 @@ export class SuccessModalComponent {
         content: "Could not write to clipboard."
       })
     }
+  }
+
+  // return green if correct, yellow if first letter matches, wrong otherwise
+  checkName(guess: CardData) {
+    let cardName = this.getName(this.card);
+    let guessName = this.getName(guess);
+    return cardName == guessName ? this.CORRECT_EMOJI :
+      cardName.startsWith(guessName[0]) ? this.PARTIALLY_CORRECT_EMOJI
+      : this.WRONG_EMOJI;
   }
 
   checkValue(guess: CardData, field: keyof CardData) {

@@ -1,10 +1,13 @@
 import {booleanAttribute, Component, computed, input} from '@angular/core';
 import {CardData} from '../../../model/cardData';
 import {getCardImage, getCardMarvelCDBURL, getCardName, getFaction, getPack, getType} from '../../helpers';
+import {NgTemplateOutlet} from '@angular/common';
 
 @Component({
   selector: 'app-card-info',
-  imports: [],
+  imports: [
+    NgTemplateOutlet
+  ],
   templateUrl: './card-info.component.html',
   styleUrl: './card-info.component.scss',
 })

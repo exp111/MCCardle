@@ -2,7 +2,7 @@ import {Component, computed, input, model} from '@angular/core';
 import {CardInfoComponent} from '../card-info/card-info.component';
 import {CardData, CardDataArrayField, CardResource, Pack} from '../../../model/cardData';
 import {getCardImage} from '../../helpers';
-import {Filter} from '../game.component';
+import {Filter, FilterType} from '../game.component';
 
 @Component({
   selector: 'app-guess-info',
@@ -25,19 +25,49 @@ export class GuessInfoComponent extends CardInfoComponent {
     if (this.cardGuessed()) {
       return;
     }
-    // not guessed yet
+    // check if not guessed yet
     if (this.value(field) == null ) {
       return;
     }
     // toggle filter if already on
-    if (this.filter()?.field == field) {
+    if (this.filter()?.filter == field) {
       this.filter.set(null);
       return;
     }
     // set filter
     this.filter.set({
-      field: field,
+      filter: field,
       value: this.correctCard()[field],
+      array: false
+    });
+  }
+
+  setFilterCustom(field: FilterType, value: any) {
+    // don't set filter if card was already guessed
+    if (this.cardGuessed()) {
+      return;
+    }
+    // check if not guessed yet
+    switch (field) {
+      case "firstLetter":
+        if (!this.hasFirstLetter()) {
+          return;
+        }
+        break;
+      default:
+        console.error(`Unknown filter: ${field}`);
+        return;
+    }
+
+    // toggle filter if already on
+    if (this.filter()?.filter == field) {
+      this.filter.set(null);
+      return;
+    }
+    // set filter
+    this.filter.set({
+      filter: field,
+      value: value,
       array: false
     });
   }
@@ -48,13 +78,13 @@ export class GuessInfoComponent extends CardInfoComponent {
       return;
     }
     // toggle filter if already on
-    if (this.filter()?.field == field && this.filter()?.value == value) {
+    if (this.filter()?.filter == field && this.filter()?.value == value) {
       this.filter.set(null);
       return;
     }
     // set filter
     this.filter.set({
-      field: field,
+      filter: field,
       value: value,
       array: true
     });
@@ -68,6 +98,11 @@ export class GuessInfoComponent extends CardInfoComponent {
       }
     }
     return null;
+  }
+
+  hasFirstLetter() {
+    let name = this.getName(this.correctCard());
+    return this.guesses().some(g => this.getName(g)[0] == name[0]);
   }
 
   hasValue(field: CardDataArrayField, value: never) {
