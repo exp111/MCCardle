@@ -9,6 +9,7 @@ import {getCardImage, getCardName, getFaction} from '../helpers';
 import {NgbDate, NgbInputDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SuccessModalComponent} from './success-modal/success-modal.component';
 import confetti from 'canvas-confetti';
+import {IS_DEV} from '../const';
 
 export interface Filter {
   field: keyof CardData;
@@ -177,6 +178,17 @@ export class GameComponent implements OnInit {
     this.showLegend = !this.showLegend;
   }
 
+  // Debug methods
+  resetToday() {
+    this.guesses.set([]);
+    this.filter.set(null);
+  }
+
+  logSolution() {
+    console.log(this.cardToGuess());
+  }
+
   protected readonly getCardImage = getCardImage;
   protected readonly getFaction = getFaction;
+  protected readonly IS_DEV = IS_DEV;
 }

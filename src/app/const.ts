@@ -1,3 +1,7 @@
+import {environment} from '../environments/environment';
+
+export const IS_DEV = !environment.production;
+
 export const GITHUB_PAGES_URL = "https://exp111.github.io/MCCardle/";
 export const GITHUB_URL = "https://www.github.com/exp111/MCCardle";
 
