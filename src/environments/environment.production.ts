@@ -1,5 +1,5 @@
 import {Environment} from './environmentDef';
 
-export const environmentProduction: Environment = {
+export const environment: Environment = {
   production: true
 };
