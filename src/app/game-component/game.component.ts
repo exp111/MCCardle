@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {CardInfoComponent} from './card-info/card-info.component';
 import {CardData, CardDataArrayField} from '../../model/cardData';
 import {GuessInfoComponent} from './guess-info/guess-info.component';
-import {getCardImage, getCardName, getFaction} from '../helpers';
+import {camelCaseToSpaces, getCardImage, getCardName, getFaction} from '../helpers';
 import {NgbDate, NgbInputDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SuccessModalComponent} from './success-modal/success-modal.component';
 import confetti from 'canvas-confetti';
@@ -58,7 +58,7 @@ export class GameComponent implements OnInit {
   shownSearchResults = computed(() => this.searchResults().slice(0, this.SHOWN_RESULTS));
   showSearchImages = signal(true);
   filter = signal<Filter | null>(null);
-  filterDescription = computed(() => this.filter() ? `[Filter ${this.filter()!.filter}: ${this.filter()!.value}] ` : "");
+  filterDescription = computed(() => this.filter() ? `[Filter ${camelCaseToSpaces(this.filter()!.filter).toLowerCase()}: ${this.filter()!.value}] ` : "");
   germanLanguage = signal(false);
 
   matchesFilter(card: CardData) {

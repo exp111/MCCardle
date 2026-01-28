@@ -27,6 +27,10 @@ export function getPack(pack: string) {
     .replace("S H I E L D", "S.H.I.E.L.D."); // edge case
 }
 
+export function camelCaseToSpaces(str: string) {
+  return str.replaceAll(/([A-Z])/g, (c) => ` ${c}`);
+}
+
 //export function getSet(set: string) {
 //  return set.replace(/^\w/, (c) => c.toUpperCase()).replaceAll(/_(\w)/g, (c) => ` ${c[1].toUpperCase()}`) // convert to camel case
 //}
