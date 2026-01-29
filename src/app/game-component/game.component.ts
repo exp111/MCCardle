@@ -11,7 +11,7 @@ import {SuccessModalComponent} from './success-modal/success-modal.component';
 import confetti from 'canvas-confetti';
 import {IS_DEV} from '../const';
 
-export type FilterType = keyof CardData | "firstLetter" | "allResources" | "anyResource" | "allTraits" | "anyTrait";
+export type FilterType = keyof CardData | "firstLetter" | "allResources" | "anyResource" | "allTraits" | "anyTrait" | "allPacks";
 
 export interface Filter {
   filter: FilterType;
@@ -78,6 +78,8 @@ export class GameComponent implements OnInit {
         return sortString(card.resources.join("")) == filter.value;
       case 'anyResource':
         return filter.value.every((r: CardResource) => card.resources.includes(r));
+      case 'allPacks':
+        return arraysHaveSameValues(card.packs, filter.value);
       case 'allTraits':
         return arraysHaveSameValues(card.traits, filter.value);
       case 'anyTrait':

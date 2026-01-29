@@ -64,13 +64,16 @@
       }
     </div>
     <div>
-      <span class="fw-bold">Packs </span>
+      @let packsComplete = hasAllPacks();
+      <span class="value fw-bold"
+            [class.correct]="packsComplete"
+            [class.filter]="filter()?.filter == 'allPacks'"
+            (click)="setFilterCustom('allPacks')">Packs </span>
       @for (pack of correctCard().packs; track pack) {
-        @let hasValue = hasPack(pack);
         <span class="value"
-              [class.correct]="hasValue"
+              [class.correct]="packsComplete"
               [class.filter]="filter()?.filter == 'packs' && filter()?.value == pack"
-              (click)="setFilterArray('packs', pack)">{{ hasValue ? getPack(pack) : PLACEHOLDER }}</span>@if (!$last) {, }
+              (click)="setFilterArray('packs', pack)">{{ packsComplete ? getPack(pack) : PLACEHOLDER }}</span>@if (!$last) {, }
       }
     </div>
     <div>

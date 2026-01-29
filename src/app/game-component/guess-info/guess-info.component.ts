@@ -68,18 +68,24 @@ export class GuessInfoComponent extends CardInfoComponent {
           .filter(r => this.hasResource(r))
           .filter((r,i,s) => s.indexOf(r) === i); // unique
         break;
+      case "allPacks":
+        if (!this.hasAllPacks()) {
+          return;
+        }
+        value = this.correctCard().packs;
+        break;
       case "allTraits":
         if (!this.hasAllTraits()) {
           return;
         }
         value = this.correctCard().traits;
         break;
-        case "anyTrait":
-          if (!this.hasAnyTrait()) {
-            return;
-          }
-          value = this.correctCard().traits.filter(t => this.hasTrait(t));
-          break;
+      case "anyTrait":
+        if (!this.hasAnyTrait()) {
+          return;
+        }
+        value = this.correctCard().traits.filter(t => this.hasTrait(t));
+        break;
       default:
         console.error(`Unknown filter: ${field}`);
         return;
@@ -101,6 +107,9 @@ export class GuessInfoComponent extends CardInfoComponent {
   setFilterArray(field: CardDataArrayField, value: any) {
     // not guessed yet
     if (!this.hasValue(field as any, value as never)) {
+      return;
+    }
+    if (field == "packs" && !this.hasAllPacks()) {
       return;
     }
     // toggle filter if already on
@@ -150,6 +159,14 @@ export class GuessInfoComponent extends CardInfoComponent {
 
   hasPack(pack: Pack) {
     return this.hasValue("packs", pack as never);
+  }
+
+  override hasAllPacks() {
+    return this.guesses().some(g => arraysHaveSameValues(g.packs, this.correctCard().packs));
+  }
+
+  override hasAnyPack() {
+    return this.correctCard().packs.some(p => this.hasPack(p));
   }
 
   hasTrait(trait: string) {

@@ -45,6 +45,14 @@ export class CardInfoComponent {
     return sortString(card.resources.join(""));
   }
 
+  hasAllPacks() {
+    return arraysHaveSameValues(this.card().packs, this.correctCard().packs);
+  }
+
+  hasAnyPack() {
+    return this.card().packs.some(p => this.correctCard().packs.includes(p));
+  }
+
   hasAllTraits() {
     return arraysHaveSameValues(this.card().traits, this.correctCard().traits);
   }
@@ -87,5 +95,4 @@ export class CardInfoComponent {
   protected readonly getFaction = getFaction;
   protected readonly getType = getType;
   protected readonly getCardMarvelCDBURL = getCardMarvelCDBURL;
-  protected readonly sortString = sortString;
 }

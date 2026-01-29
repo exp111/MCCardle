@@ -48,18 +48,21 @@
     <div>
       <span class="value fw-bold"
             [class.correct]="correctCard() && getResourceString(correctCard()) == getResourceString(card())"
-            [class.partial]="correctCard() && hasAnyResource()"
-      >Resources </span>
+            [class.partial]="correctCard() && hasAnyResource()">Resources </span>
       @for (resource of card().resources; track $index) {
         <span class="resource {{resource}}"
               [class.correct]="correctCard() && correctCard().resources.includes(resource)">{{ resource.toUpperCase() }}</span>
       }
     </div>
     <div>
-      <span class="fw-bold">Packs </span>
+      @let packsCorrect = correctCard() && hasAllPacks();
+      <span class="value fw-bold"
+            [class.correct]="packsCorrect"
+            [class.partial]="hasAnyPack()">Packs </span>
+      <!-- Only show packs if all are correct -->
       @for (pack of card().packs; track pack) {
         <span class="value"
-              [class.correct]="correctCard() && correctCard().packs.includes(pack)">{{ getPack(pack) }}</span>@if (!$last) {,}
+              [class.correct]="packsCorrect">{{ getPack(pack) }}</span>@if (!$last) {,}
       }
     </div>
     <div>
