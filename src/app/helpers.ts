@@ -38,3 +38,7 @@ export function camelCaseToSpaces(str: string) {
 export function getCardName(card: CardData, translated: boolean) {
   return translated ? card.name_de ?? card.name : card.name;
 }
+
+export function sortString(str: string, compareFn?: (a: string, b: string) => number) {
+  return str.split("").sort(compareFn).join("");
+}

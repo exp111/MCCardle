@@ -3,15 +3,15 @@ import {DataService} from '../../services/data.service';
 import Rand from 'rand-seed';
 import {FormsModule} from '@angular/forms';
 import {CardInfoComponent} from './card-info/card-info.component';
-import {CardData, CardDataArrayField} from '../../model/cardData';
+import {CardData, CardDataArrayField, CardResource} from '../../model/cardData';
 import {GuessInfoComponent} from './guess-info/guess-info.component';
-import {camelCaseToSpaces, getCardImage, getCardName, getFaction} from '../helpers';
+import {camelCaseToSpaces, getCardImage, getCardName, getFaction, sortString} from '../helpers';
 import {NgbDate, NgbInputDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SuccessModalComponent} from './success-modal/success-modal.component';
 import confetti from 'canvas-confetti';
 import {IS_DEV} from '../const';
 
-export type FilterType = keyof CardData | "firstLetter";
+export type FilterType = keyof CardData | "firstLetter" | "allResources" | "anyResource";
 
 export interface Filter {
   filter: FilterType;
@@ -71,16 +71,16 @@ export class GameComponent implements OnInit {
       return (card[filter.filter as CardDataArrayField] as any[]).includes(filter.value);
     }
 
-    let cardValue: unknown;
     switch (filter.filter) {
       case 'firstLetter':
-        cardValue = this.getName(card)[0];
-        break;
+        return this.getName(card)[0] == filter.value;
+      case 'allResources':
+        return sortString(card.resources.join("")) == filter.value;
+      case 'anyResource':
+        return filter.value.every((r: CardResource) => card.resources.includes(r));
       default:
-        cardValue = card[filter.filter];
-        break;
+        return card[filter.filter] == filter.value;
     }
-    return cardValue == filter.value;
   }
 
   getName(card: CardData) {

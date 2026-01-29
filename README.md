@@ -1,8 +1,8 @@
 # MCCardle
 
 ## TODO
-- show starting letter if guessed
 - tutorial/help
+- set card override
 
 ## Links
 - [BGdle](http://bgdle.org/)

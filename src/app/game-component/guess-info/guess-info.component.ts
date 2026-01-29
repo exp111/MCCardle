@@ -1,7 +1,7 @@
 import {Component, computed, input, model} from '@angular/core';
 import {CardInfoComponent} from '../card-info/card-info.component';
 import {CardData, CardDataArrayField, CardResource, Pack} from '../../../model/cardData';
-import {getCardImage} from '../../helpers';
+import {getCardImage, sortString} from '../../helpers';
 import {Filter, FilterType} from '../game.component';
 
 @Component({
@@ -42,7 +42,7 @@ export class GuessInfoComponent extends CardInfoComponent {
     });
   }
 
-  setFilterCustom(field: FilterType, value: any) {
+  setFilterCustom(field: FilterType, value?: any) {
     // don't set filter if card was already guessed
     if (this.cardGuessed()) {
       return;
@@ -53,6 +53,20 @@ export class GuessInfoComponent extends CardInfoComponent {
         if (!this.hasFirstLetter()) {
           return;
         }
+        break;
+      case "allResources":
+        if (!this.hasAllResources()) {
+          return;
+        }
+        value = this.getResourceString(this.correctCard());
+        break;
+      case "anyResource":
+        if (!this.hasAnyResource()) {
+          return;
+        }
+        value = this.correctCard().resources
+          .filter(r => this.hasResource(r))
+          .filter((r,i,s) => s.indexOf(r) === i); // unique
         break;
       default:
         console.error(`Unknown filter: ${field}`);
@@ -107,6 +121,19 @@ export class GuessInfoComponent extends CardInfoComponent {
 
   hasValue(field: CardDataArrayField, value: never) {
     return this.guesses().some(g => g[field].includes(value));
+  }
+
+  getResourceString(card: CardData) {
+    return sortString(card.resources.join(""));
+  }
+
+  hasAllResources() {
+    let resourceString = this.getResourceString(this.correctCard());
+    return this.guesses().some(g => this.getResourceString(g) == resourceString);
+  }
+
+  hasAnyResource() {
+    return this.correctCard().resources.some(r => this.hasResource(r));
   }
 
   hasResource(resource: CardResource) {

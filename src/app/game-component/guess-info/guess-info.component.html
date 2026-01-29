@@ -50,7 +50,13 @@
   </div>
   <div class="col">
     <div>
-      <span class="fw-bold">Resources </span>
+      @let partial = hasAnyResource();
+      @let complete = hasAllResources();
+      <span class="value fw-bold"
+            [class.partial]="partial"
+            [class.correct]="complete"
+            [class.filter]="filter()?.filter == 'allResources' || filter()?.filter == 'anyResource'"
+            (click)="setFilterCustom(complete ? 'allResources' : 'anyResource')">Resources </span>
       @for (resource of correctCard().resources; track $index) {
         @let hasValue = hasResource(resource);
         <span class="{{hasValue ? `resource ${resource}` : ''}}"
