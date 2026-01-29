@@ -103,7 +103,7 @@ export class GameComponent implements OnInit {
     if (data == null) {
       data = {};
     }
-    data[this.day()] = this.guesses();
+    data[this.day()] = this.guesses().map(g => ({code: g.code}));
     localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(data));
   });
 
@@ -144,7 +144,7 @@ export class GameComponent implements OnInit {
     let data = this.getLocalStorage();
     this.guesses.set(data ? (data[this.day()] ?? [])
       // map saved cards to the actual data
-      .map((card: CardData) => this.cards().find(c => c.code == card.code)) : []);
+      .map((card: {code: string}) => this.cards().find(c => c.code == card.code)) : []);
   }
 
   getDailyCard() {
