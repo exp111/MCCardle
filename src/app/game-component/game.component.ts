@@ -147,7 +147,11 @@ export class GameComponent implements OnInit {
     if (!this.cards().length) {
       return null!;
     }
-    let random = new Rand(this.day());
+    return this.getCardForSeed(this.day());
+  }
+
+  getCardForSeed(seed: string) {
+    let random = new Rand(seed);
     let index = Math.floor(random.next() * this.cards().length);
     return this.cards()[index];
   }
@@ -206,6 +210,25 @@ export class GameComponent implements OnInit {
 
   logSolution() {
     console.log(this.cardToGuess());
+  }
+
+  getDayForCode() {
+    let code = prompt("Enter code");
+    if (code == null || !this.cards().find(c => c.code == code)) {
+      console.error(`Invalid code ${code}`);
+      return;
+    }
+    let cur = new Date();
+    while (true) {
+      let seed = cur.toISOString().split('T')[0];
+      let card = this.getCardForSeed(seed);
+      if (card.code == code) {
+        console.log(`For card ${card.name} (${card.code}) use day ${seed}`);
+        return;
+      }
+      // reduce by 1 day
+      cur.setTime(cur.getTime() - (24*60*60*1000));
+    }
   }
 
   protected readonly getCardImage = getCardImage;
