@@ -9,7 +9,7 @@
     @let hasGuessedName = correctCard() && card().name == correctCard().name;
     <ng-template #nameDisplay>
       @if (correctCard() && !hasGuessedName && getName(correctCard()).startsWith(name[0])) {
-        <span class="value correct">{{ name[0] }}</span><span>{{ name.slice(1) }}</span>
+        <span class="value partial">{{ name[0] }}</span><span>{{ name.slice(1) }}</span>
       } @else {
         <span class="value" [class.correct]="hasGuessedName">
           {{ name }}

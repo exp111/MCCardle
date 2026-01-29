@@ -13,7 +13,7 @@
               [class.filter]="filter()?.filter == 'name'"
               (click)="setFilter('name')">{{ name  }}</span>
       } @else if (hasFirstLetter()) {
-        <span class="value correct"
+        <span class="value partial"
               [class.filter]="filter()?.filter == 'firstLetter'"
               (click)="setFilterCustom('firstLetter', name[0])">{{name[0]}}</span><span>{{PLACEHOLDER}}</span>
       } @else {
