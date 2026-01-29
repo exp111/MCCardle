@@ -212,7 +212,7 @@ export class GameComponent implements OnInit {
     console.log(this.cardToGuess());
   }
 
-  getDayForCode() {
+  setDayForCode() {
     let code = prompt("Enter code");
     if (code == null || !this.cards().find(c => c.code == code)) {
       console.error(`Invalid code ${code}`);
@@ -224,6 +224,8 @@ export class GameComponent implements OnInit {
       let card = this.getCardForSeed(seed);
       if (card.code == code) {
         console.log(`For card ${card.name} (${card.code}) use day ${seed}`);
+        this.date.set(new NgbDate(cur.getUTCFullYear(), cur.getUTCMonth() + 1, cur.getUTCDate()));
+        this.onDayChange();
         return;
       }
       // reduce by 1 day
