@@ -50,13 +50,12 @@
   </div>
   <div class="col">
     <div>
-      @let partial = hasAnyResource();
-      @let complete = hasAllResources();
+      @let resourcesComplete = hasAllResources();
       <span class="value fw-bold"
-            [class.partial]="partial"
-            [class.correct]="complete"
+            [class.partial]="hasAnyResource()"
+            [class.correct]="resourcesComplete"
             [class.filter]="filter()?.filter == 'allResources' || filter()?.filter == 'anyResource'"
-            (click)="setFilterCustom(complete ? 'allResources' : 'anyResource')">Resources </span>
+            (click)="setFilterCustom(resourcesComplete ? 'allResources' : 'anyResource')">Resources </span>
       @for (resource of correctCard().resources; track $index) {
         @let hasValue = hasResource(resource);
         <span class="{{hasValue ? `resource ${resource}` : ''}}"
@@ -75,7 +74,12 @@
       }
     </div>
     <div>
-      <span class="fw-bold">Traits </span>
+      @let traitsComplete = hasAllTraits();
+      <span class="value fw-bold"
+            [class.partial]="hasAnyTrait()"
+            [class.correct]="traitsComplete"
+            [class.filter]="filter()?.filter == 'allTraits' || filter()?.filter == 'anyTrait'"
+            (click)="setFilterCustom(traitsComplete ? 'allTraits' : 'anyTrait')">Traits </span>
       @for (trait of correctCard().traits; track trait) {
         @let hasValue = hasTrait(trait);
         <span class="value"

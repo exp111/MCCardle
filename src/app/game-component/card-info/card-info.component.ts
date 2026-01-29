@@ -1,6 +1,15 @@
 import {booleanAttribute, Component, computed, input} from '@angular/core';
 import {CardData} from '../../../model/cardData';
-import {getCardImage, getCardMarvelCDBURL, getCardName, getFaction, getPack, getType, sortString} from '../../helpers';
+import {
+  arraysHaveSameValues,
+  getCardImage,
+  getCardMarvelCDBURL,
+  getCardName,
+  getFaction,
+  getPack,
+  getType,
+  sortString
+} from '../../helpers';
 import {NgTemplateOutlet} from '@angular/common';
 
 @Component({
@@ -24,12 +33,24 @@ export class CardInfoComponent {
     return getCardName(card, this.germanLanguage());
   }
 
+  hasAllResources() {
+    return this.getResourceString(this.correctCard()) == this.getResourceString(this.card());
+  }
+
   hasAnyResource() {
-    return this.card().resources.some((r) => this.correctCard().resources.includes(r));
+    return this.card().resources.some(r => this.correctCard().resources.includes(r));
   }
 
   getResourceString(card: CardData) {
     return sortString(card.resources.join(""));
+  }
+
+  hasAllTraits() {
+    return arraysHaveSameValues(this.card().traits, this.correctCard().traits);
+  }
+
+  hasAnyTrait() {
+    return this.card().traits.some(t => this.correctCard().traits.includes(t));
   }
 
   answerIsHigher(val?: number, correct?: number) {

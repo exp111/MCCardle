@@ -1,7 +1,7 @@
 import {Component, computed, input, model} from '@angular/core';
 import {CardInfoComponent} from '../card-info/card-info.component';
 import {CardData, CardDataArrayField, CardResource, Pack} from '../../../model/cardData';
-import {getCardImage, sortString} from '../../helpers';
+import {arraysHaveSameValues, getCardImage} from '../../helpers';
 import {Filter, FilterType} from '../game.component';
 
 @Component({
@@ -68,6 +68,18 @@ export class GuessInfoComponent extends CardInfoComponent {
           .filter(r => this.hasResource(r))
           .filter((r,i,s) => s.indexOf(r) === i); // unique
         break;
+      case "allTraits":
+        if (!this.hasAllTraits()) {
+          return;
+        }
+        value = this.correctCard().traits;
+        break;
+        case "anyTrait":
+          if (!this.hasAnyTrait()) {
+            return;
+          }
+          value = this.correctCard().traits.filter(t => this.hasTrait(t));
+          break;
       default:
         console.error(`Unknown filter: ${field}`);
         return;
@@ -123,7 +135,7 @@ export class GuessInfoComponent extends CardInfoComponent {
     return this.guesses().some(g => g[field].includes(value));
   }
 
-  hasAllResources() {
+  override hasAllResources() {
     let resourceString = this.getResourceString(this.correctCard());
     return this.guesses().some(g => this.getResourceString(g) == resourceString);
   }
@@ -142,5 +154,13 @@ export class GuessInfoComponent extends CardInfoComponent {
 
   hasTrait(trait: string) {
     return this.hasValue("traits", trait as never);
+  }
+
+  override hasAllTraits() {
+    return this.guesses().some(g => arraysHaveSameValues(g.traits, this.correctCard().traits));
+  }
+
+  override hasAnyTrait() {
+    return this.correctCard().traits.some(t => this.hasTrait(t));
   }
 }

@@ -5,13 +5,13 @@ import {FormsModule} from '@angular/forms';
 import {CardInfoComponent} from './card-info/card-info.component';
 import {CardData, CardDataArrayField, CardResource} from '../../model/cardData';
 import {GuessInfoComponent} from './guess-info/guess-info.component';
-import {camelCaseToSpaces, getCardImage, getCardName, getFaction, sortString} from '../helpers';
+import {arraysHaveSameValues, camelCaseToSpaces, getCardImage, getCardName, getFaction, sortString} from '../helpers';
 import {NgbDate, NgbInputDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SuccessModalComponent} from './success-modal/success-modal.component';
 import confetti from 'canvas-confetti';
 import {IS_DEV} from '../const';
 
-export type FilterType = keyof CardData | "firstLetter" | "allResources" | "anyResource";
+export type FilterType = keyof CardData | "firstLetter" | "allResources" | "anyResource" | "allTraits" | "anyTrait";
 
 export interface Filter {
   filter: FilterType;
@@ -78,6 +78,10 @@ export class GameComponent implements OnInit {
         return sortString(card.resources.join("")) == filter.value;
       case 'anyResource':
         return filter.value.every((r: CardResource) => card.resources.includes(r));
+      case 'allTraits':
+        return arraysHaveSameValues(card.traits, filter.value);
+      case 'anyTrait':
+        return filter.value.every((t: string) => card.traits.includes(t));
       default:
         return card[filter.filter] == filter.value;
     }

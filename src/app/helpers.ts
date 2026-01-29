@@ -42,3 +42,14 @@ export function getCardName(card: CardData, translated: boolean) {
 export function sortString(str: string, compareFn?: (a: string, b: string) => number) {
   return str.split("").sort(compareFn).join("");
 }
+
+export function arraysHaveSameValues<T>(a: T[], b: T[]) {
+  if (a.length !== b.length) {
+    return false;
+  }
+
+  const sortedA = [...a].sort();
+  const sortedB = [...b].sort();
+
+  return sortedA.every((value, index) => value === sortedB[index]);
+}
