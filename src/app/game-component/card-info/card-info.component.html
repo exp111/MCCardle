@@ -46,7 +46,10 @@
   </div>
   <div class="col">
     <div>
-      <span class="fw-bold">Resources </span>
+      <span class="value fw-bold"
+            [class.correct]="correctCard() && getResourceString(correctCard()) == getResourceString(card())"
+            [class.partial]="correctCard() && hasAnyResource()"
+      >Resources </span>
       @for (resource of card().resources; track $index) {
         <span class="resource {{resource}}"
               [class.correct]="correctCard() && correctCard().resources.includes(resource)">{{ resource.toUpperCase() }}</span>

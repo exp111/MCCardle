@@ -123,16 +123,12 @@ export class GuessInfoComponent extends CardInfoComponent {
     return this.guesses().some(g => g[field].includes(value));
   }
 
-  getResourceString(card: CardData) {
-    return sortString(card.resources.join(""));
-  }
-
   hasAllResources() {
     let resourceString = this.getResourceString(this.correctCard());
     return this.guesses().some(g => this.getResourceString(g) == resourceString);
   }
 
-  hasAnyResource() {
+  override hasAnyResource() {
     return this.correctCard().resources.some(r => this.hasResource(r));
   }
 

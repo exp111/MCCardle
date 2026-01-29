@@ -1,6 +1,6 @@
 import {booleanAttribute, Component, computed, input} from '@angular/core';
 import {CardData} from '../../../model/cardData';
-import {getCardImage, getCardMarvelCDBURL, getCardName, getFaction, getPack, getType} from '../../helpers';
+import {getCardImage, getCardMarvelCDBURL, getCardName, getFaction, getPack, getType, sortString} from '../../helpers';
 import {NgTemplateOutlet} from '@angular/common';
 
 @Component({
@@ -22,6 +22,14 @@ export class CardInfoComponent {
 
   getName(card: CardData) {
     return getCardName(card, this.germanLanguage());
+  }
+
+  hasAnyResource() {
+    return this.card().resources.some((r) => this.correctCard().resources.includes(r));
+  }
+
+  getResourceString(card: CardData) {
+    return sortString(card.resources.join(""));
   }
 
   answerIsHigher(val?: number, correct?: number) {
@@ -58,4 +66,5 @@ export class CardInfoComponent {
   protected readonly getFaction = getFaction;
   protected readonly getType = getType;
   protected readonly getCardMarvelCDBURL = getCardMarvelCDBURL;
+  protected readonly sortString = sortString;
 }
