@@ -55,7 +55,7 @@
         @let hasValue = hasResource(resource);
         <span class="{{hasValue ? `resource ${resource}` : ''}}"
               [class.filter]="filter()?.filter == 'resources' && filter()?.value == resource"
-              (click)="setFilterArray('resources', resource)">{{ hasValue ? resource.toUpperCase() : PLACEHOLDER }}</span>
+              (click)="setFilterArray('resources', resource)">{{ hasValue ? resource.toUpperCase() : PLACEHOLDER[0] }}</span>
       }
     </div>
     <div>
@@ -65,9 +65,7 @@
         <span class="value"
               [class.correct]="hasValue"
               [class.filter]="filter()?.filter == 'packs' && filter()?.value == pack"
-              (click)="setFilterArray('packs', pack)">{{ hasValue ? getPack(pack) : PLACEHOLDER }}</span>@if (!$last) {
-          ,
-        }
+              (click)="setFilterArray('packs', pack)">{{ hasValue ? getPack(pack) : PLACEHOLDER }}</span>@if (!$last) {, }
       }
     </div>
     <div>
@@ -77,9 +75,7 @@
         <span class="value"
               [class.correct]="hasValue"
               [class.filter]="filter()?.filter == 'traits' && filter()?.value == trait"
-              (click)="setFilterArray('traits', trait)">{{ hasValue ? trait : PLACEHOLDER }}</span>@if (!$last) {
-          .
-        }
+              (click)="setFilterArray('traits', trait)">{{ hasValue ? trait : PLACEHOLDER }}</span>.
       }
     </div>
   </div>
