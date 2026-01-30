@@ -66,14 +66,12 @@
                       [guesses]="guesses()"
                       [germanLanguage]="germanLanguage()"
                       [(filter)]="filter"></app-guess-info>
-      <!-- Search Bar -->
-      <div class="d-flex gap-1">
+      @if (!cardGuessed()) {
         <!-- Search -->
-        <div class="flex-grow-1 position-relative">
+        <div class="position-relative">
           <!-- Search Input -->
           <input placeholder="{{filterDescription()}}Enter your guess here" class="form-control form-control-lg"
-                 [(ngModel)]="search"
-                 [disabled]="cardGuessed()">
+                 [(ngModel)]="search">
           <!-- Search Results -->
           <div class="z-2 position-absolute w-100 bg-white border rounded-bottom"
                [class.d-none]="!shownSearchResults().length">
@@ -90,15 +88,10 @@
             }
           </div>
         </div>
-        <!-- Guess Counter -->
-        @if (!cardGuessed()) {
-          <span
-            class="w-25 border rounded text-center align-content-center fs-5">Guess #{{ guesses().length + 1 }}</span>
-        } @else {
-          <button type="button" class="w-25 btn btn-outline-primary" (click)="showSuccessModal()">Show Result</button>
-        }
+      } @else {
+        <button type="button" class="btn btn-outline-primary" (click)="showSuccessModal()">Show Result</button>
+      }
 
-      </div>
       @for (guess of guesses(); track guess.code) {
         <app-card-info [card]="guess" [correctCard]="cardToGuess()" [germanLanguage]="germanLanguage()"></app-card-info>
       }
