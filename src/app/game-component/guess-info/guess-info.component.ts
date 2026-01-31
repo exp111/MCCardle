@@ -3,6 +3,7 @@ import {CardInfoComponent} from '../card-info/card-info.component';
 import {CardData, CardDataArrayField, CardResource, Pack} from '../../../model/cardData';
 import {arraysHaveSameValues, getCardImage} from '../../helpers';
 import {Filter, FilterType} from '../game.component';
+import {PLACEHOLDER_IMAGE} from '../../const';
 
 @Component({
   selector: 'app-guess-info',
@@ -18,7 +19,7 @@ export class GuessInfoComponent extends CardInfoComponent {
 
   PLACEHOLDER = "???";
 
-  override cardImg = computed(() => this.cardGuessed() ? getCardImage(this.correctCard()) : "placeholder.png");
+  override cardImg = computed(() => this.cardGuessed() ? getCardImage(this.correctCard()) : PLACEHOLDER_IMAGE);
 
   setFilter(field: keyof CardData) {
     // don't set filter if card was already guessed

@@ -8,6 +8,7 @@ export interface CardData {
   resources: CardResource[];
   traits: string[];
   packs: Pack[];
+  img: string;
   // these are both incomplete
   sets: string[];
   illustrators: string[];
