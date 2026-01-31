@@ -73,7 +73,7 @@
           <input placeholder="{{filterDescription()}}Enter your guess here" class="form-control form-control-lg"
                  [(ngModel)]="search">
           <!-- Search Results -->
-          <div class="z-2 position-absolute w-100 bg-white border rounded-bottom"
+          <div class="z-2 position-absolute w-100 bg-white border rounded-bottom overflow-auto search-results"
                [class.d-none]="!shownSearchResults().length">
             @for (result of shownSearchResults(); track result.code) {
               <div class="cursor-pointer d-flex" (click)="guessCard(result)">
@@ -84,7 +84,7 @@
               </div>
             }
             @if (shownSearchResults().length != searchResults().length) {
-              <div class="p-2">...</div>
+              <div class="p-2 bg-body-secondary text-center fw-bold">...</div>
             }
           </div>
         </div>

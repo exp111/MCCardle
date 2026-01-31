@@ -46,7 +46,7 @@ export class GameComponent implements OnInit {
   showLegend = false;
 
   MINIMUM_SEARCH_LENGTH = 1;
-  SHOWN_RESULTS = 5;
+  SHOWN_RESULTS = 25;
   search = signal("");
   searchResults = computed(() =>
     this.search().length >= this.MINIMUM_SEARCH_LENGTH ?
