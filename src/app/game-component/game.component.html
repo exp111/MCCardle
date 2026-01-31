@@ -78,7 +78,7 @@
             @for (result of shownSearchResults(); track result.code) {
               <div class="cursor-pointer d-flex" (click)="guessCard(result)">
                 @if (showSearchImages()) {
-                  <div class="col-2 p-2"><img class="card-img" [src]="getCardImage(result)"></div>
+                  <div class="col-2 p-2"><img class="card-img" [src]="getCardImage(result)" loading="lazy"></div>
                 }
                 <div class="col align-content-center">{{ getName(result) }} ({{ getFaction(result.faction) }})</div>
               </div>
