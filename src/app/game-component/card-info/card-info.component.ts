@@ -11,6 +11,7 @@ import {
   sortString
 } from '../../helpers';
 import {NgTemplateOutlet} from '@angular/common';
+import {IS_DEV} from '../../const';
 
 @Component({
   selector: 'app-card-info',
@@ -95,4 +96,5 @@ export class CardInfoComponent {
   protected readonly getFaction = getFaction;
   protected readonly getType = getType;
   protected readonly getCardMarvelCDBURL = getCardMarvelCDBURL;
+  protected readonly IS_DEV = IS_DEV;
 }

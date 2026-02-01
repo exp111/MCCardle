@@ -15,6 +15,9 @@
           {{ name }}
         </span>
       }
+      @if (IS_DEV) {
+        ({{card().code}})
+      }
     </ng-template>
     @if (showMarvelCDBLink()) {
       <a [href]="getCardMarvelCDBURL(card())" target="_blank" rel="noreferrer noopener" class="fw-bold">
