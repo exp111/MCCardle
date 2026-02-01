@@ -40,12 +40,29 @@
       <!-- Parameters -->
       <div class="input-group">
         <span class="input-group-text">Card for Date</span>
+        <ng-template
+          #customDay
+          let-date
+          let-currentMonth="currentMonth"
+          let-selected="selected"
+          let-disabled="disabled"
+          let-focused="focused">
+          <div
+            customDay
+            [dayGuessed]="cardGuessed()"
+            [date]="date"
+            [currentMonth]="currentMonth"
+            [selected]="selected"
+            [disabled]="disabled"
+            [focused]="focused">
+          </div>
+        </ng-template>
         <input type="date" [(ngModel)]="date" [maxDate]="todayNgbDate" class="form-control"
                ngbDatepicker
                readonly
                #d="ngbDatepicker"
+               [dayTemplate]="customDay"
                (ngModelChange)="onDayChange()">
-
         <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">Change</button>
       </div>
       <div class="form-check">

@@ -10,6 +10,7 @@ import {NgbDate, NgbInputDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap'
 import {SuccessModalComponent} from './success-modal/success-modal.component';
 import confetti from 'canvas-confetti';
 import {IS_DEV} from '../const';
+import {CustomDayComponent} from './custom-day-component/custom-day.component';
 
 export type FilterType = keyof CardData | "firstLetter" | "allResources" | "anyResource" | "allTraits" | "anyTrait" | "allPacks";
 
@@ -25,7 +26,8 @@ export interface Filter {
     FormsModule,
     CardInfoComponent,
     GuessInfoComponent,
-    NgbInputDatepicker
+    NgbInputDatepicker,
+    CustomDayComponent
   ],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss',
