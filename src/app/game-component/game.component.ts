@@ -81,7 +81,7 @@ export class GameComponent implements OnInit {
   LOCAL_STORAGE_KEY = "data";
   saveToLocalStorageEffect = effect(() => {
     // dont write anything
-    if (!Object.values({}).length) {
+    if (!Object.values(this.userData()).length) {
       return;
     }
     let data = mapRecordValues<string, CardData[], SavedCardData[]>(this.userData(), guesses => guesses
