@@ -28,6 +28,8 @@ export interface Filter {
   array: boolean;
 }
 
+type SavedCardData = {code: string};
+
 @Component({
   selector: 'app-game',
   imports: [
@@ -82,7 +84,7 @@ export class GameComponent implements OnInit {
     if (!Object.values({}).length) {
       return;
     }
-    let data = mapRecordValues(this.userData(), guesses => guesses
+    let data = mapRecordValues<string, CardData[], SavedCardData[]>(this.userData(), guesses => guesses
       .map(g => ({code: g.code}))); // only save codes
     localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(data));
   });
@@ -118,9 +120,9 @@ export class GameComponent implements OnInit {
       console.log("No data found.");
       return;
     }
-    this.userData.set(mapRecordValues<string, {code: string}[], CardData[]>(data, guesses  => guesses
+    this.userData.set(mapRecordValues<string, SavedCardData[], CardData[]>(data, guesses  => guesses
       // map saved cards to the actual data
-      .map((card: {code: string}) => this.cards().find(c => c.code == card.code)!)));
+      .map(card => this.cards().find(c => c.code == card.code)!)));
   }
 
   matchesFilter(card: CardData) {
