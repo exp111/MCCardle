@@ -5,7 +5,15 @@ import {FormsModule} from '@angular/forms';
 import {CardInfoComponent} from './card-info/card-info.component';
 import {CardData, CardDataArrayField, CardResource} from '../../model/cardData';
 import {GuessInfoComponent} from './guess-info/guess-info.component';
-import {arraysHaveSameValues, camelCaseToSpaces, getCardImage, getCardName, getFaction, sortString} from '../helpers';
+import {
+  arraysHaveSameValues,
+  camelCaseToSpaces,
+  getCardImage,
+  getCardName,
+  getFaction,
+  mapRecordValues,
+  sortString
+} from '../helpers';
 import {NgbDate, NgbInputDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SuccessModalComponent} from './success-modal/success-modal.component';
 import confetti from 'canvas-confetti';
@@ -41,7 +49,9 @@ export class GameComponent implements OnInit {
   cards = signal<CardData[]>([]);
   cardToGuess = computed(() => this.getDailyCard());
   todayNgbDate = new NgbDate(new Date().getUTCFullYear(), new Date().getUTCMonth() + 1, new Date().getUTCDate());
+  // the selected data as a ngbdate
   date = signal<NgbDate>(new NgbDate(this.todayNgbDate.year, this.todayNgbDate.month, this.todayNgbDate.day));
+  // the selected date as a iso string (YYYY-MM-DD)
   day = computed(() => `${this.date().year}-${this.date().month.toString().padStart(2, "0")}-${this.date().day.toString().padStart(2, "0")}`);
 
   cardGuessed = computed(() => this.guesses().includes(this.cardToGuess()));
@@ -62,6 +72,56 @@ export class GameComponent implements OnInit {
   filter = signal<Filter | null>(null);
   filterDescription = computed(() => this.filter() ? `[Filter ${camelCaseToSpaces(this.filter()!.filter).toLowerCase()}: ${this.filter()!.value}] ` : "");
   germanLanguage = signal(false);
+
+  userData = signal<Record<string, CardData[]>>({});
+  guesses = computed(() => this.userData()[this.day()] ?? []);
+
+  LOCAL_STORAGE_KEY = "data";
+  saveToLocalStorageEffect = effect(() => {
+    // dont write anything
+    if (!Object.values({}).length) {
+      return;
+    }
+    let data = mapRecordValues(this.userData(), guesses => guesses
+      .map(g => ({code: g.code}))); // only save codes
+    localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(data));
+  });
+
+  ngOnInit() {
+    this.loading = true;
+    this.dataService.getData().subscribe({
+      next: data => {
+        this.cards.set(data);
+        this.loadGuessesFromLocalStorage();
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: err => {
+        console.error(err);
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    })
+  }
+
+  getLocalStorage() {
+    let data = localStorage.getItem(this.LOCAL_STORAGE_KEY);
+    if (data) {
+      return JSON.parse(data);
+    }
+    return null;
+  }
+
+  loadGuessesFromLocalStorage() {
+    let data = this.getLocalStorage();
+    if (!data) {
+      console.log("No data found.");
+      return;
+    }
+    this.userData.set(mapRecordValues<string, {code: string}[], CardData[]>(data, guesses  => guesses
+      // map saved cards to the actual data
+      .map((card: {code: string}) => this.cards().find(c => c.code == card.code)!)));
+  }
 
   matchesFilter(card: CardData) {
     let filter = this.filter();
@@ -95,60 +155,9 @@ export class GameComponent implements OnInit {
     return getCardName(card, this.germanLanguage());
   }
 
-  guesses = signal<CardData[]>([]);
-
-  LOCAL_STORAGE_KEY = "data";
-  saveToLocalStorageEffect = effect(() => {
-    // dont write empty stuff into storage
-    if (!this.guesses().length) {
-      return;
-    }
-    let data = this.getLocalStorage();
-    if (data == null) {
-      data = {};
-    }
-    data[this.day()] = this.guesses().map(g => ({code: g.code}));
-    localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(data));
-  });
-
-  getLocalStorage() {
-    let data = localStorage.getItem(this.LOCAL_STORAGE_KEY);
-    if (data) {
-      return JSON.parse(data);
-    }
-    return null;
-  }
-
-  ngOnInit() {
-    this.loading = true;
-    this.dataService.getData().subscribe({
-      next: data => {
-        this.cards.set(data);
-        this.loadGuessesFromLocalStorage();
-        this.loading = false;
-        this.cdr.detectChanges();
-      },
-      error: err => {
-        console.error(err);
-        this.loading = false;
-        this.cdr.detectChanges();
-      }
-    })
-  }
-
   onDayChange() {
-    // load guesses for date
-    this.loadGuessesFromLocalStorage();
     // reset filter
     this.filter.set(null);
-  }
-
-  loadGuessesFromLocalStorage() {
-    // read from local storage
-    let data = this.getLocalStorage();
-    this.guesses.set(data ? (data[this.day()] ?? [])
-      // map saved cards to the actual data
-      .map((card: {code: string}) => this.cards().find(c => c.code == card.code)) : []);
   }
 
   getDailyCard() {
@@ -169,7 +178,11 @@ export class GameComponent implements OnInit {
       console.log(`Card ${cardData.name} already guessed`);
       return;
     }
-    this.guesses.update(g => [...g, cardData]);
+    // add guess to guesses
+    this.userData.update(u => ({
+      ...u,
+      [this.day()]: [...u[this.day()] ?? [], cardData]
+    }));
     if (this.cardToGuess() == cardData) {
       console.log("Card guessed!");
       // reset filter
@@ -212,7 +225,10 @@ export class GameComponent implements OnInit {
 
   // Debug methods
   resetToday() {
-    this.guesses.set([]);
+    this.userData.update(u => ({
+      ...u,
+      [this.day()]: []
+    }));
     this.filter.set(null);
   }
 
