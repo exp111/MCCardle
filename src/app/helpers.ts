@@ -1,5 +1,6 @@
 import {CardData, CardFaction, CardType, Pack} from '../model/cardData';
 import {MARVELCDB_BASE_URL, MARVELCDB_CARD_URL, PLACEHOLDER_IMAGE} from './const';
+import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 
 export function getCardImage(card: CardData) {
   return card.img ? `${MARVELCDB_BASE_URL}${card.img}` : PLACEHOLDER_IMAGE;
@@ -66,3 +67,6 @@ export function mapRecordValues<K extends string, V, R>(
   ) as Record<K, R>
 }
 
+export function ngbDateToISOString(date: NgbDate) {
+  return `${date.year}-${date.month.toString().padStart(2, "0")}-${date.day.toString().padStart(2, "0")}`
+}

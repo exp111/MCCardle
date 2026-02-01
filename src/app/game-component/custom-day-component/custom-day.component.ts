@@ -9,15 +9,16 @@ import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'btn-light',
-    '[class.bg-primary]': 'selected()',
-    '[class.text-white]': 'selected()',
+    '[class.selected]': 'selected()',
     '[class.text-muted]': 'isMuted()',
     '[class.outside]': 'isMuted()',
     '[class.active]': 'focused()',
-    '[class.guessed]': 'dayGuessed()'
+    '[class.guessed]': 'dayGuessed()',
+    '[class.started]': 'dayStarted()'
   },
 })
 export class CustomDayComponent {
+  dayStarted = input.required<boolean>();
   dayGuessed = input.required<boolean>();
   currentMonth = input.required<number>();
   date = input.required<NgbDate>();

@@ -11,7 +11,7 @@ import {
   getCardImage,
   getCardName,
   getFaction,
-  mapRecordValues,
+  mapRecordValues, ngbDateToISOString,
   sortString
 } from '../helpers';
 import {NgbDate, NgbInputDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -53,8 +53,8 @@ export class GameComponent implements OnInit {
   todayNgbDate = new NgbDate(new Date().getUTCFullYear(), new Date().getUTCMonth() + 1, new Date().getUTCDate());
   // the selected data as a ngbdate
   date = signal<NgbDate>(new NgbDate(this.todayNgbDate.year, this.todayNgbDate.month, this.todayNgbDate.day));
-  // the selected date as a iso string (YYYY-MM-DD)
-  day = computed(() => `${this.date().year}-${this.date().month.toString().padStart(2, "0")}-${this.date().day.toString().padStart(2, "0")}`);
+  // the selected date as an iso string (YYYY-MM-DD)
+  day = computed(() => ngbDateToISOString(this.date()));
 
   cardGuessed = computed(() => this.guesses().includes(this.cardToGuess()));
   showLegend = false;
@@ -157,6 +157,7 @@ export class GameComponent implements OnInit {
     return getCardName(card, this.germanLanguage());
   }
 
+  //TODO: FIXME: if you change from a solved card to a not solved one it doesnt change the guess info image directly
   onDayChange() {
     // reset filter
     this.filter.set(null);
@@ -259,7 +260,19 @@ export class GameComponent implements OnInit {
     }
   }
 
+  hasStartedDate(date: NgbDate) {
+    let day = ngbDateToISOString(date);
+    return this.userData()[day] && Object.keys(this.userData()[day]).length > 0;
+  }
+
+  hasGuessedDate(date: NgbDate) {
+    let day = ngbDateToISOString(date);
+    let card = this.getCardForSeed(day);
+    return this.userData()[day]?.includes(card);
+  }
+
   protected readonly getCardImage = getCardImage;
   protected readonly getFaction = getFaction;
   protected readonly IS_DEV = IS_DEV;
+  protected readonly Object = Object;
 }

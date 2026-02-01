@@ -1,3 +1,5 @@
+@import "../../../variables";
+
 [customDay] {
   text-align: center;
   width: 2rem;
@@ -6,8 +8,15 @@
   border-radius: 0.25rem;
   background: transparent;
 
-  &:hover:not(.bg-primary),
-  &.active:not(.bg-primary) {
+  // currently selected day
+  &.selected {
+    background: var(--bs-primary);
+    color: white;
+  }
+
+  //TODO: FIXME: this doesnt look good when hovering guessed dates
+  &:hover:not(.selected),
+  &.active:not(.selected) {
     background-color: var(--bs-tertiary-bg);
     outline: 1px solid var(--bs-border-color);
   }
@@ -16,7 +25,14 @@
     opacity: 0.5;
   }
 
-  &.guessed {
-    background: green;
+  // guessed day
+  &.guessed:not(.selected) {
+    background: $correct-color !important;
+    color: white;
+  }
+
+  // started, but not guessed day
+  &.started:not(.selected) {
+    background: $partial-color;
   }
 }
