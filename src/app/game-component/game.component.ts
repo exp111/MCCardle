@@ -11,7 +11,8 @@ import {
   getCardImage,
   getCardName,
   getFaction,
-  mapRecordValues, ngbDateToISOString,
+  mapRecordValues,
+  ngbDateToISOString,
   sortString
 } from '../helpers';
 import {NgbDate, NgbInputDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -19,6 +20,7 @@ import {SuccessModalComponent} from './success-modal/success-modal.component';
 import confetti from 'canvas-confetti';
 import {IS_DEV} from '../const';
 import {CustomDayComponent} from './custom-day-component/custom-day.component';
+import {from} from 'rxjs';
 
 export type FilterType = keyof CardData | "firstLetter" | "allResources" | "anyResource" | "allTraits" | "anyTrait" | "allPacks";
 
@@ -204,6 +206,16 @@ export class GameComponent implements OnInit {
     instance.germanLanguage = this.germanLanguage();
     instance.guesses = this.guesses();
     instance.day = this.day();
+    // listen to result
+    from(ref.result).subscribe({
+      next: result => {
+        switch (result) {
+          case "reset":
+            this.resetDay();
+            break;
+        }
+      }
+    })
   }
 
   confetti() {
@@ -225,15 +237,16 @@ export class GameComponent implements OnInit {
     this.showLegend = !this.showLegend;
   }
 
-  // Debug methods
-  resetToday() {
+  resetDay() {
     this.userData.update(u => ({
       ...u,
       [this.day()]: []
     }));
     this.filter.set(null);
+    console.log("Reset gueses.");
   }
 
+  // Debug methods
   logSolution() {
     console.log(this.cardToGuess());
   }

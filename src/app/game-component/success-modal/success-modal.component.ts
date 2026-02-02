@@ -27,6 +27,13 @@ export class SuccessModalComponent {
   PARTIALLY_CORRECT_EMOJI = "🟨";
   CORRECT_EMOJI = "🟩";
 
+  reset() {
+    this.toastService.show({
+      content: "Reset guesses."
+    })
+    this.activeModal.close("reset");
+  }
+
   share(addSpoileredCardName = false) {
     let share = `Marvel Champions Cardle ${this.day} in ${this.guesses.length} Guesses\n`;
     share += `${GITHUB_PAGES_URL}\n\n`;

@@ -9,7 +9,6 @@
   - Show if word is included in guess
   - Filter by word
 - replay view + link share
-- reset today button in results
 
 ## Links
 - [BGdle](http://bgdle.org/)
