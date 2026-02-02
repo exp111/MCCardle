@@ -11,13 +11,23 @@
       @if (nameValue) {
         <span class="value correct"
               [class.filter]="filter()?.filter == 'name'"
-              (click)="setFilter('name')">{{ name  }}</span>
-      } @else if (hasFirstLetter()) {
+              (click)="setFilter('name')">{{ name }}</span>
+      } @else {
+        @let hasFirst = hasFirstLetter();
+        @if (hasFirst) {
         <span class="value partial"
               [class.filter]="filter()?.filter == 'firstLetter'"
-              (click)="setFilterCustom('firstLetter', name[0])">{{name[0]}}</span><span>{{PLACEHOLDER}}</span>
-      } @else {
-        {{PLACEHOLDER}}
+              (click)="setFilterCustom('firstLetter', name[0])">{{name[0]}}</span>
+        }
+        @for (part of guessNameParts(); track $index + part) {
+          <span [class.ms-n1]="$first && hasFirst">
+            @if ($first && hasFirst) {
+              {{part.slice(1) }}
+            } @else {
+              {{part}}
+            }
+          </span>
+        }
       }
     </div>
     <!-- cost -->

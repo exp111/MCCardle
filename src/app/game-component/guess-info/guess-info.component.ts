@@ -17,6 +17,10 @@ export class GuessInfoComponent extends CardInfoComponent {
 
   cardGuessed = computed(() => this.guesses().includes(this.correctCard()));
 
+  cardNameParts = computed(() => this.getName(this.correctCard()).split(" "));
+  guessedWords = computed(() => this.guesses().flatMap(g => this.getName(g).toLowerCase().split(" ")));
+  guessNameParts = computed(() => this.cardNameParts().map(p => this.guessedWords().includes(p.toLowerCase()) ? p : this.PLACEHOLDER));
+
   PLACEHOLDER = "???";
 
   override cardImg = computed(() => this.cardGuessed() ? getCardImage(this.correctCard()) : PLACEHOLDER_IMAGE);

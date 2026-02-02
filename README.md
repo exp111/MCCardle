@@ -4,10 +4,7 @@
 - tutorial/help
 - set card override (debug)
 - year parameter
-- Show name as ??? ??? ???:
-  - Split by words
-  - Show if word is included in guess
-  - Filter by word
+- Filter by word part
 
 ## Links
 - [BGdle](http://bgdle.org/)
