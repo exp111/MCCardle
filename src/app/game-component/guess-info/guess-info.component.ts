@@ -110,6 +110,10 @@ export class GuessInfoComponent extends CardInfoComponent {
   }
 
   setFilterArray(field: CardDataArrayField, value: any) {
+    // don't set filter if card was already guessed
+    if (this.cardGuessed()) {
+      return;
+    }
     // not guessed yet
     if (!this.hasValue(field as any, value as never)) {
       return;
