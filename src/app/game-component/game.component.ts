@@ -157,7 +157,6 @@ export class GameComponent implements OnInit {
     return getCardName(card, this.germanLanguage());
   }
 
-  //TODO: FIXME: if you change from a solved card to a not solved one it doesnt change the guess info image directly
   onDayChange() {
     // reset filter
     this.filter.set(null);

@@ -1,3 +1,4 @@
+@use "sass:color";
 @import "../../../variables";
 
 [customDay] {
@@ -12,11 +13,14 @@
   &.selected {
     background: var(--bs-primary);
     color: white;
+    &:hover {
+      background: color.adjust(#0D6EFD, $lightness: 10%);
+    }
   }
 
-  //TODO: FIXME: this doesnt look good when hovering guessed dates
-  &:hover:not(.selected),
-  &.active:not(.selected) {
+  // hovered fields
+  &:hover:not(.selected, .guessed, .started),
+  &.active:not(.selected, .guessed, .started) {
     background-color: var(--bs-tertiary-bg);
     outline: 1px solid var(--bs-border-color);
   }
@@ -27,12 +31,18 @@
 
   // guessed day
   &.guessed:not(.selected) {
-    background: $correct-color !important;
+    background: $correct-color;
     color: white;
+    &:hover {
+      background: color.adjust($correct-color, $lightness: 10%);
+    }
   }
 
   // started, but not guessed day
-  &.started:not(.selected) {
+  &.started:not(.selected, .guessed) {
     background: $partial-color;
+    &:hover {
+      background: color.adjust($partial-color, $lightness: 10%);
+    }
   }
 }
