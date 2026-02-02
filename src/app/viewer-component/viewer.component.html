@@ -1,0 +1,17 @@
+@if (loading()) {
+  Loading...
+} @else {
+  @if (!card()) {
+    Couldn't load data...
+  } @else {
+    <div class="d-flex flex-column gap-1 pb-2">
+      <h4 class="correct text-center">
+        Guessed {{ getName(card()) }} on {{ day() }} in {{ guesses().length }} guesses.<br>
+        <a routerLink="/">Try guessing yourself.</a>
+      </h4>
+      @for (guess of cardGuesses(); track guess.code) {
+        <app-card-info [card]="guess" [correctCard]="card()" [germanLanguage]="german()"></app-card-info>
+      }
+    </div>
+  }
+}

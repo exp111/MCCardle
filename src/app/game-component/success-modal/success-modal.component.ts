@@ -2,7 +2,7 @@ import {Component, inject} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {CardData, CardDataArrayField} from '../../../model/cardData';
 import {CardInfoComponent} from '../card-info/card-info.component';
-import {getCardName} from '../../helpers';
+import {getCardName, getShareLink} from '../../helpers';
 import {ToastService} from '../../../services/toast.service';
 import {GITHUB_PAGES_URL} from '../../const';
 
@@ -36,7 +36,7 @@ export class SuccessModalComponent {
 
   share(addSpoileredCardName = false) {
     let share = `Marvel Champions Cardle ${this.day} in ${this.guesses.length} Guesses\n`;
-    share += `${GITHUB_PAGES_URL}\n\n`;
+    share += `${getShareLink(this.day, this.guesses, this.germanLanguage)}\n\n`;
 
     let tries: string[] = [];
     for (let guess of this.guesses) {

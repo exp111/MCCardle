@@ -1,6 +1,5 @@
-import {ChangeDetectorRef, Component, computed, effect, inject, OnInit, signal} from '@angular/core';
+import {Component, computed, effect, inject, OnInit, signal} from '@angular/core';
 import {DataService} from '../../services/data.service';
-import Rand from 'rand-seed';
 import {FormsModule} from '@angular/forms';
 import {CardInfoComponent} from './card-info/card-info.component';
 import {CardData, CardDataArrayField, CardResource} from '../../model/cardData';
@@ -11,6 +10,8 @@ import {
   getCardImage,
   getCardName,
   getFaction,
+  getRandomItem,
+  getShareLink,
   mapRecordValues,
   ngbDateToISOString,
   sortString
@@ -18,7 +19,7 @@ import {
 import {NgbDate, NgbInputDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SuccessModalComponent} from './success-modal/success-modal.component';
 import confetti from 'canvas-confetti';
-import {IS_DEV} from '../const';
+import {GITHUB_PAGES_URL, IS_DEV} from '../const';
 import {CustomDayComponent} from './custom-day-component/custom-day.component';
 import {from} from 'rxjs';
 
@@ -169,9 +170,7 @@ export class GameComponent implements OnInit {
   }
 
   getCardForSeed(seed: string) {
-    let random = new Rand(seed);
-    let index = Math.floor(random.next() * this.cards().length);
-    return this.cards()[index];
+    return getRandomItem(this.cards(), seed);
   }
 
   guessCard(cardData: CardData) {
@@ -246,6 +245,10 @@ export class GameComponent implements OnInit {
   // Debug methods
   logSolution() {
     console.log(this.cardToGuess());
+  }
+
+  logShareLink() {
+    console.log(getShareLink(this.day(), this.guesses(), this.germanLanguage()).replace(GITHUB_PAGES_URL, "http://localhost:4200/"));
   }
 
   setDayForCode() {

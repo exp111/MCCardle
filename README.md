@@ -8,7 +8,6 @@
   - Split by words
   - Show if word is included in guess
   - Filter by word
-- replay view + link share
 
 ## Links
 - [BGdle](http://bgdle.org/)

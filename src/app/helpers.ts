@@ -1,6 +1,7 @@
 import {CardData, CardFaction, CardType, Pack} from '../model/cardData';
-import {MARVELCDB_BASE_URL, MARVELCDB_CARD_URL, PLACEHOLDER_IMAGE} from './const';
+import {GITHUB_PAGES_URL, MARVELCDB_BASE_URL, MARVELCDB_CARD_URL, PLACEHOLDER_IMAGE} from './const';
 import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
+import Rand from 'rand-seed';
 
 export function getCardImage(card: CardData) {
   return card.img ? `${MARVELCDB_BASE_URL}${card.img}` : PLACEHOLDER_IMAGE;
@@ -40,6 +41,10 @@ export function getCardName(card: CardData, translated: boolean) {
   return translated ? card.name_de ?? card.name : card.name;
 }
 
+export function getShareLink(day: string, guesses: CardData[], german?: boolean) {
+  return `${GITHUB_PAGES_URL}#/viewer?day=${day}&guesses=${guesses.map(g => g.code).join(',')}${german ? `&german=${german}` : ''}`;
+}
+
 export function sortString(str: string, compareFn?: (a: string, b: string) => number) {
   return str.split("").sort(compareFn).join("");
 }
@@ -69,4 +74,10 @@ export function mapRecordValues<K extends string, V, R>(
 
 export function ngbDateToISOString(date: NgbDate) {
   return `${date.year}-${date.month.toString().padStart(2, "0")}-${date.day.toString().padStart(2, "0")}`
+}
+
+export function getRandomItem(arr: any[], seed?: string) {
+  let random = new Rand(seed);
+  let index = Math.floor(random.next() * arr.length);
+  return arr[index];
 }
