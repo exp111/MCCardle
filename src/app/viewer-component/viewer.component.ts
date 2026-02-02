@@ -3,7 +3,7 @@ import {CardData} from '../../model/cardData';
 import {DataService} from '../../services/data.service';
 import {getCardName, getRandomItem} from '../helpers';
 import {CardInfoComponent} from '../game-component/card-info/card-info.component';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-viewer-component',
@@ -15,16 +15,20 @@ import {RouterLink} from '@angular/router';
   styleUrl: './viewer.component.scss',
 })
 export class ViewerComponent implements OnInit {
+  router = inject(Router);
   dataService = inject(DataService);
 
-  loading = signal(false);
+  // parameters
   day = input.required<string>();
   guesses = input.required({
-    transform: (v: string) => v.split(",")
+    transform: (v: string) => v ? v.split(",") : []
   });
   german = input(false, {
     transform: booleanAttribute
   });
+
+  loading = signal(false);
+  // contains the guessed cards as card data
   cardGuesses = computed(() => this.cards() && this.guesses() ?
     this.guesses().map(g => this.cards().find(c => c.code == g)!)
     : []);
@@ -32,6 +36,12 @@ export class ViewerComponent implements OnInit {
   card = computed(() => getRandomItem(this.cards(), this.day()));
 
   ngOnInit() {
+    // check if required parameters exist
+    if (!this.day() || !this.guesses()?.length) {
+      console.error("Invalid viewer link.");
+      this.router.navigate(["/"]);
+      return;
+    }
     this.loading.set(true);
     this.dataService.getData().subscribe({
       next: data => {
