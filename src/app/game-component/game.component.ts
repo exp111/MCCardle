@@ -46,10 +46,9 @@ type SavedCardData = {code: string};
 })
 export class GameComponent implements OnInit {
   dataService = inject(DataService);
-  cdr = inject(ChangeDetectorRef);
   modalService = inject(NgbModal);
 
-  loading = false;
+  loading = signal(false);
   cards = signal<CardData[]>([]);
   cardToGuess = computed(() => this.getDailyCard());
   todayNgbDate = new NgbDate(new Date().getUTCFullYear(), new Date().getUTCMonth() + 1, new Date().getUTCDate());
@@ -59,7 +58,7 @@ export class GameComponent implements OnInit {
   day = computed(() => ngbDateToISOString(this.date()));
 
   cardGuessed = computed(() => this.guesses().includes(this.cardToGuess()));
-  showLegend = false;
+  showLegend = signal(false);
 
   MINIMUM_SEARCH_LENGTH = 1;
   SHOWN_RESULTS = 25;
@@ -92,18 +91,16 @@ export class GameComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.loading = true;
+    this.loading.set(true);
     this.dataService.getData().subscribe({
       next: data => {
         this.cards.set(data);
         this.loadGuessesFromLocalStorage();
-        this.loading = false;
-        this.cdr.detectChanges();
+        this.loading.set(false);
       },
       error: err => {
         console.error(err);
-        this.loading = false;
-        this.cdr.detectChanges();
+        this.loading.set(false);
       }
     })
   }
@@ -234,7 +231,7 @@ export class GameComponent implements OnInit {
   }
 
   toggleLegend() {
-    this.showLegend = !this.showLegend;
+    this.showLegend.update(s => !s);
   }
 
   resetDay() {
