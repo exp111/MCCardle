@@ -68,3 +68,19 @@
     }
   }
 }
+
+// make packs seperated by ,
+.packs {
+  // ignore first child (title) & last child
+  span:not(:first-child, :last-child)::after {
+    content: ", ";
+  }
+}
+
+// add . to each trait
+.traits {
+  // ignore first child (title)
+  span:not(:first-child)::after {
+    content: ". ";
+  }
+}

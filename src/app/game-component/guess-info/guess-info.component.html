@@ -15,16 +15,16 @@
       } @else {
         @let hasFirst = hasFirstLetter();
         @if (hasFirst) {
-        <span class="value partial"
-              [class.filter]="filter()?.filter == 'firstLetter'"
-              (click)="setFilterCustom('firstLetter', name[0])">{{name[0]}}</span>
+          <span class="value partial"
+                [class.filter]="filter()?.filter == 'firstLetter'"
+                (click)="setFilterCustom('firstLetter', name[0])">{{ name[0] }}</span>
         }
         @for (part of guessNameParts(); track $index + part) {
           <span [class.ms-n1]="$first && hasFirst">
             @if ($first && hasFirst) {
-              {{part.slice(1) }}
+              {{ part.slice(1) }}
             } @else {
-              {{part}}
+              {{ part }}
             }
           </span>
         }
@@ -73,7 +73,7 @@
               (click)="setFilterArray('resources', resource)">{{ hasValue ? resource.toUpperCase() : PLACEHOLDER[0] }}</span>
       }
     </div>
-    <div>
+    <div class="packs">
       @let packsComplete = hasAllPacks();
       <span class="value fw-bold"
             [class.correct]="packsComplete"
@@ -83,10 +83,10 @@
         <span class="value"
               [class.correct]="packsComplete"
               [class.filter]="filter()?.filter == 'packs' && filter()?.value == pack"
-              (click)="setFilterArray('packs', pack)">{{ packsComplete ? getPack(pack) : PLACEHOLDER }}</span>@if (!$last) {, }
+              (click)="setFilterArray('packs', pack)">{{ packsComplete ? getPack(pack) : PLACEHOLDER }}</span>
       }
     </div>
-    <div>
+    <div class="traits">
       @let traitsComplete = hasAllTraits();
       <span class="value fw-bold"
             [class.partial]="hasAnyTrait()"
@@ -98,7 +98,7 @@
         <span class="value"
               [class.correct]="hasValue"
               [class.filter]="filter()?.filter == 'traits' && filter()?.value == trait"
-              (click)="setFilterArray('traits', trait)">{{ hasValue ? trait : PLACEHOLDER }}</span>.
+              (click)="setFilterArray('traits', trait)">{{ hasValue ? trait : PLACEHOLDER }}</span>
       }
     </div>
   </div>

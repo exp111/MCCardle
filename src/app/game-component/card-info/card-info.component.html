@@ -16,7 +16,7 @@
         </span>
       }
       @if (IS_DEV) {
-        ({{card().code}})
+        ({{ card().code }})
       }
     </ng-template>
     @if (showMarvelCDBLink()) {
@@ -57,24 +57,24 @@
               [class.correct]="correctCard() && correctCard().resources.includes(resource)">{{ resource.toUpperCase() }}</span>
       }
     </div>
-    <div>
+    <div class="packs">
       @let packsCorrect = correctCard() && hasAllPacks();
       <span class="value fw-bold"
             [class.correct]="packsCorrect"
-            [class.partial]="correctCard() && hasAnyPack()">Packs </span>
+            [class.partial]="correctCard() && hasAnyPack()">Packs</span>
       <!-- Only show packs if all are correct -->
       @for (pack of card().packs; track pack) {
         <span class="value"
-              [class.correct]="packsCorrect">{{ getPack(pack) }}</span>@if (!$last) {,}
+              [class.correct]="packsCorrect">{{ getPack(pack) }}</span>
       }
     </div>
-    <div>
+    <div class="traits">
       <span class="value fw-bold"
             [class.correct]="correctCard() && hasAllTraits()"
             [class.partial]="correctCard() && hasAnyTrait()">Traits </span>
       @for (trait of card().traits; track trait) {
         <span class="value"
-              [class.correct]="correctCard() && correctCard().traits.includes(trait)">{{ trait }}</span>.
+              [class.correct]="correctCard() && correctCard().traits.includes(trait)">{{ trait }}</span>
       }
     </div>
   </div>
