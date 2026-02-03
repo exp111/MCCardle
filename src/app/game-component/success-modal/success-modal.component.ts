@@ -36,7 +36,7 @@ export class SuccessModalComponent {
 
   share(addSpoileredCardName = false) {
     let share = `Marvel Champions Cardle ${this.day} in ${this.guesses.length} Guesses\n`;
-    share += `${getShareLink(this.day, this.guesses, this.germanLanguage)}\n\n`;
+    share += `[exp111.github.io/MCCardle](${getShareLink(this.day, this.guesses, this.germanLanguage)})\n\n`;
 
     let tries: string[] = [];
     for (let guess of this.guesses) {
