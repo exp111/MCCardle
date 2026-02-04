@@ -73,8 +73,8 @@ export class GameComponent implements OnInit {
       : []);
   shownSearchResults = computed(() => this.searchResults().slice(0, this.SHOWN_RESULTS));
   showSearchImages = signal(true);
-  filter = signal<Filter | null>(null);
-  filterDescription = computed(() => this.filter() ? `[Filter ${camelCaseToSpaces(this.filter()!.filter).toLowerCase()}: ${this.filter()!.value}] ` : "");
+  filter = signal<Filter[]>([]);
+  filterDescription = computed(() => this.filter().length ? `[Filter ${this.filter().map(f => `${camelCaseToSpaces(f.filter).toLowerCase()}: ${f.value}`).join(', ')}] ` : "");
   germanLanguage = signal(false);
 
   userData = signal<Record<string, CardData[]>>({});
@@ -127,30 +127,56 @@ export class GameComponent implements OnInit {
 
   matchesFilter(card: CardData) {
     let filter = this.filter();
-    if (!filter) {
+    if (!filter?.length) {
       return true;
     }
 
-    if (filter.array) {
-      return (card[filter.filter as CardDataArrayField] as any[]).includes(filter.value);
-    }
+    for (let criterium of filter) {
+      if (criterium.array) {
+        if (!(card[criterium.filter as CardDataArrayField] as any[]).includes(criterium.value)) {
+          return false;
+        }
+      }
 
-    switch (filter.filter) {
-      case 'firstLetter':
-        return this.getName(card)[0] == filter.value;
-      case 'allResources':
-        return sortString(card.resources.join("")) == filter.value;
-      case 'anyResource':
-        return filter.value.every((r: CardResource) => card.resources.includes(r));
-      case 'allPacks':
-        return arraysHaveSameValues(card.packs, filter.value);
-      case 'allTraits':
-        return arraysHaveSameValues(card.traits, filter.value);
-      case 'anyTrait':
-        return filter.value.every((t: string) => card.traits.includes(t));
-      default:
-        return card[filter.filter] == filter.value;
+      switch (criterium.filter) {
+        case 'firstLetter':
+          if (this.getName(card)[0] != criterium.value) {
+            return false;
+          }
+          break;
+        case 'allResources':
+          if (sortString(card.resources.join("")) != criterium.value) {
+            return false;
+          }
+          break;
+        case 'anyResource':
+          if (!criterium.value.every((r: CardResource) => card.resources.includes(r))) {
+            return false;
+          }
+          break;
+        case 'allPacks':
+          if (!arraysHaveSameValues(card.packs, criterium.value)) {
+            return false;
+          }
+          break;
+        case 'allTraits':
+          if (!arraysHaveSameValues(card.traits, criterium.value)) {
+            return false;
+          }
+          break;
+        case 'anyTrait':
+          if (!criterium.value.every((t: string) => card.traits.includes(t))) {
+            return false;
+          }
+          break;
+        default:
+          if (card[criterium.filter] != criterium.value) {
+            return false;
+          }
+          break;
+      }
     }
+    return true;
   }
 
   getName(card: CardData) {
@@ -159,7 +185,7 @@ export class GameComponent implements OnInit {
 
   onDayChange() {
     // reset filter
-    this.filter.set(null);
+    this.filter.set([]);
   }
 
   getDailyCard() {
@@ -186,7 +212,7 @@ export class GameComponent implements OnInit {
     if (this.cardToGuess() == cardData) {
       console.log("Card guessed!");
       // reset filter
-      this.filter.set(null);
+      this.filter.set([]);
       // show user success
       this.showSuccessModal();
       this.confetti();
@@ -238,7 +264,7 @@ export class GameComponent implements OnInit {
       ...u,
       [this.day()]: []
     }));
-    this.filter.set(null);
+    this.filter.set([]);
     console.log("Reset gueses.");
   }
 

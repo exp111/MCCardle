@@ -13,7 +13,7 @@ import {PLACEHOLDER_IMAGE} from '../../const';
 })
 export class GuessInfoComponent extends CardInfoComponent {
   guesses = input.required<CardData[]>();
-  filter = model<Filter | null>();
+  filter = model.required<Filter[]>();
 
   cardGuessed = computed(() => this.guesses().includes(this.correctCard()));
 
@@ -25,6 +25,24 @@ export class GuessInfoComponent extends CardInfoComponent {
 
   override cardImg = computed(() => this.cardGuessed() ? getCardImage(this.correctCard()) : PLACEHOLDER_IMAGE);
 
+  getFilterIndex(field: string, value?: unknown) {
+    return this.filter().findIndex(f => f.filter == field && (!value || value == f.value));
+  }
+
+  removeFilterIfOn(field: string, value?: unknown) {
+    let index = this.getFilterIndex(field, value);
+    if (index < 0) {
+      return false;
+    }
+    // remove index from filter
+    this.filter.update(f => f.filter((_, i) => i !== index));
+    return true;
+  }
+
+  hasFilter(field: string, value?: unknown) {
+    return this.getFilterIndex(field, value) >= 0;
+  }
+
   setFilter(field: keyof CardData) {
     // don't set filter if card was already guessed
     if (this.cardGuessed()) {
@@ -35,16 +53,15 @@ export class GuessInfoComponent extends CardInfoComponent {
       return;
     }
     // toggle filter if already on
-    if (this.filter()?.filter == field) {
-      this.filter.set(null);
+    if (this.removeFilterIfOn(field)) {
       return;
     }
-    // set filter
-    this.filter.set({
+    // add to filter
+    this.filter.update(f => [...f, {
       filter: field,
       value: this.correctCard()[field],
       array: false
-    });
+    }]);
   }
 
   setFilterCustom(field: FilterType, value?: any) {
@@ -97,16 +114,15 @@ export class GuessInfoComponent extends CardInfoComponent {
     }
 
     // toggle filter if already on
-    if (this.filter()?.filter == field) {
-      this.filter.set(null);
+    if (this.removeFilterIfOn(field)) {
       return;
     }
-    // set filter
-    this.filter.set({
+    // add to filter
+    this.filter.update(f => [...f, {
       filter: field,
       value: value,
       array: false
-    });
+    }]);
   }
 
   setFilterArray(field: CardDataArrayField, value: any) {
@@ -118,20 +134,20 @@ export class GuessInfoComponent extends CardInfoComponent {
     if (!this.hasValue(field as any, value as never)) {
       return;
     }
+    // extra check for packs to have all packs guessed
     if (field == "packs" && !this.hasAllPacks()) {
       return;
     }
     // toggle filter if already on
-    if (this.filter()?.filter == field && this.filter()?.value == value) {
-      this.filter.set(null);
+    if (this.removeFilterIfOn(field, value)) {
       return;
     }
-    // set filter
-    this.filter.set({
+    // add to filter
+    this.filter.update(f => [...f, {
       filter: field,
       value: value,
       array: true
-    });
+    }]);
   }
 
   value(field: keyof CardData) {

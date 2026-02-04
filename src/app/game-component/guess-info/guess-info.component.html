@@ -10,13 +10,13 @@
     <div class="fw-bold">
       @if (nameValue) {
         <span class="value correct"
-              [class.filter]="filter()?.filter == 'name'"
+              [class.filter]="hasFilter('name')"
               (click)="setFilter('name')">{{ name }}</span>
       } @else {
         @let hasFirst = hasFirstLetter();
         @if (hasFirst) {
           <span class="value partial"
-                [class.filter]="filter()?.filter == 'firstLetter'"
+                [class.filter]="hasFilter('firstLetter')"
                 (click)="setFilterCustom('firstLetter', name[0])">{{ name[0] }}</span>
         }
         @for (part of guessNameParts(); track $index + part) {
@@ -35,7 +35,7 @@
       @let costValue = value("cost");
       <span class="value"
             [class.correct]="costValue != null"
-            [class.filter]="filter()?.filter == 'cost'"
+            [class.filter]="hasFilter('cost')"
             (click)="setFilter('cost')">{{ costValue ?? PLACEHOLDER }} </span>
       <span class="text-muted">Cost</span>
     </div>
@@ -44,7 +44,7 @@
       @let typeValue = value("type");
       <span class="value"
             [class.correct]="typeValue != null"
-            [class.filter]="filter()?.filter == 'type'"
+            [class.filter]="hasFilter('type')"
             (click)="setFilter('type')">{{ typeValue ? getType($any(typeValue)) : PLACEHOLDER }} </span>
       <span class="text-muted">Type</span>
     </div>
@@ -53,7 +53,7 @@
       @let factionValue = value("faction");
       <span class="value"
             [class.correct]="factionValue != null"
-            [class.filter]="filter()?.filter == 'faction'"
+            [class.filter]="hasFilter('faction')"
             (click)="setFilter('faction')">{{ factionValue ? getFaction($any(factionValue)) : PLACEHOLDER }} </span>
       <span class="text-muted">Aspect</span>
     </div>
@@ -64,12 +64,12 @@
       <span class="value fw-bold"
             [class.partial]="hasAnyResource()"
             [class.correct]="resourcesComplete"
-            [class.filter]="filter()?.filter == 'allResources' || filter()?.filter == 'anyResource'"
+            [class.filter]="hasFilter('allResources') || hasFilter('anyResource')"
             (click)="setFilterCustom(resourcesComplete ? 'allResources' : 'anyResource')">Resources </span>
       @for (resource of correctCard().resources; track $index) {
         @let hasValue = hasResource(resource);
         <span class="{{hasValue ? `resource ${resource}` : ''}}"
-              [class.filter]="filter()?.filter == 'resources' && filter()?.value == resource"
+              [class.filter]="hasFilter('resources', resource)"
               (click)="setFilterArray('resources', resource)">{{ hasValue ? resource.toUpperCase() : PLACEHOLDER[0] }}</span>
       }
     </div>
@@ -77,12 +77,12 @@
       @let packsComplete = hasAllPacks();
       <span class="value fw-bold"
             [class.correct]="packsComplete"
-            [class.filter]="filter()?.filter == 'allPacks'"
+            [class.filter]="hasFilter('allPacks')"
             (click)="setFilterCustom('allPacks')">Packs </span>
       @for (pack of correctCard().packs; track pack) {
         <span class="value"
               [class.correct]="packsComplete"
-              [class.filter]="filter()?.filter == 'packs' && filter()?.value == pack"
+              [class.filter]="hasFilter('packs', pack)"
               (click)="setFilterArray('packs', pack)">{{ packsComplete ? getPack(pack) : PLACEHOLDER }}</span>
       }
     </div>
@@ -91,13 +91,13 @@
       <span class="value fw-bold"
             [class.partial]="hasAnyTrait()"
             [class.correct]="traitsComplete"
-            [class.filter]="filter()?.filter == 'allTraits' || filter()?.filter == 'anyTrait'"
+            [class.filter]="hasFilter('allTraits') || hasFilter('anyTrait')"
             (click)="setFilterCustom(traitsComplete ? 'allTraits' : 'anyTrait')">Traits </span>
       @for (trait of correctCard().traits; track trait) {
         @let hasValue = hasTrait(trait);
         <span class="value"
               [class.correct]="hasValue"
-              [class.filter]="filter()?.filter == 'traits' && filter()?.value == trait"
+              [class.filter]="hasFilter('traits', trait)"
               (click)="setFilterArray('traits', trait)">{{ hasValue ? trait : PLACEHOLDER }}</span>
       }
     </div>
