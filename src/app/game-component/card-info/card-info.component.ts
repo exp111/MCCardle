@@ -34,6 +34,10 @@ export class CardInfoComponent {
     return getCardName(card, this.germanLanguage());
   }
 
+  getCost(card: CardData) {
+    return card.cost ?? "-";
+  }
+
   hasAllResources() {
     return this.getResourceString(this.correctCard()) == this.getResourceString(this.card());
   }

@@ -31,7 +31,7 @@
       <span class="value"
             [class.correct]="correctCard() && card().cost == correctCard().cost"
             [class.lower]="correctCard() && answerIsLower(card().cost, correctCard().cost)"
-            [class.higher]="correctCard() && answerIsHigher(card().cost, correctCard().cost)">{{ card().cost ?? "-" }} </span>
+            [class.higher]="correctCard() && answerIsHigher(card().cost, correctCard().cost)">{{ getCost(card()) }} </span>
       <span class="text-muted">Cost</span>
     </div>
     <!-- type -->

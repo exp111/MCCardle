@@ -49,7 +49,7 @@ export class GuessInfoComponent extends CardInfoComponent {
       return;
     }
     // check if not guessed yet
-    if (this.value(field) == null ) {
+    if (this.hasValue(field) == null ) {
       return;
     }
     // toggle filter if already on
@@ -131,7 +131,7 @@ export class GuessInfoComponent extends CardInfoComponent {
       return;
     }
     // not guessed yet
-    if (!this.hasValue(field as any, value as never)) {
+    if (!this.hasValueArray(field as any, value as never)) {
       return;
     }
     // extra check for packs to have all packs guessed
@@ -150,23 +150,18 @@ export class GuessInfoComponent extends CardInfoComponent {
     }]);
   }
 
-  value(field: keyof CardData) {
+  hasValue(field: keyof CardData) {
     let correct = this.correctCard()[field];
-    for (let guess of this.guesses()) {
-      if (guess[field] == correct) {
-        return correct;
-      }
-    }
-    return null;
+    return this.guesses().some(g => g[field] === correct);
+  }
+
+  hasValueArray(field: CardDataArrayField, value: never) {
+    return this.guesses().some(g => g[field].includes(value));
   }
 
   hasFirstLetter() {
     let name = this.getName(this.correctCard());
     return this.guesses().some(g => this.getName(g)[0] == name[0]);
-  }
-
-  hasValue(field: CardDataArrayField, value: never) {
-    return this.guesses().some(g => g[field].includes(value));
   }
 
   override hasAllResources() {
@@ -179,11 +174,11 @@ export class GuessInfoComponent extends CardInfoComponent {
   }
 
   hasResource(resource: CardResource) {
-    return this.hasValue("resources", resource as never);
+    return this.hasValueArray("resources", resource as never);
   }
 
   hasPack(pack: Pack) {
-    return this.hasValue("packs", pack as never);
+    return this.hasValueArray("packs", pack as never);
   }
 
   override hasAllPacks() {
@@ -195,7 +190,7 @@ export class GuessInfoComponent extends CardInfoComponent {
   }
 
   hasTrait(trait: string) {
-    return this.hasValue("traits", trait as never);
+    return this.hasValueArray("traits", trait as never);
   }
 
   override hasAllTraits() {

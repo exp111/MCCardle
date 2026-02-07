@@ -6,9 +6,9 @@
   <div class="col-6 d-flex flex-column">
     <!-- name -->
     @let name = getName(correctCard());
-    @let nameValue = value("name");
+    @let hasNameValue = hasValue("name");
     <div class="fw-bold">
-      @if (nameValue) {
+      @if (hasNameValue) {
         <span class="value correct"
               [class.filter]="hasFilter('name')"
               (click)="setFilter('name')">{{ name }}</span>
@@ -32,29 +32,29 @@
     </div>
     <!-- cost -->
     <div>
-      @let costValue = value("cost");
+      @let hasCostValue = hasValue("cost");
       <span class="value"
-            [class.correct]="costValue != null"
+            [class.correct]="hasCostValue"
             [class.filter]="hasFilter('cost')"
-            (click)="setFilter('cost')">{{ costValue ?? PLACEHOLDER }} </span>
+            (click)="setFilter('cost')">{{ hasCostValue ? getCost(correctCard()) : PLACEHOLDER }} </span>
       <span class="text-muted">Cost</span>
     </div>
     <!-- type -->
     <div>
-      @let typeValue = value("type");
+      @let hasTypeValue = hasValue("type");
       <span class="value"
-            [class.correct]="typeValue != null"
+            [class.correct]="hasTypeValue"
             [class.filter]="hasFilter('type')"
-            (click)="setFilter('type')">{{ typeValue ? getType($any(typeValue)) : PLACEHOLDER }} </span>
+            (click)="setFilter('type')">{{ hasTypeValue ? getType(correctCard().type) : PLACEHOLDER }} </span>
       <span class="text-muted">Type</span>
     </div>
     <!-- faction/aspect -->
     <div>
-      @let factionValue = value("faction");
+      @let hasFactionValue = hasValue("faction");
       <span class="value"
-            [class.correct]="factionValue != null"
+            [class.correct]="hasFactionValue"
             [class.filter]="hasFilter('faction')"
-            (click)="setFilter('faction')">{{ factionValue ? getFaction($any(factionValue)) : PLACEHOLDER }} </span>
+            (click)="setFilter('faction')">{{ hasFactionValue ? getFaction(correctCard().faction) : PLACEHOLDER }} </span>
       <span class="text-muted">Aspect</span>
     </div>
   </div>
