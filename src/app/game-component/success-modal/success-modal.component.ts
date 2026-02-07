@@ -35,8 +35,8 @@ export class SuccessModalComponent {
   }
 
   share(addSpoileredCardName = false) {
-    let share = `Marvel Champions Cardle ${this.day} in ${this.guesses.length} Guesses\n`;
-    share += `[exp111.github.io/MCCardle](${getShareLink(this.day, this.guesses, this.germanLanguage)})\n\n`;
+    let share = `Marvel Champions Cardle ${this.day} in ${this.guesses.length} ${this.guesses.length == 1 ? "Guess" : "Guesses"}\n`;
+    share += `${GITHUB_PAGES_URL}\n\n`;
 
     let tries: string[] = [];
     for (let guess of this.guesses) {
@@ -53,6 +53,9 @@ export class SuccessModalComponent {
       tries.push(text);
     }
     share += tries.join("\n");
+    if (addSpoileredCardName) {
+      share += `\n||[View guesses](${getShareLink(this.day, this.guesses, this.germanLanguage)})||`
+    }
     // write to clipboard + toast
     try {
       navigator.clipboard.writeText(share).then(() => {
