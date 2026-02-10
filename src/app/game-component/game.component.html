@@ -93,7 +93,7 @@
                  [(ngModel)]="search">
           <!-- Search Results -->
           <div class="z-2 position-absolute w-100 bg-white border rounded-bottom overflow-auto search-results"
-               [class.d-none]="!shownSearchResults().length">
+               [class.d-none]="!search().length">
             @for (result of shownSearchResults(); track result.code) {
               <div class="cursor-pointer d-flex" (click)="guessCard(result)">
                 @if (showSearchImages()) {
@@ -101,6 +101,8 @@
                 }
                 <div class="col align-content-center">{{ getName(result) }} ({{ getFaction(result.faction) }})</div>
               </div>
+            } @empty {
+              <div class="p-2 bg-body-secondary text-center fw-bold">No results.</div>
             }
             @if (shownSearchResults().length != searchResults().length) {
               <div class="p-2 bg-body-secondary text-center fw-bold">...</div>
