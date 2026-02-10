@@ -23,7 +23,14 @@ import {GITHUB_PAGES_URL, IS_DEV} from '../const';
 import {CustomDayComponent} from './custom-day-component/custom-day.component';
 import {from} from 'rxjs';
 
-export type FilterType = keyof CardData | "firstLetter" | "allResources" | "anyResource" | "allTraits" | "anyTrait" | "allPacks";
+export type FilterType =
+  keyof CardData
+  | "firstLetter"
+  | "allResources"
+  | "anyResource"
+  | "allTraits"
+  | "anyTrait"
+  | "allPacks";
 
 export interface Filter {
   filter: FilterType;
@@ -31,7 +38,7 @@ export interface Filter {
   array: boolean;
 }
 
-type SavedCardData = {code: string};
+type SavedCardData = { code: string };
 
 @Component({
   selector: 'app-game',
@@ -49,20 +56,32 @@ export class GameComponent implements OnInit {
   dataService = inject(DataService);
   modalService = inject(NgbModal);
 
+  // consts
+  LOCAL_STORAGE_KEY = "data";
+  MINIMUM_SEARCH_LENGTH = 1;
+  SHOWN_RESULTS = 25;
+
+  // runtime vars
   loading = signal(false);
+  showLegend = signal(false);
+
+  // card data
   cards = signal<CardData[]>([]);
+  // current card which should be guessed
   cardToGuess = computed(() => this.getDailyCard());
+
+  // current day
   todayNgbDate = new NgbDate(new Date().getUTCFullYear(), new Date().getUTCMonth() + 1, new Date().getUTCDate());
   // the selected data as a ngbdate
   date = signal<NgbDate>(new NgbDate(this.todayNgbDate.year, this.todayNgbDate.month, this.todayNgbDate.day));
   // the selected date as an iso string (YYYY-MM-DD)
   day = computed(() => ngbDateToISOString(this.date()));
 
-  cardGuessed = computed(() => this.guesses().includes(this.cardToGuess()));
-  showLegend = signal(false);
+  // settings
+  germanLanguage = signal(false);
+  showSearchImages = signal(true);
 
-  MINIMUM_SEARCH_LENGTH = 1;
-  SHOWN_RESULTS = 25;
+  // search
   search = signal("");
   searchResults = computed(() =>
     this.search().length >= this.MINIMUM_SEARCH_LENGTH ?
@@ -72,26 +91,29 @@ export class GameComponent implements OnInit {
         .filter(c => !this.guesses().includes(c)) // filter out already guessed cards
       : []);
   shownSearchResults = computed(() => this.searchResults().slice(0, this.SHOWN_RESULTS));
-  showSearchImages = signal(true);
   filter = signal<Filter[]>([]);
   filterDescription = computed(() => this.filter().length ? `[Filter ${this.filter().map(f => `${camelCaseToSpaces(f.filter).toLowerCase()}: ${f.value}`).join(', ')}] ` : "");
-  germanLanguage = signal(false);
 
+  // guesses
   userData = signal<Record<string, CardData[]>>({});
   guesses = computed(() => this.userData()[this.day()] ?? []);
+  cardGuessed = computed(() => this.guesses().includes(this.cardToGuess()));
 
-  LOCAL_STORAGE_KEY = "data";
-  saveToLocalStorageEffect = effect(() => {
-    // dont write anything
-    if (!Object.values(this.userData()).length) {
-      return;
-    }
-    let data = mapRecordValues<string, CardData[], SavedCardData[]>(this.userData(), guesses => guesses
-      .map(g => ({code: g.code}))); // only save codes
-    localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(data));
-  });
+  constructor() {
+    // write data to localstorage
+    effect(() => {
+      // dont write anything
+      if (!Object.values(this.userData()).length) {
+        return;
+      }
+      let data = mapRecordValues<string, CardData[], SavedCardData[]>(this.userData(), guesses => guesses
+        .map(g => ({code: g.code}))); // only save codes
+      localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(data));
+    });
+  }
 
   ngOnInit() {
+    // fetch cards
     this.loading.set(true);
     this.dataService.getData().subscribe({
       next: data => {
@@ -120,7 +142,7 @@ export class GameComponent implements OnInit {
       console.log("No data found.");
       return;
     }
-    this.userData.set(mapRecordValues<string, SavedCardData[], CardData[]>(data, guesses  => guesses
+    this.userData.set(mapRecordValues<string, SavedCardData[], CardData[]>(data, guesses => guesses
       // map saved cards to the actual data
       .map(card => this.cards().find(c => c.code == card.code)!)));
   }
@@ -294,7 +316,7 @@ export class GameComponent implements OnInit {
         return;
       }
       // reduce by 1 day
-      cur.setTime(cur.getTime() - (24*60*60*1000));
+      cur.setTime(cur.getTime() - (24 * 60 * 60 * 1000));
     }
   }
 
