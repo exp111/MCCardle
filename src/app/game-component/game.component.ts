@@ -38,7 +38,19 @@ export interface Filter {
   array: boolean;
 }
 
-type SavedCardData = { code: string };
+// saved data
+interface SaveData {
+  // code of the gard to guess
+  card: string;
+  // codes of the cards guessed
+  guesses: string[];
+}
+
+// data for the day
+interface UserData {
+  card: CardData;
+  guesses: CardData[];
+}
 
 @Component({
   selector: 'app-game',
@@ -57,9 +69,11 @@ export class GameComponent implements OnInit {
   modalService = inject(NgbModal);
 
   // consts
-  LOCAL_STORAGE_KEY = "data";
+  LOCAL_STORAGE_DATA_KEY = "data";
+  LOCAL_STORAGE_SCHEMA_VERSION_KEY = "schema_version";
   MINIMUM_SEARCH_LENGTH = 1;
   SHOWN_RESULTS = 25;
+  SCHEMA_VERSION = "1";
 
   // runtime vars
   loading = signal(false);
@@ -95,8 +109,8 @@ export class GameComponent implements OnInit {
   filterDescription = computed(() => this.filter().length ? `[Filter ${this.filter().map(f => `${camelCaseToSpaces(f.filter).toLowerCase()}: ${f.value}`).join(', ')}] ` : "");
 
   // guesses
-  userData = signal<Record<string, CardData[]>>({});
-  guesses = computed(() => this.userData()[this.day()] ?? []);
+  userData = signal<Record<string, UserData>>({});
+  guesses = computed(() => this.userData()[this.day()]?.guesses ?? []);
   cardGuessed = computed(() => this.guesses().includes(this.cardToGuess()));
 
   constructor() {
@@ -106,9 +120,11 @@ export class GameComponent implements OnInit {
       if (!Object.values(this.userData()).length) {
         return;
       }
-      let data = mapRecordValues<string, CardData[], SavedCardData[]>(this.userData(), guesses => guesses
-        .map(g => ({code: g.code}))); // only save codes
-      localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(data));
+      let data = mapRecordValues<string, UserData, SaveData>(this.userData(), d => ({
+        card: d.card.code,
+        guesses: d.guesses.map(g => g.code) // only save codes
+      }));
+      localStorage.setItem(this.LOCAL_STORAGE_DATA_KEY, JSON.stringify(data));
     });
   }
 
@@ -118,7 +134,7 @@ export class GameComponent implements OnInit {
     this.dataService.getData().subscribe({
       next: data => {
         this.cards.set(data);
-        this.loadGuessesFromLocalStorage();
+        this.loadDataFromLocalStorage();
         this.loading.set(false);
       },
       error: err => {
@@ -128,23 +144,55 @@ export class GameComponent implements OnInit {
     })
   }
 
-  getLocalStorage() {
-    let data = localStorage.getItem(this.LOCAL_STORAGE_KEY);
-    if (data) {
-      return JSON.parse(data);
-    }
-    return null;
-  }
-
-  loadGuessesFromLocalStorage() {
-    let data = this.getLocalStorage();
+  loadDataFromLocalStorage() {
+    let data = this.getLocalStorageData();
     if (!data) {
       console.log("No data found.");
       return;
     }
-    this.userData.set(mapRecordValues<string, SavedCardData[], CardData[]>(data, guesses => guesses
+    // migrate data if needed
+    data = this.migrateLocalStorageData(data);
+    this.userData.set(mapRecordValues<string, SaveData, UserData>(data, d => ({
       // map saved cards to the actual data
-      .map(card => this.cards().find(c => c.code == card.code)!)));
+      card: this.getCardByCode(d.card)!,
+      guesses: d.guesses.map(c => this.getCardByCode(c)!)
+    })));
+  }
+
+  // migrates data from an old schema version
+  migrateLocalStorageData(data: any) {
+    // no data => no migration needed
+    if (!data) {
+      console.log("No migration needed as no data was found.");
+      this.writeSchemaVersion();
+      return data;
+    }
+    let schema = localStorage.getItem(this.LOCAL_STORAGE_SCHEMA_VERSION_KEY);
+    // if schema is up-to-date, no migration needed
+    if (schema == this.SCHEMA_VERSION) {
+      console.log(`No migration needed (current version ${schema}).`);
+      return data;
+    }
+    console.log(`Trying to migrate from schema version ${schema}`);
+    // migrate data into one that fits into current schema
+    let d;
+    switch (schema) {
+      default:
+        // first schema (no version number): map<string, {<day>: {code: string}[]}
+        d = mapRecordValues<string, {code: string}[], SaveData>(data, (d, k) => ({
+          card: this.getCardForSeed(k).code,
+          guesses: d.map(c => c.code)
+        }));
+        break;
+    }
+    // migration finished, write current schema
+    this.writeSchemaVersion();
+    console.log(`Finished migration to version ${this.SCHEMA_VERSION}`);
+    return d;
+  }
+
+  writeSchemaVersion() {
+    localStorage.setItem(this.LOCAL_STORAGE_SCHEMA_VERSION_KEY, this.SCHEMA_VERSION);
   }
 
   matchesFilter(card: CardData) {
@@ -201,10 +249,6 @@ export class GameComponent implements OnInit {
     return true;
   }
 
-  getName(card: CardData) {
-    return getCardName(card, this.germanLanguage());
-  }
-
   onDayChange() {
     // reset filter
     this.filter.set([]);
@@ -214,7 +258,8 @@ export class GameComponent implements OnInit {
     if (!this.cards().length) {
       return null!;
     }
-    return this.getCardForSeed(this.day());
+    // if there is a saved card use that one - otherwise generate for the current date
+    return this.userData()[this.day()]?.card ?? this.getCardForSeed(this.day());
   }
 
   getCardForSeed(seed: string) {
@@ -229,7 +274,7 @@ export class GameComponent implements OnInit {
     // add guess to guesses
     this.userData.update(u => ({
       ...u,
-      [this.day()]: [...u[this.day()] ?? [], cardData]
+      [this.day()]: {card: this.cardToGuess(), guesses: [...u[this.day()]?.guesses ?? [], cardData]}
     }));
     if (this.cardToGuess() == cardData) {
       console.log("Card guessed!");
@@ -284,15 +329,36 @@ export class GameComponent implements OnInit {
   resetDay() {
     this.userData.update(u => ({
       ...u,
-      [this.day()]: []
+      [this.day()]: {card: this.getCardForSeed(this.day()), guesses: []}
     }));
     this.filter.set([]);
     console.log("Reset gueses.");
   }
 
+  // Helpers
+  getCardByCode(code: string) {
+    return this.cards().find(c => c.code == code);
+  }
+
+  getName(card: CardData) {
+    return getCardName(card, this.germanLanguage());
+  }
+
+  getLocalStorageData() {
+    let data = localStorage.getItem(this.LOCAL_STORAGE_DATA_KEY);
+    if (data) {
+      return JSON.parse(data);
+    }
+    return null;
+  }
+
   // Debug methods
   logSolution() {
     console.log(this.cardToGuess());
+  }
+
+  logSolutionNoCache() {
+    console.log(this.getCardForSeed(this.day()));
   }
 
   logShareLink() {
@@ -322,13 +388,13 @@ export class GameComponent implements OnInit {
 
   hasStartedDate(date: NgbDate) {
     let day = ngbDateToISOString(date);
-    return this.userData()[day] && Object.keys(this.userData()[day]).length > 0;
+    return this.userData()[day] && Object.keys(this.userData()[day]?.guesses).length > 0;
   }
 
   hasGuessedDate(date: NgbDate) {
     let day = ngbDateToISOString(date);
-    let card = this.getCardForSeed(day);
-    return this.userData()[day]?.includes(card);
+    let data = this.userData()[day];
+    return data?.guesses.includes(data?.card);
   }
 
   protected readonly getCardImage = getCardImage;
