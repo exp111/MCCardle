@@ -50,7 +50,7 @@ export class GuessInfoComponent extends CardInfoComponent {
       return;
     }
     // check if not guessed yet
-    if (this.hasValue(field) == null ) {
+    if (!this.hasValue(field)) {
       return;
     }
     // toggle filter if already on
