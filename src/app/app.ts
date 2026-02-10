@@ -12,17 +12,23 @@ import {GITHUB_URL, KOFI_URL} from './const';
   styleUrl: './app.scss'
 })
 export class App {
-  isMenuCollapsed = true;
-  darkMode = signal(true);
+  PREFERS_DARK_QUERY = "(prefers-color-scheme: dark)";
+
+  isMenuCollapsed = signal(true);
+  darkMode = signal(window.matchMedia(this.PREFERS_DARK_QUERY).matches);
   theme = computed(() => this.darkMode() ? "dark" : "light");
 
   constructor() {
     // write theme to html tag
     effect(() => document.documentElement.setAttribute('data-bs-theme', this.theme()));
     // listen to system
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) =>
+    window.matchMedia(this.PREFERS_DARK_QUERY).addEventListener('change', (event) =>
       this.darkMode.set(event.matches),
     );
+  }
+
+  toggleMenuCollapsed() {
+    this.isMenuCollapsed.update(c => !c)
   }
 
   toggleDarkMode() {
