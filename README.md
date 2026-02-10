@@ -5,7 +5,6 @@
 - set card override (debug)
 - year parameter
 - Filter by word part
-- dark mode
 
 ## Links
 - [BGdle](http://bgdle.org/)

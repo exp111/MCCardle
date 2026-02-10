@@ -5,5 +5,7 @@
 
 // mark active filters
 .filter {
-  text-decoration: #1796B7 wavy underline;
+  text-decoration-style: wavy;
+  text-decoration-line: underline;
+  text-decoration-color: #1796B7;
 }
