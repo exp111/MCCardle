@@ -1,6 +1,6 @@
 @for (toast of toastService.toasts(); track toast) {
   <ngb-toast
-    class="bg-white {{toast.type ? `text-bg-${toast.type}` : ''}}"
+    class="bg-body-secondary {{toast.type ? `text-bg-${toast.type}` : ''}}"
     [autohide]="true"
     [delay]="toast.delay || 5000"
     (hidden)="toastService.remove(toast)"
