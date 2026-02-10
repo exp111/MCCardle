@@ -3,6 +3,11 @@
   cursor: pointer;
 }
 
+// dont add radius to placeholder
+.img.placeholder-img {
+  border-radius: 0;
+}
+
 // mark active filters
 .filter {
   text-decoration-style: wavy;

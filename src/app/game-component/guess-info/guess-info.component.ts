@@ -23,7 +23,8 @@ export class GuessInfoComponent extends CardInfoComponent {
 
   PLACEHOLDER = "???";
 
-  override cardImg = computed(() => this.cardGuessed() ? getCardImage(this.correctCard()) : PLACEHOLDER_IMAGE);
+  shouldShowPlaceholderImage = computed(() => !this.cardGuessed());
+  override cardImg = computed(() => this.shouldShowPlaceholderImage() ? PLACEHOLDER_IMAGE : getCardImage(this.correctCard()));
 
   getFilterIndex(field: string, value?: unknown) {
     return this.filter().findIndex(f => f.filter == field && (!value || value == f.value));
