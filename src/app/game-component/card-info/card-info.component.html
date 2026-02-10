@@ -4,50 +4,61 @@
     <img class="img" [src]="cardImg()">
   </div>
   <div class="col-6 d-flex flex-column">
-    <!-- name -->
-    @let name = getName(card());
-    @let hasGuessedName = correctCard() && card().name == correctCard().name;
-    <ng-template #nameDisplay>
-      @if (correctCard() && !hasGuessedName && getName(correctCard()).startsWith(name[0])) {
-        <span class="value partial">{{ name[0] }}</span><span>{{ name.slice(1) }}</span>
-      } @else {
-        <span class="value" [class.correct]="hasGuessedName">
+    <div>
+      <!-- name -->
+      @let name = getName(card());
+      @let hasGuessedName = correctCard() && card().name == correctCard().name;
+      <ng-template #nameDisplay>
+        @if (correctCard() && !hasGuessedName && getName(correctCard()).startsWith(name[0])) {
+          <span class="value partial">{{ name[0] }}</span><span>{{ name.slice(1) }}</span>
+        } @else {
+          <span class="value" [class.correct]="hasGuessedName">
           {{ name }}
         </span>
+        }
+      </ng-template>
+      @if (showMarvelCDBLink()) {
+        <a [href]="getCardMarvelCDBURL(card())" target="_blank" rel="noreferrer noopener" class="fw-bold">
+          <ng-template [ngTemplateOutlet]="nameDisplay"></ng-template>
+        </a>
+      } @else {
+        <span class="fw-bold"><ng-template [ngTemplateOutlet]="nameDisplay"></ng-template></span>
       }
+      <!-- DEBUG: code -->
       @if (IS_DEV) {
         ({{ card().code }})
       }
-    </ng-template>
-    @if (showMarvelCDBLink()) {
-      <a [href]="getCardMarvelCDBURL(card())" target="_blank" rel="noreferrer noopener" class="fw-bold">
-        <ng-template [ngTemplateOutlet]="nameDisplay"></ng-template>
-      </a>
-    } @else {
-      <span class="fw-bold"><ng-template [ngTemplateOutlet]="nameDisplay"></ng-template></span>
-    }
+    </div>
     <!-- cost -->
     <div>
       <span class="value"
             [class.correct]="correctCard() && card().cost == correctCard().cost"
             [class.lower]="correctCard() && answerIsLower(card().cost, correctCard().cost)"
-            [class.higher]="correctCard() && answerIsHigher(card().cost, correctCard().cost)">{{ getCost(card()) }} </span>
-      <span class="text-muted">Cost</span>
+            [class.higher]="correctCard() && answerIsHigher(card().cost, correctCard().cost)">{{ getCost(card()) }}</span>
+      <span class="text-muted"> Cost</span>
     </div>
     <!-- type -->
     <div>
       <span class="value"
-            [class.correct]="correctCard() && card().type == correctCard().type">{{ getType(card().type) }} </span>
-      <span class="text-muted">Type</span>
+            [class.correct]="correctCard() && card().type == correctCard().type">{{ getType(card().type) }}</span>
+      <span class="text-muted"> Type</span>
     </div>
     <!-- faction -->
     <div>
       <span class="value"
-            [class.correct]="correctCard() && card().faction == correctCard().faction">{{ getFaction(card().faction) }} </span>
-      <span class="text-muted">Aspect</span>
+            [class.correct]="correctCard() && card().faction == correctCard().faction">{{ getFaction(card().faction) }}</span>
+      <span class="text-muted"> Aspect</span>
     </div>
   </div>
   <div class="col">
+    <div>
+      <!-- year -->
+      <span class="value"
+                  [class.correct]="correctCard() && card().year == correctCard().year"
+                  [class.lower]="correctCard() && answerIsLower(card().year, correctCard().year)"
+                  [class.higher]="correctCard() && answerIsHigher(card().year, correctCard().year)">{{ card().year }}</span>
+      <span class="text-muted"> Year</span>
+    </div>
     <div>
       <span class="value fw-bold"
             [class.correct]="correctCard() && getResourceString(correctCard()) == getResourceString(card())"

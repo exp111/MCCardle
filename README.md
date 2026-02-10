@@ -3,7 +3,6 @@
 ## TODO
 - tutorial/help
 - set card override (debug)
-- year parameter
 - Filter by word part
 
 ## Links

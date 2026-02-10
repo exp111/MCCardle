@@ -36,8 +36,8 @@
       <span class="value"
             [class.correct]="hasCostValue"
             [class.filter]="hasFilter('cost')"
-            (click)="setFilter('cost')">{{ hasCostValue ? getCost(correctCard()) : PLACEHOLDER }} </span>
-      <span class="text-muted">Cost</span>
+            (click)="setFilter('cost')">{{ hasCostValue ? getCost(correctCard()) : PLACEHOLDER }}</span>
+      <span class="text-muted"> Cost</span>
     </div>
     <!-- type -->
     <div>
@@ -45,8 +45,8 @@
       <span class="value"
             [class.correct]="hasTypeValue"
             [class.filter]="hasFilter('type')"
-            (click)="setFilter('type')">{{ hasTypeValue ? getType(correctCard().type) : PLACEHOLDER }} </span>
-      <span class="text-muted">Type</span>
+            (click)="setFilter('type')">{{ hasTypeValue ? getType(correctCard().type) : PLACEHOLDER }}</span>
+      <span class="text-muted"> Type</span>
     </div>
     <!-- faction/aspect -->
     <div>
@@ -54,11 +54,20 @@
       <span class="value"
             [class.correct]="hasFactionValue"
             [class.filter]="hasFilter('faction')"
-            (click)="setFilter('faction')">{{ hasFactionValue ? getFaction(correctCard().faction) : PLACEHOLDER }} </span>
-      <span class="text-muted">Aspect</span>
+            (click)="setFilter('faction')">{{ hasFactionValue ? getFaction(correctCard().faction) : PLACEHOLDER }}</span>
+      <span class="text-muted"> Aspect</span>
     </div>
   </div>
   <div class="col">
+    <div>
+      <!-- year -->
+      @let hasYearValue = hasValue("year");
+      <span class="value"
+                   [class.correct]="hasYearValue"
+                   [class.filter]="hasFilter('year')"
+                   (click)="setFilter('year')">{{hasYearValue ? correctCard().year : PLACEHOLDER}}</span>
+      <span class="text-muted"> Year</span>
+    </div>
     <div>
       @let resourcesComplete = hasAllResources();
       <span class="value fw-bold"

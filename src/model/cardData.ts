@@ -5,6 +5,7 @@ export interface CardData {
   faction: CardFaction;
   name: string;
   name_de?: string;
+  year: number;
   resources: CardResource[];
   traits: string[];
   packs: Pack[];
