@@ -42,8 +42,10 @@ export class SuccessModalComponent {
     for (let guess of this.guesses) {
       let text = '';
       text += this.checkName(guess);
+      text += this.checkValue(guess, "cost");
       text += this.checkValue(guess, "type");
       text += this.checkValue(guess, "faction");
+      text += this.checkValue(guess, "year");
       text += this.checkArray(guess, "resources");
       text += this.checkArray(guess, "packs");
       text += this.checkArray(guess, "traits");
