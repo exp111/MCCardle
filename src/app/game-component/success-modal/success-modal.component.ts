@@ -38,6 +38,8 @@ export class SuccessModalComponent {
     let share = `Marvel Champions Cardle ${this.day} in ${this.guesses.length} ${this.guesses.length == 1 ? "Guess" : "Guesses"}\n`;
     share += `${GITHUB_PAGES_URL}\n\n`;
 
+    // emoji legend
+    share += "🗨️🪙👪🅰️🗓️💰📖🃏\n";
     let tries: string[] = [];
     for (let guess of this.guesses) {
       let text = '';
