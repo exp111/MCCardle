@@ -106,7 +106,7 @@ export class GameComponent implements OnInit {
       : []);
   shownSearchResults = computed(() => this.searchResults().slice(0, this.SHOWN_RESULTS));
   filter = signal<Filter[]>([]);
-  filterDescription = computed(() => this.filter().length ? `[Filter ${this.filter().map(f => `${camelCaseToSpaces(f.filter).toLowerCase()}: ${f.value}`).join(', ')}] ` : "");
+  filterDescription = computed(() => this.filter().length ? `[Filter ${this.filter().map(f => `${camelCaseToSpaces(f.filter).toLowerCase()}: ${Array.isArray(f.value) ? f.value.length > 0 ? f.value : 'None' : f.value}`).join(', ')}] ` : "");
 
   // guesses
   userData = signal<Record<string, UserData>>({});
