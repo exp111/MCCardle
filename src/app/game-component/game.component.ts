@@ -202,12 +202,15 @@ export class GameComponent implements OnInit {
     }
 
     for (let criterium of filter) {
+      // for arrays check if the value is contained in the array
       if (criterium.array) {
         if (!(card[criterium.filter as CardDataArrayField] as any[]).includes(criterium.value)) {
           return false;
         }
+        continue;
       }
 
+      // custom filters
       switch (criterium.filter) {
         case 'firstLetter':
           if (this.getName(card)[0] != criterium.value) {
@@ -240,6 +243,7 @@ export class GameComponent implements OnInit {
           }
           break;
         default:
+          // default: just check if the field equals the value
           if (card[criterium.filter] != criterium.value) {
             return false;
           }
