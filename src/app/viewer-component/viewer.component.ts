@@ -1,7 +1,7 @@
 import {booleanAttribute, Component, computed, inject, input, OnInit, signal} from '@angular/core';
 import {CardData} from '../../model/cardData';
 import {DataService} from '../../services/data.service';
-import {getCardName, getRandomItem} from '../helpers';
+import {getCardName} from '../helpers';
 import {CardInfoComponent} from '../game-component/card-info/card-info.component';
 import {Router, RouterLink} from '@angular/router';
 
@@ -20,6 +20,7 @@ export class ViewerComponent implements OnInit {
 
   // parameters
   day = input.required<string>();
+  code = input.required<string>();
   guesses = input.required({
     transform: (v: string) => v ? v.split(",") : []
   });
@@ -30,14 +31,14 @@ export class ViewerComponent implements OnInit {
   loading = signal(false);
   // contains the guessed cards as card data
   cardGuesses = computed(() => this.cards() && this.guesses() ?
-    this.guesses().map(g => this.cards().find(c => c.code == g)!)
+    this.guesses().map(g => this.getCardByCode(g))
     : []);
   cards = signal<CardData[]>([]);
-  card = computed(() => getRandomItem(this.cards(), this.day()));
+  card = computed(() => this.cards() && this.code() ? this.getCardByCode(this.code()) : {name: "Card not found."} as CardData);
 
   ngOnInit() {
     // check if required parameters exist
-    if (!this.day() || !this.guesses()?.length) {
+    if (!this.day() || !this.code() || !this.guesses()?.length) {
       console.error("Invalid viewer link.");
       this.router.navigate(["/"]);
       return;
@@ -57,5 +58,9 @@ export class ViewerComponent implements OnInit {
 
   getName(card: CardData) {
     return getCardName(card, this.german());
+  }
+
+  getCardByCode(code: string) {
+    return this.cards().find(c => c.code == code)!;
   }
 }

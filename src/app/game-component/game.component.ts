@@ -154,8 +154,8 @@ export class GameComponent implements OnInit {
     data = this.migrateLocalStorageData(data);
     this.userData.set(mapRecordValues<string, SaveData, UserData>(data, d => ({
       // map saved cards to the actual data
-      card: this.getCardByCode(d.card)!,
-      guesses: d.guesses.map(c => this.getCardByCode(c)!)
+      card: this.getCardByCode(d.card),
+      guesses: d.guesses.map(c => this.getCardByCode(c))
     })));
   }
 
@@ -341,7 +341,7 @@ export class GameComponent implements OnInit {
 
   // Helpers
   getCardByCode(code: string) {
-    return this.cards().find(c => c.code == code);
+    return this.cards().find(c => c.code == code)!;
   }
 
   getName(card: CardData) {
@@ -366,12 +366,12 @@ export class GameComponent implements OnInit {
   }
 
   logShareLink() {
-    console.log(getShareLink(this.day(), this.guesses(), this.germanLanguage()).replace(GITHUB_PAGES_URL, "http://localhost:4200/"));
+    console.log(getShareLink(this.day(), this.cardToGuess(), this.guesses(), this.germanLanguage()).replace(GITHUB_PAGES_URL, "http://localhost:4200/"));
   }
 
   setDayForCode() {
     let code = prompt("Enter code");
-    if (code == null || !this.cards().find(c => c.code == code)) {
+    if (code == null || !this.getCardByCode(code)) {
       console.error(`Invalid code ${code}`);
       return;
     }

@@ -54,7 +54,7 @@ export class SuccessModalComponent {
     }
     share += tries.join("\n");
     if (addSpoileredCardName) {
-      share += `\n||[View guesses](${getShareLink(this.day, this.guesses, this.germanLanguage)})||`
+      share += `\n||[View guesses](${getShareLink(this.day, this.card, this.guesses, this.germanLanguage)})||`
     }
     // write to clipboard + toast
     try {
