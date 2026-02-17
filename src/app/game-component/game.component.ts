@@ -155,7 +155,7 @@ export class GameComponent implements OnInit {
     this.userData.set(mapRecordValues<string, SaveData, UserData>(data, d => ({
       // map saved cards to the actual data
       card: this.getCardByCode(d.card),
-      guesses: d.guesses.map(c => this.getCardByCode(c))
+      guesses: d.guesses.map(c => this.getCardByCode(c)).filter(g => g != null) // filter out null values (cards that weren't found)
     })));
   }
 
