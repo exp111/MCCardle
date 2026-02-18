@@ -7,9 +7,11 @@ import {GuessInfoComponent} from './guess-info/guess-info.component';
 import {
   arraysHaveSameValues,
   camelCaseToSpaces,
+  dateToNgbDate,
   getCardImage,
   getCardName,
   getFaction,
+  getRandomDate,
   getRandomItem,
   getShareLink,
   mapRecordValues,
@@ -85,7 +87,7 @@ export class GameComponent implements OnInit {
   cardToGuess = computed(() => this.getDailyCard());
 
   // current day
-  todayNgbDate = new NgbDate(new Date().getUTCFullYear(), new Date().getUTCMonth() + 1, new Date().getUTCDate());
+  todayNgbDate = dateToNgbDate(new Date());
   // the selected data as a ngbdate
   date = signal<NgbDate>(new NgbDate(this.todayNgbDate.year, this.todayNgbDate.month, this.todayNgbDate.day));
   // the selected date as an iso string (YYYY-MM-DD)
@@ -337,6 +339,14 @@ export class GameComponent implements OnInit {
     }));
     this.filter.set([]);
     console.log("Reset gueses.");
+  }
+
+  setToday() {
+    this.date.set(this.todayNgbDate);
+  }
+
+  setRandomDay() {
+    this.date.set(dateToNgbDate(getRandomDate()));
   }
 
   // Helpers

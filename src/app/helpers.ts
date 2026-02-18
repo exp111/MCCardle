@@ -82,3 +82,16 @@ export function getRandomItem(arr: any[], seed?: string) {
   let index = Math.floor(random.next() * arr.length);
   return arr[index];
 }
+
+const minRandomDate = new Date(2000, 0, 1);
+const maxRandomDate = new Date();
+const minRandomDateTime = minRandomDate.getTime();
+const maxRandomDateTime = maxRandomDate.getTime();
+
+export function getRandomDate() {
+  return new Date(minRandomDateTime + Math.random() * (maxRandomDateTime - minRandomDateTime),);
+}
+
+export function dateToNgbDate(date: Date) {
+  return new NgbDate(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate())
+}

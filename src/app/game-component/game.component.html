@@ -60,10 +60,17 @@
             [focused]="focused">
           </div>
         </ng-template>
+        <ng-template #datepickerFooter>
+          <div class="btn-group d-flex justify-content-end">
+            <button type="button" class="btn btn-sm btn-outline-primary" (click)="setToday(); d.close()">Today</button>
+            <button type="button" class="btn btn-sm btn-outline-primary" (click)="setRandomDay(); d.close()">Random</button>
+          </div>
+        </ng-template>
         <input type="date" [(ngModel)]="date" [maxDate]="todayNgbDate" class="form-control"
                ngbDatepicker
                readonly
                #d="ngbDatepicker"
+               [footerTemplate]="datepickerFooter"
                [dayTemplate]="customDay"
                (ngModelChange)="onDayChange()">
         <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">Change</button>
