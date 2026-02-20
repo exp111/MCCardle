@@ -183,7 +183,7 @@ export class GameComponent implements OnInit {
         // first schema (no version number): map<string, {<day>: {code: string}[]}
         d = mapRecordValues<string, {code: string}[], SaveData>(data, (d, k) => ({
           card: this.getCardForSeed(k).code,
-          guesses: d.map(c => c.code)
+          guesses: d?.map(c => c.code) ?? []
         }));
         break;
     }
