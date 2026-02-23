@@ -16,7 +16,8 @@ export function getEnumKey(enums: any, val: string) {
 }
 
 export function getType(type: CardType) {
-  return getEnumKey(CardType, type);
+  return getEnumKey(CardType, type)
+    .replaceAll(/([A-Z])/g, (c) => ` ${c}`); // convert camel case to spaces
 }
 
 export function getFaction(faction: CardFaction) {
