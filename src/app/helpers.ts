@@ -12,7 +12,7 @@ export function getCardMarvelCDBURL(card: CardData) {
 }
 
 export function getEnumKey(enums: any, val: string) {
-  return Object.entries(enums).find(([_, v]) => v === val)![0] ?? val;
+  return Object.entries(enums).find(([_, v]) => v === val)?.[0] ?? val;
 }
 
 export function getType(type: CardType) {
