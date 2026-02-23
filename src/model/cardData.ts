@@ -116,5 +116,7 @@ export enum Pack {
   Falcon = "falcon",
   WinterSoldier = "winter",
   TricksterTakeover = "tt",
-  CivilWar = "cw"
+  CivilWar = "cw",
+  WonderMan = "wonder_man",
+  Hercules = "hercules"
 }
