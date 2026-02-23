@@ -72,7 +72,7 @@
       @let packsCorrect = correctCard() && hasAllPacks();
       <span class="value fw-bold"
             [class.correct]="packsCorrect"
-            [class.partial]="correctCard() && hasAnyPack()">Packs</span>
+            [class.partial]="correctCard() && hasAnyPack()">Packs </span>
       <!-- Only show packs if all are correct -->
       @for (pack of card().packs; track pack) {
         <span class="value"
