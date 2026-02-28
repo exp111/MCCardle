@@ -7,6 +7,7 @@ import {GuessInfoComponent} from '../guess-info/guess-info.component';
 import {NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import {CustomDayComponent} from '../custom-day-component/custom-day.component';
 import {CardData} from '../../../model/cardData';
+import {ExpertWarningModal} from './expert-warning-modal/expert-warning-modal';
 
 @Component({
   selector: 'app-expert-game',
@@ -32,6 +33,11 @@ export class ExpertGameComponent extends GameComponent {
   override cardGuessed = computed(() => this.guesses().includes(this.getCard(this.guesses().length - 1)));
   // overwrite card to change after every guess. if the card was guessed, instead of use the last card to properly show the end result
   override cardToGuess = computed(() => this.cardGuessed() ? this.getCard(this.guesses().length - 1) : this.getCard(this.guesses().length));
+
+  override ngOnInit() {
+    super.ngOnInit();
+    this.modalService.open(ExpertWarningModal, {size: "lg"});
+  }
 
   // gets the random card for the seed randomized iterations times
   getCard(iteration: number) {
