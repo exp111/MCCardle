@@ -18,6 +18,7 @@ export class SuccessModalComponent {
   activeModal = inject(NgbActiveModal);
   toastService = inject(ToastService);
 
+  mode!: string;
   card!: CardData;
   germanLanguage!: boolean;
   guesses!: CardData[];
@@ -35,7 +36,11 @@ export class SuccessModalComponent {
   }
 
   share(addSpoileredCardName = false) {
-    let share = `Marvel Champions Cardle ${this.day} in ${this.guesses.length} ${this.guesses.length == 1 ? "Guess" : "Guesses"}\n`;
+    let share = "";
+    if (this.mode != "Standard") {
+      share += `[${this.mode}] `
+    }
+    share += `Marvel Champions Cardle ${this.day} in ${this.guesses.length} ${this.guesses.length == 1 ? "Guess" : "Guesses"}\n`;
     share += `${GITHUB_PAGES_URL}\n\n`;
 
     // emoji legend

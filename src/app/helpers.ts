@@ -78,8 +78,12 @@ export function ngbDateToISOString(date: NgbDate) {
   return `${date.year}-${date.month.toString().padStart(2, "0")}-${date.day.toString().padStart(2, "0")}`
 }
 
-export function getRandomItem(arr: any[], seed?: string) {
+export function getRandomItem(arr: any[], seed?: string, iterations?: number) {
   let random = new Rand(seed);
+  // get the n-th random iteration
+  for (let i = 0; i < (iterations ?? 0); i++) {
+    random.next();
+  }
   let index = Math.floor(random.next() * arr.length);
   return arr[index];
 }

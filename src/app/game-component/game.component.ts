@@ -71,6 +71,7 @@ export class GameComponent implements OnInit {
   modalService = inject(NgbModal);
 
   // consts
+  MODE = "Standard";
   LOCAL_STORAGE_DATA_KEY = "data";
   LOCAL_STORAGE_SCHEMA_VERSION_KEY = "schema_version";
   MINIMUM_SEARCH_LENGTH = 1;
@@ -85,6 +86,7 @@ export class GameComponent implements OnInit {
   cards = signal<CardData[]>([]);
   // current card which should be guessed
   cardToGuess = computed(() => this.getDailyCard());
+  seed = computed(() => this.day());
 
   // current day
   todayNgbDate = dateToNgbDate(new Date());
@@ -177,20 +179,20 @@ export class GameComponent implements OnInit {
     }
     console.log(`Trying to migrate from schema version ${schema}`);
     // migrate data into one that fits into current schema
-    let d;
+    let ret;
     switch (schema) {
       default:
         // first schema (no version number): map<string, {<day>: {code: string}[]}
-        d = mapRecordValues<string, {code: string}[], SaveData>(data, (d, k) => ({
+        ret = mapRecordValues<string, {code: string}[], SaveData>(data, (d, k) => ({
           card: this.getCardForSeed(k).code,
-          guesses: d?.map(c => c.code) ?? []
+          guesses: (d?.["map"] ? d.map(c => c.code) ?? [] : [])
         }));
         break;
     }
     // migration finished, write current schema
     this.writeSchemaVersion();
     console.log(`Finished migration to version ${this.SCHEMA_VERSION}`);
-    return d;
+    return ret;
   }
 
   writeSchemaVersion() {
@@ -265,7 +267,7 @@ export class GameComponent implements OnInit {
       return null!;
     }
     // if there is a saved card use that one - otherwise generate for the current date
-    return this.userData()[this.day()]?.card ?? this.getCardForSeed(this.day());
+    return this.userData()[this.day()]?.card ?? this.getCardForSeed(this.seed());
   }
 
   getCardForSeed(seed: string) {
@@ -282,7 +284,7 @@ export class GameComponent implements OnInit {
       ...u,
       [this.day()]: {card: this.cardToGuess(), guesses: [...u[this.day()]?.guesses ?? [], cardData]}
     }));
-    if (this.cardToGuess() == cardData) {
+    if (this.cardGuessed()) {
       console.log("Card guessed!");
       // reset filter
       this.filter.set([]);
@@ -297,6 +299,7 @@ export class GameComponent implements OnInit {
   showSuccessModal() {
     let ref = this.modalService.open(SuccessModalComponent, {size: "lg"});
     let instance = ref.componentInstance as SuccessModalComponent;
+    instance.mode = this.MODE;
     instance.card = this.cardToGuess();
     instance.germanLanguage = this.germanLanguage();
     instance.guesses = this.guesses();
@@ -335,7 +338,7 @@ export class GameComponent implements OnInit {
   resetDay() {
     this.userData.update(u => ({
       ...u,
-      [this.day()]: {card: this.getCardForSeed(this.day()), guesses: []}
+      [this.day()]: {card: this.getCardForSeed(this.seed()), guesses: []}
     }));
     this.filter.set([]);
     console.log("Reset gueses.");
@@ -372,7 +375,7 @@ export class GameComponent implements OnInit {
   }
 
   logSolutionNoCache() {
-    console.log(this.getCardForSeed(this.day()));
+    console.log(this.getCardForSeed(this.seed()));
   }
 
   logShareLink() {
