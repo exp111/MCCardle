@@ -1,4 +1,4 @@
-import {Component, computed, effect, signal} from '@angular/core';
+import {Component, computed, effect, signal, viewChild} from '@angular/core';
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {NgbCollapse} from '@ng-bootstrap/ng-bootstrap';
 import {ToastContainerComponent} from './toast-container/toast-container.component';
@@ -12,6 +12,7 @@ import {GITHUB_URL, KOFI_URL} from './const';
   styleUrl: './app.scss'
 })
 export class App {
+  outlet = viewChild(RouterOutlet);
   PREFERS_DARK_QUERY = "(prefers-color-scheme: dark)";
 
   isMenuCollapsed = signal(true);
@@ -33,6 +34,19 @@ export class App {
 
   toggleDarkMode() {
     this.darkMode.update(d => !d);
+  }
+
+  getActivateOutletComponent() {
+    return (this.outlet() as any)?.activatedComponentRef?.instance;
+  }
+
+  canShowHelp() {
+    let instance = this.getActivateOutletComponent();
+    return instance?.showHelp;
+  }
+
+  openHelp() {
+    this.getActivateOutletComponent()?.showHelp();
   }
 
   protected readonly GITHUB_URL = GITHUB_URL;

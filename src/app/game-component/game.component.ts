@@ -24,6 +24,7 @@ import confetti from 'canvas-confetti';
 import {GITHUB_PAGES_URL, IS_DEV} from '../const';
 import {CustomDayComponent} from './custom-day-component/custom-day.component';
 import {from} from 'rxjs';
+import {HelpModalComponent} from './help-modal/help-modal.component';
 
 export type FilterType =
   keyof CardData
@@ -71,9 +72,10 @@ export class GameComponent implements OnInit {
   modalService = inject(NgbModal);
 
   // consts
-  MODE = "Standard";
+  MODE = "";
   LOCAL_STORAGE_DATA_KEY = "data";
   LOCAL_STORAGE_SCHEMA_VERSION_KEY = "schema_version";
+  LOCAL_STORAGE_HELP_KEY = "help_shown";
   MINIMUM_SEARCH_LENGTH = 1;
   SHOWN_RESULTS = 25;
   SCHEMA_VERSION = "1";
@@ -145,7 +147,12 @@ export class GameComponent implements OnInit {
         console.error(err);
         this.loading.set(false);
       }
-    })
+    });
+    // show help if not shown
+    if (!localStorage.getItem(this.LOCAL_STORAGE_HELP_KEY)) {
+      this.showHelp();
+      localStorage.setItem(this.LOCAL_STORAGE_HELP_KEY, "true");
+    }
   }
 
   loadDataFromLocalStorage() {
@@ -329,6 +336,10 @@ export class GameComponent implements OnInit {
 
     // Clear confetti after a certain duration
     setTimeout(() => confetti.reset(), duration);
+  }
+
+  showHelp() {
+    this.modalService.open(HelpModalComponent, {size: "lg"});
   }
 
   toggleLegend() {

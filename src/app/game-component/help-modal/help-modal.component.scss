@@ -1,0 +1,23 @@
+@import "../../../variables";
+
+.correct {
+  color: $correct-color;
+}
+
+.partial {
+  color: $partial-color;
+}
+
+.higher {
+  color: $higher-color;
+}
+
+.lower {
+  color: $lower-color;
+}
+
+.filter {
+  text-decoration-style: wavy;
+  text-decoration-line: underline;
+  text-decoration-color: #1796B7;
+}

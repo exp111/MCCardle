@@ -35,6 +35,10 @@ export function camelCaseToSpaces(str: string) {
   return str.replaceAll(/([A-Z])/g, (c) => ` ${c}`);
 }
 
+export function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 //export function getSet(set: string) {
 //  return set.replace(/^\w/, (c) => c.toUpperCase()).replaceAll(/_(\w)/g, (c) => ` ${c[1].toUpperCase()}`) // convert to camel case
 //}

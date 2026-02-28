@@ -10,4 +10,4 @@ export const KOFI_URL = "https://ko-fi.com/exp111";
 export const MARVELCDB_BASE_URL = "https://marvelcdb.com";
 export const MARVELCDB_CARD_URL = "https://marvelcdb.com/card";
 
-export const PLACEHOLDER_IMAGE = "placeholder.png";
+export const PLACEHOLDER_IMAGE = "img/placeholder.png";

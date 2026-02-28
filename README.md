@@ -1,9 +1,9 @@
 # MCCardle
 
 ## TODO
-- tutorial/help
+- tutorial
 - set card override (debug)
-- Filter by word part
+- ally mode (card pool is only allies, add additional attributes like hp, thw, atk)
 
 ## Links
 - [BGdle](http://bgdle.org/)

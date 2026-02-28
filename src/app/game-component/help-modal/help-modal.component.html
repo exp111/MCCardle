@@ -1,0 +1,42 @@
+<div class="modal-header">
+  <h4 class="modal-title">Help</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
+</div>
+<div class="modal-body">
+  Marvel Champions Cardle is an wordle-like game where you have to guess a random Marvel Champions player card each day.
+
+  <h3 class="mt-1">How do I play?</h3>
+  To play simply enter a card name into the search bar. This will search for cards that contain the name and show those under the input field. If you click on a card it will add the card as a guess.<br>
+  This will add a new card info element under the search bar:
+  <img class="w-100" src="img/card-info.png">
+  Each value of the guessed card will be compared to the correct card:
+  <ul>
+    <li><span class="correct">Green</span> text shows that the value is correct.</li>
+    <li><span class="partial">Orange</span> text shows that the value is partially correct.</li>
+    <li><span class="higher">Red-ish</span> text shows that correct value is higher.</li>
+    <li><span class="lower">Blue</span> text shows that correct value is lower.</li>
+  </ul>
+  You can also view this info in the legend.
+
+  Above the search bar is a summarized info of the correct card and what you have guessed so far:
+  <img class="w-100" src="img/guess-info.png">
+  Values marked as ??? have not been guessed yet.<br>
+  You can click on the <span class="correct">correct</span>/<span class="partial">partially correct</span> values to add filters to your search.
+  Filtered values are marked with an <span class="filter">underscore</span> and also shown in the search bar.<br>
+  <br>
+
+  If you guessed the correct card, it will open a success popup and you can share your guesses with your friends (to brag of course). You can reopen the popup by pressing the "Show result" button.
+
+  <h3 class="mt-1">Other Parameters</h3>
+  Additionally you can:
+  <ul>
+    <li>Play different past days by selecting the date. Days that are marked <span class="correct">green</span> have been solved. Days that are marked <span class="partial">orange</span> have been guessed but not solved.</li>
+    <li>Change the language to German. This will change every occurrence of card names to the german version of the name. If the german name doesn't exist (ie insufficient data or not translated), it will fallback to the english name.</li>
+  </ul>
+  You can show this help anytime by pressing help in the navigation (on mobile you might need to press the menu button first).
+</div>
+<div class="modal-footer">
+  <div class="btn-group">
+    <button type="button" class="btn btn-outline-primary" (click)="activeModal.close()">Close</button>
+  </div>
+</div>

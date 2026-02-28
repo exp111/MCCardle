@@ -2,7 +2,7 @@ import {Component, inject} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {CardData, CardDataArrayField} from '../../../model/cardData';
 import {CardInfoComponent} from '../card-info/card-info.component';
-import {getCardName, getShareLink} from '../../helpers';
+import {capitalize, getCardName, getShareLink} from '../../helpers';
 import {ToastService} from '../../../services/toast.service';
 import {GITHUB_PAGES_URL} from '../../const';
 
@@ -31,14 +31,14 @@ export class SuccessModalComponent {
   reset() {
     this.toastService.show({
       content: "Reset guesses."
-    })
+    });
     this.activeModal.close("reset");
   }
 
   share(addSpoileredCardName = false) {
     let share = "";
-    if (this.mode != "Standard") {
-      share += `[${this.mode}] `
+    if (this.mode) {
+      share += `[${capitalize(this.mode)}] `;
     }
     share += `Marvel Champions Cardle ${this.day} in ${this.guesses.length} ${this.guesses.length == 1 ? "Guess" : "Guesses"}\n`;
     share += `${GITHUB_PAGES_URL}\n\n`;

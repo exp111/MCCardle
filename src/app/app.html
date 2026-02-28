@@ -22,7 +22,8 @@
       >
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/">Game</a>
+            <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+               routerLink="/">Game</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLinkActive="active" routerLink="/expert">Expert</a>
@@ -39,6 +40,11 @@
           <li class="nav-item">
             <button class="nav-link" (click)="toggleDarkMode()">Toggle Dark Mode</button>
           </li>
+          @if (canShowHelp()) {
+            <li class="nav-item">
+              <button class="nav-link" (click)="openHelp()">Help</button>
+            </li>
+          }
         </ul>
       </div>
     </div>
