@@ -85,6 +85,7 @@
       @for (resource of correctCard().resources; track $index) {
         @let hasValue = hasResource(resource);
         <span class="{{hasValue ? `resource ${resource}` : ''}}"
+              [class.correct]="hasValue"
               [class.filter]="hasFilter('resources', resource)"
               (click)="setFilterArray('resources', resource)">{{ hasValue ? resource.toUpperCase() : PLACEHOLDER[0] }}</span>
       }
