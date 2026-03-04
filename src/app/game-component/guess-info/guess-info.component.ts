@@ -4,10 +4,13 @@ import {CardData, CardDataArrayField, CardResource, Pack} from '../../../model/c
 import {arraysHaveSameValues, getCardImage} from '../../helpers';
 import {Filter, FilterType} from '../game.component';
 import {PLACEHOLDER_IMAGE} from '../../const';
+import {GuessInfoAttributeComponent} from './guess-info-attribute/guess-info-attribute.component';
 
 @Component({
   selector: 'app-guess-info',
-  imports: [],
+  imports: [
+    GuessInfoAttributeComponent
+  ],
   templateUrl: './guess-info.component.html',
   styleUrls: ['../card-info/card-info.component.scss', './guess-info.component.scss'],
 })

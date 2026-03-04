@@ -32,41 +32,48 @@
     </div>
     <!-- cost -->
     <div>
-      @let hasCostValue = hasValue("cost");
-      <span class="value"
-            [class.correct]="hasCostValue"
-            [class.filter]="hasFilter('cost')"
-            (click)="setFilter('cost')">{{ hasCostValue ? getCost(correctCard()) : PLACEHOLDER }}</span>
-      <span class="text-muted"> Cost</span>
+      <guess-info-attribute [card]="correctCard()"
+                            [guesses]="guesses()"
+                            [PLACEHOLDER]="PLACEHOLDER"
+                            [hasFilter]="hasFilter.bind(this)"
+                            [setFilter]="setFilter.bind(this)"
+                            [displayFunc]="getCost"
+                            name="Cost"
+                            field="cost"></guess-info-attribute>
     </div>
     <!-- type -->
     <div>
-      @let hasTypeValue = hasValue("type");
-      <span class="value"
-            [class.correct]="hasTypeValue"
-            [class.filter]="hasFilter('type')"
-            (click)="setFilter('type')">{{ hasTypeValue ? getType(correctCard()) : PLACEHOLDER }}</span>
-      <span class="text-muted"> Type</span>
+      <guess-info-attribute [card]="correctCard()"
+                            [guesses]="guesses()"
+                            [PLACEHOLDER]="PLACEHOLDER"
+                            [hasFilter]="hasFilter.bind(this)"
+                            [setFilter]="setFilter.bind(this)"
+                            [displayFunc]="getType"
+                            name="Type"
+                            field="type"></guess-info-attribute>
     </div>
     <!-- faction/aspect -->
     <div>
-      @let hasFactionValue = hasValue("faction");
-      <span class="value"
-            [class.correct]="hasFactionValue"
-            [class.filter]="hasFilter('faction')"
-            (click)="setFilter('faction')">{{ hasFactionValue ? getFaction(correctCard()) : PLACEHOLDER }}</span>
-      <span class="text-muted"> Aspect</span>
+      <guess-info-attribute [card]="correctCard()"
+                            [guesses]="guesses()"
+                            [PLACEHOLDER]="PLACEHOLDER"
+                            [hasFilter]="hasFilter.bind(this)"
+                            [setFilter]="setFilter.bind(this)"
+                            [displayFunc]="getFaction"
+                            name="Aspect"
+                            field="faction"></guess-info-attribute>
     </div>
   </div>
   <div class="col">
     <div>
       <!-- year -->
-      @let hasYearValue = hasValue("year");
-      <span class="value"
-                   [class.correct]="hasYearValue"
-                   [class.filter]="hasFilter('year')"
-                   (click)="setFilter('year')">{{hasYearValue ? correctCard().year : PLACEHOLDER}}</span>
-      <span class="text-muted"> Year</span>
+      <guess-info-attribute [card]="correctCard()"
+                            [guesses]="guesses()"
+                            [PLACEHOLDER]="PLACEHOLDER"
+                            [hasFilter]="hasFilter.bind(this)"
+                            [setFilter]="setFilter.bind(this)"
+                            name="Year"
+                            field="year"></guess-info-attribute>
     </div>
     <div>
       @let resourcesComplete = hasAllResources();
