@@ -1,0 +1,96 @@
+<div class="d-flex rounded" [class.border]="showBorder()">
+  <!-- img -->
+  <div class="col-2 p-2">
+    <img class="img" [src]="cardImg()">
+  </div>
+  <div class="col-6 d-flex flex-column">
+    <div>
+      <!-- name -->
+      @let name = getName(card());
+      @let hasGuessedName = correctCard() && card().name == correctCard().name;
+      <ng-template #nameDisplay>
+        @if (correctCard() && !hasGuessedName && getName(correctCard()).startsWith(name[0])) {
+          <span class="value partial">{{ name[0] }}</span><span>{{ name.slice(1) }}</span>
+        } @else {
+          <span class="value" [class.correct]="hasGuessedName">
+          {{ name }}
+        </span>
+        }
+      </ng-template>
+      @if (showMarvelCDBLink()) {
+        <a [href]="getCardMarvelCDBURL(card())" target="_blank" rel="noreferrer noopener" class="fw-bold">
+          <ng-template [ngTemplateOutlet]="nameDisplay"></ng-template>
+        </a>
+      } @else {
+        <span class="fw-bold"><ng-template [ngTemplateOutlet]="nameDisplay"></ng-template></span>
+      }
+      <!-- DEBUG: code -->
+      @if (IS_DEV) {
+        ({{ card().code }})
+      }
+    </div>
+    <!-- cost -->
+    <div>
+      <card-info-attribute [card]="card()"
+                           [correctCard]="correctCard()"
+                           [displayFunc]="getCost"
+                           name="Cost"
+                           field="cost"></card-info-attribute>
+    </div>
+    <!-- type -->
+    <div>
+      <card-info-attribute [card]="card()"
+                           [correctCard]="correctCard()"
+                           [displayFunc]="getType"
+                           name="Type1"
+                           field="type"></card-info-attribute>
+    </div>
+    <!-- faction -->
+    <div>
+      <card-info-attribute [card]="card()"
+                           [correctCard]="correctCard()"
+                           [displayFunc]="getFaction"
+                           name="Aspect"
+                           field="faction"></card-info-attribute>
+    </div>
+  </div>
+  <div class="col">
+    <div>
+      <!-- year -->
+      <card-info-attribute [card]="card()"
+                           [correctCard]="correctCard()"
+                           name="Year"
+                           field="year"></card-info-attribute>
+    </div>
+    <div>
+      <span class="value fw-bold"
+            [class.correct]="correctCard() && getResourceString(correctCard()) == getResourceString(card())"
+            [class.partial]="correctCard() && hasAnyResource()">Resources </span>
+      @for (resource of card().resources; track $index) {
+        <span class="resource {{resource}}"
+              [class.correct]="correctCard() && correctCard().resources.includes(resource)">{{ resource.toUpperCase() }}</span>
+      }
+    </div>
+    <div class="packs">
+      @let packsCorrect = correctCard() && hasAllPacks();
+      <span class="value fw-bold"
+            [class.correct]="packsCorrect"
+            [class.partial]="correctCard() && hasAnyPack()">Packs </span>
+      <!-- Only show packs if all are correct -->
+      @for (pack of card().packs; track pack) {
+        <span class="value"
+              [class.correct]="packsCorrect">{{ getPack(pack) }}</span>
+      }
+    </div>
+    <div class="traits">
+      <span class="value fw-bold"
+            [class.correct]="correctCard() && hasAllTraits()"
+            [class.partial]="correctCard() && hasAnyTrait()">Traits </span>
+      @for (trait of card().traits; track trait) {
+        <span class="value"
+              [class.correct]="correctCard() && correctCard().traits.includes(trait)">{{ trait }}</span>
+      }
+    </div>
+  </div>
+</div>
+

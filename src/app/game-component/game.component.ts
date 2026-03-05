@@ -36,7 +36,7 @@ import {NgbDate, NgbInputDatepicker, NgbModal} from '@ng-bootstrap/ng-bootstrap'
 import {SuccessModalComponent} from './success-modal/success-modal.component';
 import confetti from 'canvas-confetti';
 import {GITHUB_PAGES_URL, IS_DEV} from '../const';
-import {CustomDayComponent} from './custom-day-component/custom-day.component';
+import {CustomDayComponent} from './custom-day/custom-day.component';
 import {from} from 'rxjs';
 import {HelpModalComponent} from './help-modal/help-modal.component';
 import {NgComponentOutlet} from '@angular/common';

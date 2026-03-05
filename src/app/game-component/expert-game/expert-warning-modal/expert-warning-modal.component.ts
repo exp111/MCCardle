@@ -4,9 +4,9 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-expert-warning-modal',
   imports: [],
-  templateUrl: './expert-warning-modal.html',
-  styleUrl: './expert-warning-modal.scss',
+  templateUrl: './expert-warning-modal.component.html',
+  styleUrl: './expert-warning-modal.component.scss',
 })
-export class ExpertWarningModal {
+export class ExpertWarningModalComponent {
   activeModal = inject(NgbActiveModal);
 }

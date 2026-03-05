@@ -2,10 +2,12 @@ import {Component, computed} from '@angular/core';
 import {GameComponent} from '../game.component';
 import {FormsModule} from '@angular/forms';
 import {NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
-import {CustomDayComponent} from '../custom-day-component/custom-day.component';
+import {CustomDayComponent} from '../custom-day/custom-day.component';
 import {CardData, CardType} from '../../../model/cardData';
 import {map, Observable} from 'rxjs';
 import {NgComponentOutlet} from '@angular/common';
+import {AllyGuessInfoComponent} from './ally-guess-info/ally-guess-info.component';
+import {AllyCardInfoComponent} from './ally-card-info/ally-card-info.component';
 
 @Component({
   selector: 'app-ally-game',
@@ -27,6 +29,9 @@ export class AllyGameComponent extends GameComponent {
 
   // seed other than normal game as we operate on the same card pool
   override seed = computed(() => `${this.day()}-${this.MODE}`);
+
+  override cardInfoComponent = AllyCardInfoComponent;
+  override guessInfoComponent = AllyGuessInfoComponent;
 
   // only get allies
   override getData(): Observable<CardData[]> {

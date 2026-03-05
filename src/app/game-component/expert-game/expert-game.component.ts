@@ -4,9 +4,9 @@ import {getRandomItem} from '../../helpers';
 import {FormsModule} from '@angular/forms';
 import {CardInfoComponent} from '../card-info/card-info.component';
 import {NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
-import {CustomDayComponent} from '../custom-day-component/custom-day.component';
+import {CustomDayComponent} from '../custom-day/custom-day.component';
 import {CardData} from '../../../model/cardData';
-import {ExpertWarningModal} from './expert-warning-modal/expert-warning-modal';
+import {ExpertWarningModalComponent} from './expert-warning-modal/expert-warning-modal.component';
 import {NgComponentOutlet} from '@angular/common';
 
 @Component({
@@ -50,6 +50,6 @@ export class ExpertGameComponent extends GameComponent {
 
   // show expert warning
   override showHelp() {
-    this.modalService.open(ExpertWarningModal, {size: "lg"});
+    this.modalService.open(ExpertWarningModalComponent, {size: "lg"});
   }
 }
