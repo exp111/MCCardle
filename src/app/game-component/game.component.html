@@ -91,13 +91,7 @@
         </label>
       </div>
       <!-- Guess Info -->
-      <ng-container [ngComponentOutlet]="guessInfoComponent"
-       [ngComponentOutletInputs]="{
-      correctCard: cardToGuess(),
-      guesses: guesses(),
-      germanLanguage: germanLanguage(),
-      filter: filter
-      }"></ng-container>
+      <div #guessInfo></div>
       @if (!cardGuessed()) {
         <!-- Search -->
         <div class="position-relative">
@@ -127,7 +121,12 @@
       }
 
       @for (guess of guesses(); track guess.code) {
-        <app-card-info [card]="guess" [correctCard]="cardToGuess()" [germanLanguage]="germanLanguage()"></app-card-info>
+        <ng-container [ngComponentOutlet]="cardInfoComponent"
+                      [ngComponentOutletInputs]="{
+                      card: guess,
+                      correctCard: cardToGuess(),
+                      germanLanguage: germanLanguage()
+                      }"></ng-container>
       }
     </div>
   }

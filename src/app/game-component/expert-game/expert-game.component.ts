@@ -3,20 +3,19 @@ import {GameComponent} from '../game.component';
 import {getRandomItem} from '../../helpers';
 import {FormsModule} from '@angular/forms';
 import {CardInfoComponent} from '../card-info/card-info.component';
-import {GuessInfoComponent} from '../guess-info/guess-info.component';
 import {NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import {CustomDayComponent} from '../custom-day-component/custom-day.component';
 import {CardData} from '../../../model/cardData';
 import {ExpertWarningModal} from './expert-warning-modal/expert-warning-modal';
+import {NgComponentOutlet} from '@angular/common';
 
 @Component({
   selector: 'app-expert-game',
   imports: [
     FormsModule,
-    CardInfoComponent,
-    GuessInfoComponent,
     NgbInputDatepicker,
-    CustomDayComponent
+    CustomDayComponent,
+    NgComponentOutlet
   ],
   templateUrl: '../game.component.html',
   styleUrl: '../game.component.scss',

@@ -1,21 +1,19 @@
 import {Component, computed} from '@angular/core';
 import {GameComponent} from '../game.component';
 import {FormsModule} from '@angular/forms';
-import {CardInfoComponent} from '../card-info/card-info.component';
-import {GuessInfoComponent} from '../guess-info/guess-info.component';
 import {NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import {CustomDayComponent} from '../custom-day-component/custom-day.component';
 import {CardData, CardType} from '../../../model/cardData';
 import {map, Observable} from 'rxjs';
+import {NgComponentOutlet} from '@angular/common';
 
 @Component({
   selector: 'app-ally-game',
   imports: [
     FormsModule,
-    CardInfoComponent,
-    GuessInfoComponent,
     NgbInputDatepicker,
-    CustomDayComponent
+    CustomDayComponent,
+    NgComponentOutlet
   ],
   templateUrl: '../game.component.html',
   styleUrl: '../game.component.scss',

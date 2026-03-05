@@ -1,4 +1,18 @@
-import {Component, computed, effect, inject, OnInit, signal} from '@angular/core';
+import {
+  ApplicationRef,
+  Component,
+  computed,
+  createComponent,
+  effect,
+  ElementRef,
+  EnvironmentInjector,
+  inject,
+  inputBinding,
+  OnInit,
+  signal,
+  twoWayBinding,
+  viewChild
+} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {FormsModule} from '@angular/forms';
 import {CardInfoComponent} from './card-info/card-info.component';
@@ -25,7 +39,7 @@ import {GITHUB_PAGES_URL, IS_DEV} from '../const';
 import {CustomDayComponent} from './custom-day-component/custom-day.component';
 import {from} from 'rxjs';
 import {HelpModalComponent} from './help-modal/help-modal.component';
-import {CommonModule, NgComponentOutlet} from '@angular/common';
+import {NgComponentOutlet} from '@angular/common';
 
 export type FilterType =
   keyof CardData
@@ -60,10 +74,8 @@ interface UserData {
   selector: 'app-game',
   imports: [
     FormsModule,
-    CardInfoComponent,
     NgbInputDatepicker,
     CustomDayComponent,
-    CommonModule,
     NgComponentOutlet
   ],
   templateUrl: './game.component.html',
@@ -124,6 +136,10 @@ export class GameComponent implements OnInit {
   cardInfoComponent = CardInfoComponent;
   guessInfoComponent = GuessInfoComponent;
 
+  appRef = inject(ApplicationRef);
+  injector = inject(EnvironmentInjector);
+  guessInfo = viewChild<ElementRef>("guessInfo");
+
   constructor() {
     // write data to localstorage
     effect(() => {
@@ -136,6 +152,13 @@ export class GameComponent implements OnInit {
         guesses: d.guesses.map(g => g.code) // only save codes
       }));
       localStorage.setItem(this.LOCAL_STORAGE_DATA_KEY, JSON.stringify(data));
+    });
+    // if guessInfo is available
+    effect(() => {
+      if (!this.guessInfo()) {
+        return;
+      }
+      this.createElements();
     });
   }
 
@@ -162,6 +185,21 @@ export class GameComponent implements OnInit {
 
   getData() {
     return this.dataService.getData();
+  }
+
+  createElements() {
+    // create guess info comp
+    let ref = createComponent(this.guessInfoComponent, {
+      environmentInjector: this.injector,
+      hostElement: this.guessInfo()?.nativeElement,
+      bindings: [
+        inputBinding('correctCard', this.cardToGuess),
+        inputBinding('guesses', this.guesses),
+        inputBinding('germanLanguage', this.germanLanguage),
+        twoWayBinding('filter', this.filter),
+      ]
+    });
+    this.appRef.attachView(ref.hostView);
   }
 
   loadDataFromLocalStorage() {
