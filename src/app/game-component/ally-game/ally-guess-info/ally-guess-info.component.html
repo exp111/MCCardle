@@ -41,16 +41,15 @@
                             name="Cost"
                             field="cost"></guess-info-attribute>
     </div>
-    <!-- type -->
+    <!-- health -->
     <div>
       <guess-info-attribute [card]="correctCard()"
                             [guesses]="guesses()"
                             [PLACEHOLDER]="PLACEHOLDER"
                             [hasFilter]="hasFilter.bind(this)"
                             [setFilter]="setFilter.bind(this)"
-                            [displayFunc]="getType"
-                            name="Type1"
-                            field="type"></guess-info-attribute>
+                            name="Health"
+                            field="attack"></guess-info-attribute>
     </div>
     <!-- faction/aspect -->
     <div>
@@ -76,32 +75,24 @@
                             field="year"></guess-info-attribute>
     </div>
     <div>
-      @let resourcesComplete = hasAllResources();
-      <span class="value fw-bold"
-            [class.partial]="hasAnyResource()"
-            [class.correct]="resourcesComplete"
-            [class.filter]="hasFilter('allResources') || hasFilter('anyResource')"
-            (click)="setFilterCustom(resourcesComplete ? 'allResources' : 'anyResource')">Resources </span>
-      @for (resource of correctCard().resources; track $index) {
-        @let hasValue = hasResource(resource);
-        <span class="{{hasValue ? `resource ${resource}` : ''}}"
-              [class.correct]="hasValue"
-              [class.filter]="hasFilter('resources', resource)"
-              (click)="setFilterArray('resources', resource)">{{ hasValue ? resource.toUpperCase() : PLACEHOLDER[0] }}</span>
-      }
+      <!-- attack -->
+      <guess-info-attribute [card]="correctCard()"
+                            [guesses]="guesses()"
+                            [PLACEHOLDER]="PLACEHOLDER"
+                            [hasFilter]="hasFilter.bind(this)"
+                            [setFilter]="setFilter.bind(this)"
+                            name="Attack"
+                            field="attack"></guess-info-attribute>
     </div>
-    <div class="packs">
-      @let packsComplete = hasAllPacks();
-      <span class="value fw-bold"
-            [class.correct]="packsComplete"
-            [class.filter]="hasFilter('allPacks')"
-            (click)="setFilterCustom('allPacks')">Packs </span>
-      @for (pack of correctCard().packs; track pack) {
-        <span class="value"
-              [class.correct]="packsComplete"
-              [class.filter]="hasFilter('packs', pack)"
-              (click)="setFilterArray('packs', pack)">{{ packsComplete ? getPack(pack) : PLACEHOLDER }}</span>
-      }
+    <div>
+      <!-- thwart -->
+      <guess-info-attribute [card]="correctCard()"
+                            [guesses]="guesses()"
+                            [PLACEHOLDER]="PLACEHOLDER"
+                            [hasFilter]="hasFilter.bind(this)"
+                            [setFilter]="setFilter.bind(this)"
+                            name="Thwart"
+                            field="thwart"></guess-info-attribute>
     </div>
     <div class="traits">
       @let traitsComplete = hasAllTraits();
