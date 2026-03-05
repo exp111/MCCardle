@@ -47,8 +47,8 @@ export function getCardName(card: CardData, translated: boolean) {
   return translated ? card.name_de ?? card.name : card.name;
 }
 
-export function getShareLink(day: string, card: CardData, guesses: CardData[], german?: boolean) {
-  return `${GITHUB_PAGES_URL}#/viewer?day=${day}&code=${card.code}&guesses=${guesses.map(g => g.code).join(',')}${german ? `&german=${german}` : ''}`;
+export function getShareLink(day: string, card: CardData, guesses: CardData[], german?: boolean, mode?: string) {
+  return `${GITHUB_PAGES_URL}#/viewer?day=${day}&code=${card.code}&guesses=${guesses.map(g => g.code).join(',')}${german ? `&german=${german}` : ''}${mode ? `&mode=${mode}` : ''}`;
 }
 
 export function sortString(str: string, compareFn?: (a: string, b: string) => number) {

@@ -27,6 +27,7 @@ export class ViewerComponent implements OnInit {
   german = input(false, {
     transform: booleanAttribute
   });
+  mode = input<string>();
 
   loading = signal(false);
   // contains the guessed cards as card data

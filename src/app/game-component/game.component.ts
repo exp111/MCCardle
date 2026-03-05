@@ -438,7 +438,7 @@ export class GameComponent implements OnInit {
   }
 
   logShareLink() {
-    console.log(getShareLink(this.day(), this.cardToGuess(), this.guesses(), this.germanLanguage()).replace(GITHUB_PAGES_URL, "http://localhost:4200/"));
+    console.log(getShareLink(this.day(), this.cardToGuess(), this.guesses(), this.germanLanguage(), this.MODE).replace(GITHUB_PAGES_URL, "http://localhost:4200/"));
   }
 
   setDayForCode() {
