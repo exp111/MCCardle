@@ -13,6 +13,10 @@ export interface CardData {
   // these are both incomplete
   sets: string[];
   illustrators: string[];
+  // ally related
+  health: number;
+  attack: number;
+  thwart: number;
 }
 
 export type CardDataArrayField = "resources" | "packs" | "traits";

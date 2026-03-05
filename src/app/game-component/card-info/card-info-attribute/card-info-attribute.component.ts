@@ -1,4 +1,4 @@
-import {Component, computed, input} from '@angular/core';
+import {booleanAttribute, Component, computed, input} from '@angular/core';
 import {getFaction} from "../../../helpers";
 import {CardData} from '../../../../model/cardData';
 
@@ -12,11 +12,14 @@ export class CardInfoAttribute {
   card = input.required<CardData>();
   correctCard = input<CardData>();
   field = input.required<keyof CardData>();
-  isNumber = input<boolean>(false);
+  isNumber = input(false, {transform: booleanAttribute});
   displayFunc = input<(c: CardData) => string>((c: CardData) => c[this.field()]!.toString());
   name = input.required<string>();
 
   displayValue = computed(() => this.displayFunc()(this.card()));
+
+  answerHigher = computed(() => this.answerIsHigher(this.card()[this.field()] as number, this.correctCard()![this.field()] as number));
+  answerLower = computed(() => this.answerIsLower(this.card()[this.field()] as number, this.correctCard()![this.field()] as number));
 
   answerIsHigher(val?: number, correct?: number) {
     // nothing lower than null (-)

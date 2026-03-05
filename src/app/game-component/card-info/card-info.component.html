@@ -32,35 +32,37 @@
     <!-- cost -->
     <div>
       <card-info-attribute [card]="card()"
-                      [correctCard]="correctCard()"
-                      [displayFunc]="getCost"
-                      name="Cost"
-                      field="cost"></card-info-attribute>
+                           [correctCard]="correctCard()"
+                           [displayFunc]="getCost"
+                           isNumber="true"
+                           name="Cost"
+                           field="cost"></card-info-attribute>
     </div>
     <!-- type -->
     <div>
       <card-info-attribute [card]="card()"
-                      [correctCard]="correctCard()"
-                      [displayFunc]="getType"
-                      name="Type"
-                      field="type"></card-info-attribute>
+                           [correctCard]="correctCard()"
+                           [displayFunc]="getType"
+                           name="Type"
+                           field="type"></card-info-attribute>
     </div>
     <!-- faction -->
     <div>
       <card-info-attribute [card]="card()"
-                      [correctCard]="correctCard()"
-                      [displayFunc]="getFaction"
-                      name="Aspect"
-                      field="faction"></card-info-attribute>
+                           [correctCard]="correctCard()"
+                           [displayFunc]="getFaction"
+                           name="Aspect"
+                           field="faction"></card-info-attribute>
     </div>
   </div>
   <div class="col">
     <div>
       <!-- year -->
       <card-info-attribute [card]="card()"
-                      [correctCard]="correctCard()"
-                      name="Year"
-                      field="year"></card-info-attribute>
+                           [correctCard]="correctCard()"
+                           isNumber="true"
+                           name="Year"
+                           field="year"></card-info-attribute>
     </div>
     <div>
       <span class="value fw-bold"

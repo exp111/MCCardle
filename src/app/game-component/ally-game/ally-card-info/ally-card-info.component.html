@@ -34,16 +34,17 @@
       <card-info-attribute [card]="card()"
                            [correctCard]="correctCard()"
                            [displayFunc]="getCost"
+                           isNumber="true"
                            name="Cost"
                            field="cost"></card-info-attribute>
     </div>
-    <!-- type -->
+    <!-- health -->
     <div>
       <card-info-attribute [card]="card()"
                            [correctCard]="correctCard()"
-                           [displayFunc]="getType"
-                           name="Type1"
-                           field="type"></card-info-attribute>
+                           isNumber="true"
+                           name="Health"
+                           field="health"></card-info-attribute>
     </div>
     <!-- faction -->
     <div>
@@ -59,28 +60,25 @@
       <!-- year -->
       <card-info-attribute [card]="card()"
                            [correctCard]="correctCard()"
+                           isNumber="true"
                            name="Year"
                            field="year"></card-info-attribute>
     </div>
     <div>
-      <span class="value fw-bold"
-            [class.correct]="correctCard() && getResourceString(correctCard()) == getResourceString(card())"
-            [class.partial]="correctCard() && hasAnyResource()">Resources </span>
-      @for (resource of card().resources; track $index) {
-        <span class="resource {{resource}}"
-              [class.correct]="correctCard() && correctCard().resources.includes(resource)">{{ resource.toUpperCase() }}</span>
-      }
+      <!-- attack -->
+      <card-info-attribute [card]="card()"
+                           [correctCard]="correctCard()"
+                           isNumber="true"
+                           name="Attack"
+                           field="attack"></card-info-attribute>
     </div>
-    <div class="packs">
-      @let packsCorrect = correctCard() && hasAllPacks();
-      <span class="value fw-bold"
-            [class.correct]="packsCorrect"
-            [class.partial]="correctCard() && hasAnyPack()">Packs </span>
-      <!-- Only show packs if all are correct -->
-      @for (pack of card().packs; track pack) {
-        <span class="value"
-              [class.correct]="packsCorrect">{{ getPack(pack) }}</span>
-      }
+    <div>
+      <!-- thwart -->
+      <card-info-attribute [card]="card()"
+                           [correctCard]="correctCard()"
+                           isNumber="true"
+                           name="Thwart"
+                           field="thwart"></card-info-attribute>
     </div>
     <div class="traits">
       <span class="value fw-bold"
