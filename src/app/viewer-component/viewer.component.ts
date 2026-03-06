@@ -4,12 +4,14 @@ import {DataService} from '../../services/data.service';
 import {getCardName, getRandomItem} from '../helpers';
 import {CardInfoComponent} from '../game-component/card-info/card-info.component';
 import {Router, RouterLink} from '@angular/router';
+import {NgComponentOutlet} from '@angular/common';
+import {AllyCardInfoComponent} from '../game-component/ally-game/ally-card-info/ally-card-info.component';
 
 @Component({
   selector: 'app-viewer-component',
   imports: [
-    CardInfoComponent,
-    RouterLink
+    RouterLink,
+    NgComponentOutlet
   ],
   templateUrl: './viewer.component.html',
   styleUrl: './viewer.component.scss',
@@ -28,6 +30,14 @@ export class ViewerComponent implements OnInit {
     transform: booleanAttribute
   });
   mode = input<string>();
+  cardInfoComponent = computed(() => {
+    switch (this.mode()) {
+      case "ally":
+        return AllyCardInfoComponent;
+      default:
+        return CardInfoComponent;
+    }
+  });
 
   loading = signal(false);
   // contains the guessed cards as card data

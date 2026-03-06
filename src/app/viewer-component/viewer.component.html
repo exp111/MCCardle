@@ -10,7 +10,12 @@
         <a routerLink="/">Try guessing yourself.</a>
       </h4>
       @for (guess of cardGuesses(); track guess.code) {
-        <app-card-info [card]="guess" [correctCard]="card()" [germanLanguage]="german()"></app-card-info>
+        <ng-container [ngComponentOutlet]="cardInfoComponent()"
+                      [ngComponentOutletInputs]="{
+                      card: guess,
+                      correctCard: card(),
+                      germanLanguage: german()
+                      }"></ng-container>
       }
     </div>
   }
