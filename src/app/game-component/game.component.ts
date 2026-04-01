@@ -408,7 +408,7 @@ export class GameComponent implements OnInit {
       [this.day()]: {card: this.getCardForSeed(this.seed()), guesses: []}
     }));
     this.filter.set([]);
-    console.log("Reset gueses.");
+    console.log("Reset guesses.");
   }
 
   setToday() {
