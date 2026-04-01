@@ -1,5 +1,5 @@
 import {booleanAttribute, Component, computed, input} from '@angular/core';
-import {getFaction} from "../../../helpers";
+import {getMcFaction} from "../../../helpers";
 import {McCardData} from '../../../../model/mcCardData';
 
 @Component({

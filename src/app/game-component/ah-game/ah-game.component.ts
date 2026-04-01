@@ -5,6 +5,12 @@ import {NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import {CustomDayComponent} from '../custom-day/custom-day.component';
 import {NgComponentOutlet} from '@angular/common';
 import {AhCardData} from '../../../model/ahCardData';
+import {McCardData} from '../../../model/mcCardData';
+
+export interface AhUserData {
+  card: AhCardData;
+  guesses: AhCardData[];
+}
 
 @Component({
   selector: 'app-ah-game',
@@ -17,7 +23,7 @@ import {AhCardData} from '../../../model/ahCardData';
   templateUrl: '../game.component.html',
   styleUrl: '../game.component.scss'
 })
-export class AhGameComponent extends GameComponent<AhCardData> {
+export class AhGameComponent extends GameComponent<AhCardData, AhUserData> {
   // consts
   override MODE = "ah";
   override LOCAL_STORAGE_DATA_KEY = `${this.MODE}_data`;

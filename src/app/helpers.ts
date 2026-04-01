@@ -16,16 +16,17 @@ export function getEnumKey(enums: any, val: string) {
   return Object.entries(enums).find(([_, v]) => v === val)?.[0] ?? val;
 }
 
-export function getType(type: McCardType) {
+// mc
+export function getMcType(type: McCardType) {
   return getEnumKey(McCardType, type)
     .replaceAll(/([A-Z])/g, (c) => ` ${c}`); // convert camel case to spaces
 }
 
-export function getFaction(faction: McCardFaction) {
+export function getMcFaction(faction: McCardFaction) {
   return getEnumKey(McCardFaction, faction);
 }
 
-export function getPack(pack: string) {
+export function getMcPack(pack: string) {
   return getEnumKey(McPack, pack)
     .replaceAll(/([A-Z])/g, (c) => ` ${c}`) // convert camel case to spaces
     .replaceAll("S H I E L D", "S.H.I.E.L.D.") // edge cases
@@ -48,7 +49,7 @@ export function getCardName(card: CardData, translated: boolean) {
   return translated ? card.name_de ?? card.name : card.name;
 }
 
-export function getShareLink(day: string, card: McCardData, guesses: McCardData[], german?: boolean, mode?: string) {
+export function getShareLink(day: string, card: CardData, guesses: CardData[], german?: boolean, mode?: string) {
   return `${GITHUB_PAGES_URL}#/viewer?day=${day}&code=${card.code}&guesses=${guesses.map(g => g.code).join(',')}${german ? `&german=${german}` : ''}${mode ? `&mode=${mode}` : ''}`;
 }
 

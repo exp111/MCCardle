@@ -5,9 +5,9 @@ import {
   getCardImage,
   getCardMarvelCDBURL,
   getCardName,
-  getFaction,
-  getPack,
-  getType,
+  getMcFaction,
+  getMcPack,
+  getMcType,
   sortString
 } from '../../helpers';
 import {NgTemplateOutlet} from '@angular/common';
@@ -41,11 +41,11 @@ export class CardInfoComponent {
   }
 
   getType(card: McCardData) {
-    return getType(card.type);
+    return getMcType(card.type);
   }
 
   getFaction(card: McCardData) {
-    return getFaction(card.faction);
+    return getMcFaction(card.faction);
   }
 
   hasAllResources() {
@@ -76,7 +76,7 @@ export class CardInfoComponent {
     return this.card().traits.some(t => this.correctCard().traits.includes(t));
   }
 
-  protected readonly getPack = getPack;
+  protected readonly getPack = getMcPack;
   protected readonly getCardMarvelCDBURL = getCardMarvelCDBURL;
   protected readonly IS_DEV = IS_DEV;
 }

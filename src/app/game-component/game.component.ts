@@ -14,21 +14,19 @@ import {
 } from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {CardInfoComponent} from './card-info/card-info.component';
-import {McCardDataArrayField, McCardResource, McCardData} from '../../model/mcCardData';
+import {McCardData} from '../../model/mcCardData';
 import {GuessInfoComponent} from './guess-info/guess-info.component';
 import {
-  arraysHaveSameValues,
   camelCaseToSpaces,
   dateToNgbDate,
   getCardImage,
   getCardName,
-  getFaction,
+  getMcFaction,
   getRandomDate,
   getRandomItem,
   getShareLink,
   mapRecordValues,
-  ngbDateToISOString,
-  sortString
+  ngbDateToISOString
 } from '../helpers';
 import {NgbDate, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SuccessModalComponent} from './success-modal/success-modal.component';
@@ -62,13 +60,7 @@ export interface SaveData {
   guesses: string[];
 }
 
-// data for the day
-export interface UserData {
-  card: McCardData;
-  guesses: McCardData[];
-}
-
-export abstract class GameComponent<T extends CardData, U extends UserData> implements OnInit {
+export abstract class GameComponent<T extends CardData, U extends {card: T, guesses: T[]}> implements OnInit {
   dataService = inject(DataService);
   modalService = inject(NgbModal);
 
@@ -116,7 +108,7 @@ export abstract class GameComponent<T extends CardData, U extends UserData> impl
   filterDescription = computed(() => this.filter().length ? `[Filter ${this.filter().map(f => `${camelCaseToSpaces(f.filter).toLowerCase()}: ${Array.isArray(f.value) ? f.value.length > 0 ? f.value : 'None' : f.value}`).join(', ')}] ` : "");
 
   // guesses
-  userData = signal<Record<string, UserData>>({});
+  userData = signal<Record<string, U>>({});
   guesses = computed(() => this.userData()[this.day()]?.guesses ?? []);
   cardGuessed = computed(() => this.guesses().includes(this.cardToGuess()));
 
@@ -134,7 +126,7 @@ export abstract class GameComponent<T extends CardData, U extends UserData> impl
       if (!Object.values(this.userData()).length) {
         return;
       }
-      let data = mapRecordValues<string, UserData, SaveData>(this.userData(), d => ({
+      let data = mapRecordValues<string, U, SaveData>(this.userData(), d => ({
         card: d.card.code,
         guesses: d.guesses.map(g => g.code) // only save codes
       }));
@@ -195,7 +187,7 @@ export abstract class GameComponent<T extends CardData, U extends UserData> impl
     }
     // migrate data if needed
     data = this.migrateLocalStorageData(data);
-    this.userData.set(mapRecordValues<string, SaveData, UserData>(data, d => ({
+    this.userData.set(mapRecordValues<string, SaveData, U>(data, d => ({
       // map saved cards to the actual data
       card: this.getCardByCode(d.card),
       guesses: d.guesses.map(c => this.getCardByCode(c)).filter(g => g != null) // filter out null values (cards that weren't found)
@@ -257,7 +249,7 @@ export abstract class GameComponent<T extends CardData, U extends UserData> impl
     return getRandomItem(this.cards(), seed);
   }
 
-  guessCard(cardData: McCardData) {
+  guessCard(cardData: T) {
     if (this.guesses().includes(cardData)) {
       console.log(`Card ${cardData.name} already guessed`);
       return;
@@ -410,7 +402,7 @@ export abstract class GameComponent<T extends CardData, U extends UserData> impl
   }
 
   protected readonly getCardImage = getCardImage;
-  protected readonly getFaction = getFaction;
+  protected readonly getFaction = getMcFaction;
   protected readonly IS_DEV = IS_DEV;
   protected readonly Object = Object;
 }
