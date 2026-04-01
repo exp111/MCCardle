@@ -19,12 +19,17 @@ export type AhCardDataArrayField = "skills" | "packs" | "traits";
 
 export enum AhCardType {
   Event = "event",
-  Ally = "ally",
+  Asset = "asset",
+  Skill = "skill"
 }
 
 export enum AhCardFaction {
-  Mythic = "mythic",
+  Mystic = "mystic",
   Survivor = "survivor",
+  Neutral = "neutral",
+  Guardian = "guardian",
+  Seeker = "seeker",
+  Rogue = "rogue",
 
   // shouldnt be in data
   Mythos = "mythos"

@@ -1,7 +1,7 @@
 import {McCardData, McCardFaction, McCardType, McPack} from '../model/mcCardData';
 import {
-  ARKHAMCDB_BASE_URL,
-  ARKHAMCDB_CARD_URL, GITHUB_PAGES_URL, MARVELCDB_BASE_URL, MARVELCDB_CARD_URL, PLACEHOLDER_IMAGE
+  ARKHAMDB_BASE_URL,
+  ARKHAMDB_CARD_URL, GITHUB_PAGES_URL, MARVELCDB_BASE_URL, MARVELCDB_CARD_URL, PLACEHOLDER_IMAGE
 } from './const';
 import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import Rand from 'rand-seed';
@@ -32,11 +32,11 @@ export function getMcFaction(faction: McCardFaction) {
 
 // ah
 export function getAhCardImage(card: AhCardData) {
-  return card.img ? `${ARKHAMCDB_CARD_URL}${card.img}` : PLACEHOLDER_IMAGE;
+  return card.img ? `${ARKHAMDB_BASE_URL}${card.img}` : PLACEHOLDER_IMAGE;
 }
 
 export function getAhCardDBURL(card: AhCardData) {
-  return `${ARKHAMCDB_BASE_URL}/${card.code}`;
+  return `${ARKHAMDB_CARD_URL}/${card.code}`;
 }
 
 export function getAhType(type: AhCardType) {
