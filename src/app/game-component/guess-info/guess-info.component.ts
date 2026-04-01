@@ -1,7 +1,7 @@
 import {Component, computed, input, model} from '@angular/core';
 import {CardInfoComponent} from '../card-info/card-info.component';
 import {McCardData, McCardDataArrayField, McCardResource, McPack} from '../../../model/mcCardData';
-import {arraysHaveSameValues, getCardImage} from '../../helpers';
+import {arraysHaveSameValues, getMcCardImage} from '../../helpers';
 import {Filter, FilterType} from '../game.component';
 import {PLACEHOLDER_IMAGE} from '../../const';
 import {GuessInfoAttributeComponent} from './guess-info-attribute/guess-info-attribute.component';
@@ -27,7 +27,7 @@ export class GuessInfoComponent extends CardInfoComponent {
   PLACEHOLDER = "???";
 
   shouldShowPlaceholderImage = computed(() => !this.cardGuessed());
-  override cardImg = computed(() => this.shouldShowPlaceholderImage() ? PLACEHOLDER_IMAGE : getCardImage(this.correctCard()));
+  override cardImg = computed(() => this.shouldShowPlaceholderImage() ? PLACEHOLDER_IMAGE : getMcCardImage(this.correctCard()));
 
   getFilterIndex(field: string, value?: unknown) {
     return this.filter().findIndex(f => f.filter == field && (!value || value == f.value));

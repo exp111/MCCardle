@@ -1,0 +1,94 @@
+<div class="d-flex rounded" [class.border]="showBorder()">
+  <!-- img -->
+  <div class="col-2 p-2">
+    <img class="img" [src]="cardImg()">
+  </div>
+  <div class="col-6 d-flex flex-column">
+    <div>
+      <!-- name -->
+      @let name = getName(card());
+      @let hasGuessedName = correctCard() && card().name == correctCard().name;
+      <ng-template #nameDisplay>
+        @if (correctCard() && !hasGuessedName && getName(correctCard()).startsWith(name[0])) {
+          <span class="value partial">{{ name[0] }}</span><span>{{ name.slice(1) }}</span>
+        } @else {
+          <span class="value" [class.correct]="hasGuessedName">
+          {{ name }}
+        </span>
+        }
+      </ng-template>
+      @if (showMarvelCDBLink()) {
+        <a [href]="getCardMarvelCDBURL(card())" target="_blank" rel="noreferrer noopener" class="fw-bold">
+          <ng-template [ngTemplateOutlet]="nameDisplay"></ng-template>
+        </a>
+      } @else {
+        <span class="fw-bold"><ng-template [ngTemplateOutlet]="nameDisplay"></ng-template></span>
+      }
+      <!-- DEBUG: code -->
+      @if (IS_DEV) {
+        ({{ card().code }})
+      }
+    </div>
+    <!-- cost -->
+    <div>
+      <card-info-attribute [card]="card()"
+                           [correctCard]="correctCard()"
+                           [displayFunc]="getCost"
+                           isNumber="true"
+                           name="Cost"
+                           field="cost"></card-info-attribute>
+    </div>
+    <!-- health -->
+    <div>
+      <card-info-attribute [card]="card()"
+                           [correctCard]="correctCard()"
+                           isNumber="true"
+                           name="Health"
+                           field="health"></card-info-attribute>
+    </div>
+    <!-- faction -->
+    <div>
+      <card-info-attribute [card]="card()"
+                           [correctCard]="correctCard()"
+                           [displayFunc]="getFaction"
+                           name="Aspect"
+                           field="faction"></card-info-attribute>
+    </div>
+  </div>
+  <div class="col">
+    <div>
+      <!-- year -->
+      <card-info-attribute [card]="card()"
+                           [correctCard]="correctCard()"
+                           isNumber="true"
+                           name="Year"
+                           field="year"></card-info-attribute>
+    </div>
+    <div>
+      <!-- attack -->
+      <card-info-attribute [card]="card()"
+                           [correctCard]="correctCard()"
+                           isNumber="true"
+                           name="Attack"
+                           field="attack"></card-info-attribute>
+    </div>
+    <div>
+      <!-- thwart -->
+      <card-info-attribute [card]="card()"
+                           [correctCard]="correctCard()"
+                           isNumber="true"
+                           name="Thwart"
+                           field="thwart"></card-info-attribute>
+    </div>
+    <div class="traits">
+      <span class="value fw-bold"
+            [class.correct]="correctCard() && hasAllTraits()"
+            [class.partial]="correctCard() && hasAnyTrait()">Traits </span>
+      @for (trait of card().traits; track trait) {
+        <span class="value"
+              [class.correct]="correctCard() && correctCard().traits.includes(trait)">{{ trait }}</span>
+      }
+    </div>
+  </div>
+</div>
+

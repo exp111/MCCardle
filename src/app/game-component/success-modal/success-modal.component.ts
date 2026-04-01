@@ -1,29 +1,20 @@
-import {Component, inject, Type} from '@angular/core';
+import {inject, Type} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {McCardData, McCardDataArrayField} from '../../../model/mcCardData';
 import {CardInfoComponent} from '../card-info/card-info.component';
 import {capitalize, getCardName, getShareLink} from '../../helpers';
 import {ToastService} from '../../../services/toast.service';
 import {GITHUB_PAGES_URL} from '../../const';
-import {NgComponentOutlet} from '@angular/common';
+import {CardData} from '../../../model/cardData';
 
-@Component({
-  selector: 'app-success-modal',
-  imports: [
-    NgComponentOutlet
-  ],
-  templateUrl: './success-modal.component.html',
-  styleUrl: './success-modal.component.scss',
-})
-export class SuccessModalComponent {
+export abstract class SuccessModalComponent<T extends CardData, A> {
   activeModal = inject(NgbActiveModal);
   toastService = inject(ToastService);
 
   cardInfoComponent!: Type<CardInfoComponent>;
   mode!: string;
-  card!: McCardData;
+  card!: T;
   germanLanguage!: boolean;
-  guesses!: McCardData[];
+  guesses!: T[];
   day!: string;
 
   WRONG_EMOJI = "⬛";
@@ -38,21 +29,7 @@ export class SuccessModalComponent {
   }
 
   // configs for each game mode
-  modeConfigs: Record<string, {legend: string, fields: (keyof McCardData)[]}> = {
-    "": {
-      legend: "🗨️🪙👪🅰️🗓️💰📖🃏",
-      fields: ["name", "cost", "type", "faction", "year", "resources", "packs", "traits"]
-    },
-    // same as standard
-    "expert": {
-      legend: "🗨️🪙👪🅰️🗓️💰📖🃏",
-      fields: ["name", "cost", "type", "faction", "year", "resources", "packs", "traits"]
-    },
-    "ally": {
-      legend: "🗨️🪙❤️🅰️🗓️🗡️🧠🃏",
-      fields: ["name", "cost", "health", "faction", "year", "attack", "thwart", "traits"]
-    }
-  }
+  abstract modeConfigs: Record<string, {legend: string, fields: (keyof T)[]}>;
 
   share(addSpoileredCardName = false) {
     let share = "";
@@ -102,19 +79,19 @@ export class SuccessModalComponent {
     }
   }
 
-  check(guess: McCardData, field: keyof McCardData) {
+  check(guess: T, field: keyof T) {
     if (field == "name") {
       return this.checkName(guess);
     }
 
     if (Array.isArray(guess[field])) {
-      return this.checkArray(guess, field as McCardDataArrayField);
+      return this.checkArray(guess, field as A);
     }
     return this.checkValue(guess, field);
   }
 
   // return green if correct, yellow if first letter matches, wrong otherwise
-  checkName(guess: McCardData) {
+  checkName(guess: T) {
     let cardName = this.getName(this.card);
     let guessName = this.getName(guess);
     return cardName == guessName ? this.CORRECT_EMOJI :
@@ -122,21 +99,21 @@ export class SuccessModalComponent {
       : this.WRONG_EMOJI;
   }
 
-  checkValue(guess: McCardData, field: keyof McCardData) {
+  checkValue(guess: T, field: keyof T) {
     return this.card[field] == guess[field] ? this.CORRECT_EMOJI : this.WRONG_EMOJI;
   }
 
-  checkArray(guess: McCardData, field: McCardDataArrayField) {
-    let correctArray = this.card[field];
-    let guessArray = guess[field];
-    let matches = guessArray.filter(v => correctArray.includes(v as never)).length;
+  checkArray(guess: T, field: A) {
+    let correctArray = (this.card as any)[field];
+    let guessArray = (guess as any)[field];
+    let matches = guessArray.filter((v: any) => correctArray.includes(v as never)).length;
     // if arrays completely match, return green. if partially matched, return orange. otherwise wrong
     return matches == correctArray.length && matches == guessArray.length ? this.CORRECT_EMOJI :
       matches > 0 ? this.PARTIALLY_CORRECT_EMOJI
         : this.WRONG_EMOJI;
   }
 
-  getName(card: McCardData) {
+  getName(card: T) {
     return getCardName(card, this.germanLanguage);
   }
 }

@@ -1,0 +1,114 @@
+<div class="d-flex border rounded">
+  <!-- img -->
+  <div class="col-2 p-2">
+    <img class="img" [class.placeholder-img]="shouldShowPlaceholderImage()" [src]="cardImg()">
+  </div>
+  <div class="col-6 d-flex flex-column">
+    <!-- name -->
+    @let name = getName(correctCard());
+    @let hasNameValue = hasValue("name");
+    <div class="fw-bold">
+      @if (hasNameValue) {
+        <span class="value correct"
+              [class.filter]="hasFilter('name')"
+              (click)="setFilter('name')">{{ name }}</span>
+      } @else {
+        @let hasFirst = hasFirstLetter();
+        @if (hasFirst) {
+          <span class="value partial"
+                [class.filter]="hasFilter('firstLetter')"
+                (click)="setFilterCustom('firstLetter', name[0])">{{ name[0] }}</span>
+        }
+        @for (part of guessNameParts(); track $index + part) {
+          <span [class.ms-n1]="$first && hasFirst">
+            @if ($first && hasFirst) {
+              {{ part.slice(1) }}
+            } @else {
+              {{ part }}
+            }
+          </span>
+        }
+      }
+    </div>
+    <!-- cost -->
+    <div>
+      <guess-info-attribute [card]="correctCard()"
+                            [guesses]="guesses()"
+                            [PLACEHOLDER]="PLACEHOLDER"
+                            [hasFilter]="hasFilter.bind(this)"
+                            [setFilter]="setFilter.bind(this)"
+                            [displayFunc]="getCost"
+                            name="Cost"
+                            field="cost"></guess-info-attribute>
+    </div>
+    <!-- health -->
+    <div>
+      <guess-info-attribute [card]="correctCard()"
+                            [guesses]="guesses()"
+                            [PLACEHOLDER]="PLACEHOLDER"
+                            [hasFilter]="hasFilter.bind(this)"
+                            [setFilter]="setFilter.bind(this)"
+                            name="Health"
+                            field="health"></guess-info-attribute>
+    </div>
+    <!-- faction/aspect -->
+    <div>
+      <guess-info-attribute [card]="correctCard()"
+                            [guesses]="guesses()"
+                            [PLACEHOLDER]="PLACEHOLDER"
+                            [hasFilter]="hasFilter.bind(this)"
+                            [setFilter]="setFilter.bind(this)"
+                            [displayFunc]="getFaction"
+                            name="Aspect"
+                            field="faction"></guess-info-attribute>
+    </div>
+  </div>
+  <div class="col">
+    <div>
+      <!-- year -->
+      <guess-info-attribute [card]="correctCard()"
+                            [guesses]="guesses()"
+                            [PLACEHOLDER]="PLACEHOLDER"
+                            [hasFilter]="hasFilter.bind(this)"
+                            [setFilter]="setFilter.bind(this)"
+                            name="Year"
+                            field="year"></guess-info-attribute>
+    </div>
+    <div>
+      <!-- attack -->
+      <guess-info-attribute [card]="correctCard()"
+                            [guesses]="guesses()"
+                            [PLACEHOLDER]="PLACEHOLDER"
+                            [hasFilter]="hasFilter.bind(this)"
+                            [setFilter]="setFilter.bind(this)"
+                            name="Attack"
+                            field="attack"></guess-info-attribute>
+    </div>
+    <div>
+      <!-- thwart -->
+      <guess-info-attribute [card]="correctCard()"
+                            [guesses]="guesses()"
+                            [PLACEHOLDER]="PLACEHOLDER"
+                            [hasFilter]="hasFilter.bind(this)"
+                            [setFilter]="setFilter.bind(this)"
+                            name="Thwart"
+                            field="thwart"></guess-info-attribute>
+    </div>
+    <div class="traits">
+      @let traitsComplete = hasAllTraits();
+      <span class="value fw-bold"
+            [class.partial]="hasAnyTrait()"
+            [class.correct]="traitsComplete"
+            [class.filter]="hasFilter('allTraits') || hasFilter('anyTrait')"
+            (click)="setFilterCustom(traitsComplete ? 'allTraits' : 'anyTrait')">Traits </span>
+      @for (trait of correctCard().traits; track trait) {
+        @let hasValue = hasTrait(trait);
+        <span class="value"
+              [class.correct]="hasValue"
+              [class.filter]="hasFilter('traits', trait)"
+              (click)="setFilterArray('traits', trait)">{{ hasValue ? trait : PLACEHOLDER }}</span>
+      }
+    </div>
+  </div>
+</div>
+

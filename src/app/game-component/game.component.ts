@@ -1,7 +1,7 @@
 import {
-  ApplicationRef,
+  ApplicationRef, Component,
   computed,
-  createComponent,
+  createComponent, Directive,
   effect,
   ElementRef,
   EnvironmentInjector,
@@ -9,17 +9,17 @@ import {
   inputBinding,
   OnInit,
   signal,
-  twoWayBinding,
+  twoWayBinding, Type,
   viewChild
 } from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {CardInfoComponent} from './card-info/card-info.component';
-import {McCardData} from '../../model/mcCardData';
+import {McCardData, McCardDataArrayField} from '../../model/mcCardData';
 import {GuessInfoComponent} from './guess-info/guess-info.component';
 import {
   camelCaseToSpaces,
   dateToNgbDate,
-  getCardImage,
+  getMcCardImage,
   getCardName,
   getMcFaction,
   getRandomDate,
@@ -36,6 +36,7 @@ import {from, Observable} from 'rxjs';
 import {HelpModalComponent} from './help-modal/help-modal.component';
 import {StatsModalComponent} from './stats-modal/stats-modal.component';
 import {CardData} from '../../model/cardData';
+import {AhCardData, AhCardDataArrayField} from '../../model/ahCardData';
 
 export type FilterType =
   keyof McCardData
@@ -60,7 +61,13 @@ export interface SaveData {
   guesses: string[];
 }
 
-export abstract class GameComponent<T extends CardData, U extends {card: T, guesses: T[]}> implements OnInit {
+export interface UserData {
+  card: CardData;
+  guesses: CardData[];
+}
+
+@Component({template: ""})
+export abstract class GameComponent<T extends CardData> implements OnInit {
   dataService = inject(DataService);
   modalService = inject(NgbModal);
 
@@ -108,12 +115,13 @@ export abstract class GameComponent<T extends CardData, U extends {card: T, gues
   filterDescription = computed(() => this.filter().length ? `[Filter ${this.filter().map(f => `${camelCaseToSpaces(f.filter).toLowerCase()}: ${Array.isArray(f.value) ? f.value.length > 0 ? f.value : 'None' : f.value}`).join(', ')}] ` : "");
 
   // guesses
-  userData = signal<Record<string, U>>({});
+  userData = signal<Record<string, UserData>>({});
   guesses = computed(() => this.userData()[this.day()]?.guesses ?? []);
   cardGuessed = computed(() => this.guesses().includes(this.cardToGuess()));
 
   cardInfoComponent = CardInfoComponent;
   guessInfoComponent = GuessInfoComponent;
+  abstract successModalType: Type<SuccessModalComponent<T, any>>;
 
   appRef = inject(ApplicationRef);
   injector = inject(EnvironmentInjector);
@@ -126,7 +134,7 @@ export abstract class GameComponent<T extends CardData, U extends {card: T, gues
       if (!Object.values(this.userData()).length) {
         return;
       }
-      let data = mapRecordValues<string, U, SaveData>(this.userData(), d => ({
+      let data = mapRecordValues<string, UserData, SaveData>(this.userData(), d => ({
         card: d.card.code,
         guesses: d.guesses.map(g => g.code) // only save codes
       }));
@@ -187,7 +195,7 @@ export abstract class GameComponent<T extends CardData, U extends {card: T, gues
     }
     // migrate data if needed
     data = this.migrateLocalStorageData(data);
-    this.userData.set(mapRecordValues<string, SaveData, U>(data, d => ({
+    this.userData.set(mapRecordValues<string, SaveData, UserData>(data, d => ({
       // map saved cards to the actual data
       card: this.getCardByCode(d.card),
       guesses: d.guesses.map(c => this.getCardByCode(c)).filter(g => g != null) // filter out null values (cards that weren't found)
@@ -214,7 +222,7 @@ export abstract class GameComponent<T extends CardData, U extends {card: T, gues
     switch (schema) {
       default:
         // first schema (no version number): map<string, {<day>: {code: string}[]}
-        ret = mapRecordValues<string, {code: string}[], SaveData>(data, (d, k) => ({
+        ret = mapRecordValues<string, { code: string }[], SaveData>(data, (d, k) => ({
           card: this.getCardForSeed(k).code,
           guesses: (d?.["map"] ? d.map(c => c.code) ?? [] : [])
         }));
@@ -231,6 +239,10 @@ export abstract class GameComponent<T extends CardData, U extends {card: T, gues
   }
 
   abstract matchesFilter(card: T): boolean;
+
+  abstract getFaction(card: T): string;
+
+  abstract getCardImage(card: T): string;
 
   onDayChange() {
     // reset filter
@@ -272,8 +284,8 @@ export abstract class GameComponent<T extends CardData, U extends {card: T, gues
   }
 
   showSuccessModal() {
-    let ref = this.modalService.open(SuccessModalComponent, {size: "lg"});
-    let instance = ref.componentInstance as SuccessModalComponent;
+    let ref = this.modalService.open(this.successModalType, {size: "lg"});
+    let instance = ref.componentInstance as SuccessModalComponent<CardData, any>;
     instance.cardInfoComponent = this.cardInfoComponent;
     instance.mode = this.MODE;
     instance.card = this.cardToGuess();
@@ -328,7 +340,7 @@ export abstract class GameComponent<T extends CardData, U extends {card: T, gues
       [this.day()]: {card: this.getCardForSeed(this.seed()), guesses: []}
     }));
     this.filter.set([]);
-    console.log("Reset gueses.");
+    console.log("Reset guesses.");
   }
 
   setToday() {
@@ -401,8 +413,6 @@ export abstract class GameComponent<T extends CardData, U extends {card: T, gues
     return data?.guesses.includes(data?.card);
   }
 
-  protected readonly getCardImage = getCardImage;
-  protected readonly getFaction = getMcFaction;
   protected readonly IS_DEV = IS_DEV;
   protected readonly Object = Object;
 }

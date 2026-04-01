@@ -6,8 +6,7 @@ import {AbstractCardsComponent} from '../cards.component';
 @Component({
   selector: 'app-mc-cards',
   imports: [],
-  templateUrl: './mc-cards.component.html',
-  styleUrl: './cards.component.scss',
+  templateUrl: './mc-cards.component.html'
 })
 export class McCardsComponent extends AbstractCardsComponent<McCardData> {
   override getData() {

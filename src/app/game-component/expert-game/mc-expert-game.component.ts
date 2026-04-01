@@ -36,7 +36,7 @@ export class McExpertGameComponent extends McGameComponent {
   override cardToGuess = computed(() => this.cardGuessed() ? this.getCard(this.guesses().length - 1) : this.getCard(this.guesses().length));
 
   // gets the random card for the seed randomized iterations times
-  getCard(iteration: number) {
+  getCard(iteration: number): McCardData {
     if (!this.cards().length) {
       return null!;
     }

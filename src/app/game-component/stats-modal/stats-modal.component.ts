@@ -4,6 +4,7 @@ import {UserData} from '../game.component';
 import {StatCard} from './stat-card/stat-card';
 import {McCardData} from '../../../model/mcCardData';
 import {getCardName} from '../../helpers';
+import {CardData} from '../../../model/cardData';
 
 @Component({
   selector: 'app-stats-modal',
@@ -59,7 +60,7 @@ export class StatsModalComponent {
     return `${this.getCardName(card)} (${occurances[card.code]})`;
   }
 
-  getCardName(card: McCardData) {
+  getCardName(card: CardData) {
     return getCardName(card, this.germanLanguage);
   }
 

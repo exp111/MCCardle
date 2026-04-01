@@ -2,8 +2,8 @@ import {booleanAttribute, Component, computed, input} from '@angular/core';
 import {McCardData} from '../../../model/mcCardData';
 import {
   arraysHaveSameValues,
-  getCardImage,
-  getCardMarvelCDBURL,
+  getMcCardImage,
+  getMcCardDBURL,
   getCardName,
   getMcFaction,
   getMcPack,
@@ -30,7 +30,7 @@ export class CardInfoComponent {
   showBorder = input(true, {transform: booleanAttribute});
   showMarvelCDBLink = input(false);
 
-  cardImg = computed(() => getCardImage(this.card()));
+  cardImg = computed(() => getMcCardImage(this.card()));
 
   getName(card: McCardData) {
     return getCardName(card, this.germanLanguage());
@@ -77,6 +77,6 @@ export class CardInfoComponent {
   }
 
   protected readonly getPack = getMcPack;
-  protected readonly getCardMarvelCDBURL = getCardMarvelCDBURL;
+  protected readonly getCardMarvelCDBURL = getMcCardDBURL;
   protected readonly IS_DEV = IS_DEV;
 }

@@ -1,22 +1,26 @@
 import {McCardData, McCardFaction, McCardType, McPack} from '../model/mcCardData';
-import {GITHUB_PAGES_URL, MARVELCDB_BASE_URL, MARVELCDB_CARD_URL, PLACEHOLDER_IMAGE} from './const';
+import {
+  ARKHAMCDB_BASE_URL,
+  ARKHAMCDB_CARD_URL, GITHUB_PAGES_URL, MARVELCDB_BASE_URL, MARVELCDB_CARD_URL, PLACEHOLDER_IMAGE
+} from './const';
 import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import Rand from 'rand-seed';
 import {CardData} from '../model/cardData';
-
-export function getCardImage(card: McCardData) {
-  return card.img ? `${MARVELCDB_BASE_URL}${card.img}` : PLACEHOLDER_IMAGE;
-}
-
-export function getCardMarvelCDBURL(card: McCardData) {
-  return `${MARVELCDB_CARD_URL}/${card.code}`;
-}
+import {AhCardData, AhCardFaction, AhCardType} from '../model/ahCardData';
 
 export function getEnumKey(enums: any, val: string) {
   return Object.entries(enums).find(([_, v]) => v === val)?.[0] ?? val;
 }
 
 // mc
+export function getMcCardImage(card: McCardData) {
+  return card.img ? `${MARVELCDB_BASE_URL}${card.img}` : PLACEHOLDER_IMAGE;
+}
+
+export function getMcCardDBURL(card: McCardData) {
+  return `${MARVELCDB_CARD_URL}/${card.code}`;
+}
+
 export function getMcType(type: McCardType) {
   return getEnumKey(McCardType, type)
     .replaceAll(/([A-Z])/g, (c) => ` ${c}`); // convert camel case to spaces
@@ -24,6 +28,24 @@ export function getMcType(type: McCardType) {
 
 export function getMcFaction(faction: McCardFaction) {
   return getEnumKey(McCardFaction, faction);
+}
+
+// ah
+export function getAhCardImage(card: AhCardData) {
+  return card.img ? `${ARKHAMCDB_CARD_URL}${card.img}` : PLACEHOLDER_IMAGE;
+}
+
+export function getAhCardDBURL(card: AhCardData) {
+  return `${ARKHAMCDB_BASE_URL}/${card.code}`;
+}
+
+export function getAhType(type: AhCardType) {
+  return getEnumKey(AhCardType, type)
+    .replaceAll(/([A-Z])/g, (c) => ` ${c}`); // convert camel case to spaces
+}
+
+export function getAhFaction(faction: AhCardFaction) {
+  return getEnumKey(AhCardFaction, faction);
 }
 
 export function getMcPack(pack: string) {

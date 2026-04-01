@@ -26,7 +26,7 @@
     <div class="d-flex flex-column gap-1 pb-2">
       @if (cardGuessed()) {
         <h4 class="correct text-center">
-          You guessed the card! It was {{ getName(cardToGuess()) }}.
+          You guessed the card! It was {{ getName($any(cardToGuess())) }}.
         </h4>
       }
       <!-- Debug Menu -->
@@ -106,7 +106,7 @@
                 @if (showSearchImages()) {
                   <div class="col-2 p-2"><img class="card-img" [src]="getCardImage(result)" loading="lazy"></div>
                 }
-                <div class="col align-content-center">{{ getName(result) }} ({{ getFaction(result.faction) }})</div>
+                <div class="col align-content-center">{{ getName(result) }} ({{ getFaction(result) }})</div>
               </div>
             } @empty {
               <div class="p-2 bg-body-secondary text-center fw-bold">No results.</div>

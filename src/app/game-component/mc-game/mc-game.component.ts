@@ -4,9 +4,9 @@ import {NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import {CustomDayComponent} from '../custom-day/custom-day.component';
 import {NgComponentOutlet} from '@angular/common';
 import {GameComponent} from '../game.component';
-import {McCardDataArrayField, McCardResource, McCardData} from '../../../model/mcCardData';
-import {arraysHaveSameValues, sortString} from '../../helpers';
-import {Observable} from 'rxjs';
+import {McCardData, McCardDataArrayField, McCardResource} from '../../../model/mcCardData';
+import {arraysHaveSameValues, getMcCardImage, getMcFaction, sortString} from '../../helpers';
+import {McSuccessModalComponent} from '../success-modal/mc-success-modal.component';
 
 export interface McUserData {
   card: McCardData;
@@ -24,7 +24,9 @@ export interface McUserData {
   templateUrl: '../game.component.html',
   styleUrl: '../game.component.scss',
 })
-export class McGameComponent extends GameComponent<McCardData, McUserData> {
+export class McGameComponent extends GameComponent<McCardData> {
+  override successModalType = McSuccessModalComponent;
+
   override matchesFilter(card: McCardData) {
     let filter = this.filter();
     if (!filter?.length) {
@@ -81,6 +83,14 @@ export class McGameComponent extends GameComponent<McCardData, McUserData> {
       }
     }
     return true;
+  }
+
+  override getFaction(card: McCardData) {
+    return getMcFaction(card.faction);
+  }
+
+  override getCardImage(card: McCardData): string {
+    return getMcCardImage(card);
   }
 
   override getData() {
