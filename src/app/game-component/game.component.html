@@ -78,12 +78,14 @@
                (ngModelChange)="onDayChange()">
         <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">Change</button>
       </div>
-      <div class="form-check">
-        <input type="checkbox" class="form-check-input" [(ngModel)]="showSearchImages">
-        <label class="form-check-label" for="checkDefault">
-          Show Card Images in Search
-        </label>
-      </div>
+      @if (SHOULD_SHOW_IMAGES) {
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" [(ngModel)]="showSearchImages">
+          <label class="form-check-label" for="checkDefault">
+            Show Card Images in Search
+          </label>
+        </div>
+      }
       <div class="form-check">
         <input type="checkbox" class="form-check-input" [(ngModel)]="germanLanguage">
         <label class="form-check-label" for="checkDefault">
@@ -102,11 +104,11 @@
           <div class="z-2 position-absolute w-100 bg-body border rounded-bottom overflow-auto search-results"
                [class.d-none]="!search().length">
             @for (result of shownSearchResults(); track result.code) {
-              <div class="cursor-pointer d-flex" (click)="guessCard(result)">
+              <div class="cursor-pointer d-flex px-2" (click)="guessCard(result)">
                 @if (showSearchImages()) {
-                  <div class="col-2 p-2"><img class="card-img" [src]="getCardImage(result)" loading="lazy"></div>
+                  <div class="col-2 py-2"><img class="card-img" [src]="getCardImage(result)" loading="lazy"></div>
                 }
-                <div class="col align-content-center">{{ getName(result) }} ({{ getFaction(result.faction) }})</div>
+                <div class="col align-content-center py-1">{{ getName(result) }} ({{ getFaction(result.faction) }})</div>
               </div>
             } @empty {
               <div class="p-2 bg-body-secondary text-center fw-bold">No results.</div>

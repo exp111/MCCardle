@@ -1,0 +1,18 @@
+<div class="d-flex rounded p-1" [class.border]="showBorder()">
+  <!-- TODO: add image? -->
+  <div class="col-6 d-flex flex-column">
+    <div>
+      <!-- name -->
+      @let name = getName(card());
+      @let hasGuessedName = correctCard() && card().name == correctCard().name;
+        <span class="fw-bold value" [class.correct]="hasGuessedName">
+          {{ name }}
+        </span>
+        <!-- DEBUG: code -->
+        @if (IS_DEV) {
+          ({{ card().code }})
+        }
+    </div>
+  </div>
+</div>
+

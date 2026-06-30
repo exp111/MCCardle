@@ -4,6 +4,7 @@ import {GameComponent} from "./game-component/game.component";
 import {ViewerComponent} from './viewer-component/viewer.component';
 import {ExpertGameComponent} from './game-component/expert-game/expert-game.component';
 import {AllyGameComponent} from './game-component/ally-game/ally-game.component';
+import {ImageGameComponent} from './game-component/image-game/image-game.component';
 
 export const routes: Routes = [
   {
@@ -21,6 +22,10 @@ export const routes: Routes = [
   {
     path: "ally",
     component: AllyGameComponent
+  },
+  {
+    path: "image",
+    component: ImageGameComponent
   },
   {
     path: "**",

@@ -94,6 +94,7 @@ export class GameComponent implements OnInit {
   MINIMUM_SEARCH_LENGTH = 1;
   SHOWN_RESULTS = 25;
   SCHEMA_VERSION = "1";
+  SHOULD_SHOW_IMAGES = true;
 
   // runtime vars
   loading = signal(false);
@@ -114,7 +115,7 @@ export class GameComponent implements OnInit {
 
   // settings
   germanLanguage = signal(false);
-  showSearchImages = signal(true);
+  showSearchImages = signal(this.SHOULD_SHOW_IMAGES);
 
   // search
   search = signal("");
