@@ -11,5 +11,5 @@ export class ImageGuessInfoComponent extends GuessInfoComponent {
   MAX_ZOOM = 4;
 
   override shouldShowPlaceholderImage = signal(false);
-  zoom = computed(() => this.MAX_ZOOM + 1 - Math.min(Math.max(this.guesses().length + 1, 1), this.MAX_ZOOM));
+  zoom = computed(() => this.cardGuessed() ? 1 : this.MAX_ZOOM + 1 - Math.min(Math.max(this.guesses().length + 1, 1), this.MAX_ZOOM));
 }
