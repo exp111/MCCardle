@@ -1,7 +1,19 @@
+.container:has(.img) {
+  position: absolute;
+}
+
 .img {
+  width: 710px;
+  height: 1030px;
+  margin-top: -150px;
   --scale: 1;
   object-fit: contain;
   transform: scale(var(--scale));
+  z-index: -1;
+}
+
+.overlay {
+  z-index: 0;
 }
 
 .container {

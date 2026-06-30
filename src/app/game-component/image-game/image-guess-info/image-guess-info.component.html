@@ -1,3 +1,9 @@
 <div class="container">
   <img class="img" [src]="cardImg()" [style.--scale]="zoom()">
 </div>
+<div class="container overlay">
+  <img class="img" src="img/overlay.png" [style.--scale]="zoom()">
+</div>
+<!-- place empty container without content to take up content as others are absolute -->
+<div class="container">
+</div>
