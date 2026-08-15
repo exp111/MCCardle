@@ -254,7 +254,7 @@ for code, card in output.items():
 
 vprint("Starting writing")
 # write to file
-fileName = "output.json"
+fileName = "cards.json"
 outputPath = os.path.join(outputDir, fileName)
 with open(outputPath, "w", encoding="utf-8") as out:
   write(json.dumps(list(output.values())), out)
