@@ -89,11 +89,13 @@ parser = argparse.ArgumentParser(
   prog='Marvel Champions Cardle Data Fetcher',
   description='Compiles the data for MCCardle from the Marvel Champions JSON Repo')
 parser.add_argument("-v", "--verbose", action="store_true", help="Show verbose output")  # flag
+parser.add_argument("-c", "--cache", action="store_true", help="Cache request files")  # flag
 parser.add_argument("-o", "--output", nargs="?", default=os.path.curdir, type=directory,
                     help="The directory where the output is written to. Defaults to the current path.")
 args = parser.parse_args()
 # args
 verbose = args.verbose
+cache = args.cache
 outputDir = args.output
 
 
@@ -120,13 +122,14 @@ def fetchJson(url):
   # first 16 chars of hash
   hashed_name = f"{sha256(url.encode()).hexdigest()[:16]}.json"
   # read cached file if available
-  if os.path.exists(hashed_name):
+  if cache and os.path.exists(hashed_name):
     with open(hashed_name, "r") as f:
       return json.loads(f.read())
   data = requests.get(url).json()
   # write to cached file
-  with open(hashed_name, "w") as f:
-    f.write(json.dumps(data))
+  if cache:
+    with open(hashed_name, "w") as f:
+      f.write(json.dumps(data))
   return data
 
 vprint("Fetching data")
