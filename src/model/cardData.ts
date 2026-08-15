@@ -10,9 +10,6 @@ export interface CardData {
   traits: string[];
   packs: Pack[];
   img: string;
-  // these are both incomplete
-  sets: string[];
-  illustrators: string[];
   // ally related
   health: number;
   attack: number;
